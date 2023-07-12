@@ -1,0 +1,165 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import '@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/* Scaling for screens */
+html{
+  font-size: 100%;
+  @media (max-width: 289px) {
+    font-size: 45%;
+  }
+  @media (min-width: 290px) {
+    font-size: 50%;
+  }
+  @media (min-width: 300px) {
+    font-size: 52.5%;
+  }
+  @media (min-width: 320px) {
+    font-size: 55.5%;
+  }
+  @media (min-width: 325px) {
+    font-size: 56.5%;
+  }
+  @media (min-width: 326px) {
+    font-size: 57%;
+  }
+  @media (min-width: 330px) {
+    font-size: 59%;
+  }
+  @media (min-width: 360px) {
+    font-size: 62.5%;
+  }
+  @media (min-width: 411px) {
+    font-size: 70%;
+  }
+  @media (min-width: 500px) {
+    font-size: 85%;
+  }
+  @media (min-width: 720px) {
+    font-size: 100%;
+  }
+  @media (min-width: 1000px) {
+    font-size: 110%;
+  }
+}
+
+/* Application-wide Styles */
+ion-title {
+  color: #07a86d;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 250%;
+  border-width:20px;
+  border-color:black
+}
+p {
+  margin-right: 5%;
+}
+h2 {
+  color: #444;
+  text-decoration: underline;
+  font-size: 160%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: lighter;
+}
+h3 {
+  color: #444;
+  font-size: 1.2rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+table{
+  width: fit-content;
+  float: left;
+}
+th {
+  font-size: 130%;
+  font-weight: lighter;
+  text-decoration: underline;
+  text-align: start;
+  padding-top: 10px;
+  height: 2rem;
+}
+div{
+  width: fit-content;
+}
+audio{
+  height: 1rem;
+  border: solid;
+  border-radius: 10px;
+  border-color: #eee;
+}
+ion-item{
+  font-size: 1rem;
+  height: 4rem;
+}
+ion-button {
+  --background: #eee;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  color: black;
+  text-transform: capitalize;
+  font-size: 1.2rem;
+}
+ion-button:hover {
+  --background: black;
+  color: white;
+}
+body {
+  margin: 1em;
+  //background-image: url("assets/icon/background.png");
+}
+body, input[type="text"], button {
+  color: #333;
+  font-family: Cambria, Georgia, serif;
+}
+button {
+  background-color: #eee;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  padding: 1rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+button:hover {
+  background-color: black;
+  color: white;
+}
+button:disabled {
+  background-color: #eee;
+  color: #aaa;
+  cursor: auto;
+}
+
+/* everywhere else */
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}

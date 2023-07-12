@@ -1,0 +1,10 @@
+{
+  "name": "OpenLingo",
+  "integrations": {
+    "capacitor": {
+      "enabled": false
+    },
+    "cordova": {}
+  },
+  "type": "angular"
+}

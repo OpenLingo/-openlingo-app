@@ -2,12 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { getWords } from '../../home/home.page';
-import { generateExcercise } from '../../home/home.page';
-import { calculateScore } from '../../home/home.page';
-import { handleReorder } from '../../home/home.page';
+import * as home  from '../../home/home.page';
 import { ItemReorderEventDetail } from '@ionic/angular';
-import { HttpClientModule, HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-ex-noun-match',
@@ -23,28 +20,41 @@ export class ExNounMatchPage implements OnInit {
   ngOnInit()
   {
     console.log("GETting Question Data...")
-    this.httpInstance.get("http://127.0.0.1:5000/getQuestions", {responseType: "text"}).subscribe((response) => { this.questionData = response, console.log("...Success") })
+    this.httpInstance.get("http://127.0.0.1:5000/getQuestions", {responseType: "text"}).subscribe((response) => { this.serverData = response, this.serverRunning = true, console.log("...Success") })
   }
 
   finalScore = "Score: 0%"
-  sampleWords: string[][] = getWords()
+  sampleWords: string[][] = home.getWords()
 
-  questionData = "{}"
+  serverData = "[]"
+  serverRunning = false
 
   getHandleReorder(ev: CustomEvent<ItemReorderEventDetail>)
   {
-    handleReorder(ev)
+    home.handleReorder(ev)
   }
 
   startEx(): void
-  {
-    generateExcercise(0, 1, false, this.questionData, "noun")
+  { 
+    if(localStorage.getItem("offlineData") != null && !this.serverRunning)
+    {
+      this.serverData = localStorage.getItem("offlineData")!
+    }
+
+    var questionData = JSON.parse(this.serverData)
+
+    home.generateExcercise(0, 1, false, questionData, "noun")
   }
 
   finishEx(): void
   {
-    var scoreData: string[] = (calculateScore(0, 1, false))
+    var scoreData: string[] = (home.calculateScore(0, 1, false))
     scoreData.unshift("noun")
+
+    if(!this.serverRunning)
+    {
+      scoreData = home.saveOfflineData(scoreData)
+    }
 
     console.log("POSTing Answers...")
     this.httpInstance.post("http://127.0.0.1:5000/saveScores", scoreData, {responseType: "text"}).subscribe((response) => { console.log(response) })

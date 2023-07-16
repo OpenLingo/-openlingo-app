@@ -1,0 +1,305 @@
+{
+	"nouns":
+	[
+		{
+			"word": "House",
+			"translation": "Hause",
+			"gender": "Neutral",
+			"category": "Structure"
+		},
+		{
+			"word": "Cat",
+			"translation": "Katze",
+			"gender": "Feminine",
+			"category": "Animal"
+		},
+		{
+			"word": "Mountain",
+			"translation": "Berg",
+			"gender": "Masculine",
+			"category": "Land"
+		},
+		{
+			"word": "Bicycle",
+			"translation": "Fahrrad",
+			"gender": "Neutral",
+			"category": "Vehicle"
+		},
+		{
+			"word": "Tree",
+			"translation": "Baum",
+			"gender": "Masculine",
+			"category": "Natural"
+		},
+		{
+			"word": "Book",
+			"translation": "Buch",
+			"gender": "Neutral",
+			"category": "Object"
+		},
+		{
+			"word": "Piano",
+			"translation": "Klavier",
+			"gender": "Neutral",
+			"category": "Instrument"
+		},
+		{
+			"word": "Box",
+			"translation": "Kasten",
+			"gender": "Masculine",
+			"category": "Object"
+		},
+		{
+			"word": "Shell",
+			"translation": "Hülse",
+			"gender": "Feminine",
+			"category": "Object"
+		},
+		{
+			"word": "Mirror",
+			"translation": "Spiegel",
+			"gender": "Masculine",
+			"category": "Object"
+		},
+		{
+			"word": "Frame",
+			"translation": "Rahmen",
+			"gender": "Masculine",
+			"category": "Object"
+		},
+		{
+			"word": "Scope",
+			"translation": "Umfang",
+			"gender": "Masculine",
+			"category": "Object"
+		},
+		{
+			"word": "Light",
+			"translation": "Licht",
+			"gender": "Neutral",
+			"category": "Natural"
+		},
+		{
+			"word": "Teeth",
+			"translation": "Zähne",
+			"gender": "Masculine",
+			"category": "Body"
+		},
+		{
+			"word": "Sword",
+			"translation": "Schwert",
+			"gender": "Neutral",
+			"category": "Object"
+		},
+		{
+			"word": "Fire",
+			"translation": "Brand",
+			"gender": "Masculine",
+			"category": "Natural"
+		},
+		{
+			"word": "Carriage",
+			"translation": "Wagen",
+			"gender": "Masculine",
+			"category": "Vehicle"
+		},
+		{
+			"word": "Hare",
+			"translation": "Hase",
+			"gender": "Masculine",
+			"category": "Animal"
+		},
+		{
+			"word": "Water",
+			"translation": "Wasser",
+			"gender": "Neutral",
+			"category": "Natural"
+		},
+		{
+			"word": "Cloud",
+			"translation": "Wolke",
+			"gender": "Feminine",
+			"category": "Natural"
+		},
+		{
+			"word": "Skull",
+			"translation": "Schädel",
+			"gender": "Masculine",
+			"category": "Body"
+		},
+		{
+			"word": "Electricity",
+			"translation": "Elektrizität",
+			"gender": "Feminine",
+			"category": "Natural"
+		},
+		{
+			"word": "Egg",
+			"translation": "Ei",
+			"gender": "Neutral",
+			"category": "Natural"
+		},
+		{
+			"word": "Umbrella",
+			"translation": "Regenschirm",
+			"gender": "Masculine",
+			"category": "Object"
+		},
+		{
+			"word": "Diamond",
+			"translation": "Diamant",
+			"gender": "Masculine",
+			"category": "Natural"
+		},
+		{
+			"word": "Horse",
+			"translation": "Pferd",
+			"gender": "Neutral",
+			"category": "Animal"
+		},
+		{
+			"word": "Cotton",
+			"translation": "Baumwolle",
+			"gender": "Feminine",
+			"category": "Natural"
+		},
+		{
+			"word": "Cartoon",
+			"translation": "Karikatur",
+			"gender": "Feminine",
+			"category": "Medium"
+		},
+		{
+			"word": "Sea",
+			"translation": "Meer",
+			"gender": "Neutral",
+			"category": "Natural"
+		},
+		{
+			"word": "Crown",
+			"translation": "Krone",
+			"gender": "Feminine",
+			"category": "Object"
+		},
+		{
+			"word": "Bacon",
+			"translation": "Speck",
+			"gender": "Masculine",
+			"category": "Food"
+		},
+		{
+			"word": "Bread",
+			"translation": "Brot",
+			"gender": "Neutral",
+			"category": "Food"
+		},
+		{
+			"word": "Chocolate",
+			"translation": "Schokolade",
+			"gender": "Feminine",
+			"category": "Food"
+		},
+		{
+			"word": "Heart",
+			"translation": "Herz",
+			"gender": "Neutral",
+			"category": "Body"
+		},
+		{
+			"word": "Potato",
+			"translation": "Kartoffel",
+			"gender": "Feminine",
+			"category": "Food"
+		},
+		{
+			"word": "Office",
+			"translation": "Amtsstube",
+			"gender": "Feminine",
+			"category": "Structure"
+		},
+		{
+			"word": "Coffin",
+			"translation": "Sarg",
+			"gender": "Masculine",
+			"category": "Object"
+		},
+		{
+			"word": "Blood",
+			"translation": "Blut",
+			"gender": "Neutral",
+			"category": "Natural"
+		},
+				{
+			"word": "Recipe",
+			"translation": "Rezept",
+			"gender": "Neutral",
+			"category": "Communication"
+		},
+		{
+			"word": "Direction",
+			"translation": "Himmelsrichtung",
+			"gender": "Feminine",
+			"category": "Communication"
+		},
+		{
+			"word": "Teacher",
+			"translation": "Lehrer",
+			"gender": "Masculine",
+			"category": "Person"
+		},
+		{
+			"word": "Grandmother",
+			"translation": "Großmutter",
+			"gender": "Feminine",
+			"category": "Person"
+		},
+		{
+			"word": "Brother",
+			"translation": "Bruder",
+			"gender": "Masculine",
+			"category": "Person"
+		},
+		{
+			"word": "Friend",
+			"translation": "Freund",
+			"gender": "Masculine",
+			"category": "Person"
+		},
+		{
+			"word": "Birthday",
+			"translation": "Geburtstag",
+			"gender": "Masculine",
+			"category": "Event"
+		},
+				{
+			"word": "Weather",
+			"translation": "Wetter",
+			"gender": "Neutral",
+			"category": "Natural"
+		},
+		{
+			"word": "Street",
+			"translation": "Straße",
+			"gender": "Feminine",
+			"category": "Structure"
+		},
+				{
+			"word": "Beer",
+			"translation": "Bier",
+			"gender": "Neutral",
+			"category": "Drink"
+		},
+		{
+			"word": "Employee",
+			"translation": "Angestellter",
+			"gender": "Masculine",
+			"category": "Person"
+		},
+		{
+			"word": "Money",
+			"translation": "Geld",
+			"gender": "Neutral",
+			"category": "Object"
+		}
+	]
+}

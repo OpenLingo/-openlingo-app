@@ -1,28 +1,119 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/angular';
-import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
-import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
+import { CapacitorSQLite } from '@capacitor-community/sqlite';
+import sampleWords from '../../assets/sampleWords.json';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, HttpClientModule],
+  imports: [IonicModule],
 })
 
-export class HomePage { }
+export class HomePage {
 
-export function getWords(): string[][]
-{                                                                                                                                   //10                                                                                                                                //20                                                                                                                                      //30
-  return [["House",       "Cat",      "Mountain",   "Bicycle",  "Tree",       "Book",     "Piano",        "Box",        "Shell",    "Mirror",     "Frame",      "Scope",      "Light",    "Teeth",      "Sword",    "Fire",      "Carriage",  "Hare",       "Water",    "Cloud",    "Skull",      "Electricity",    "Egg",      "Umbrella",     "Diamond",    "Horse",    "Cotton",     "Cartoon",    "Sea",      "Crown"],
-          ["Haus",        "Katze",    "Berg",       "Fahrrad",  "Baum",       "Buch",     "Klavier",      "Kasten",     "Hülse",    "Spiegel",    "Rahmen",     "Umfang",     "Licht",    "Zähne",      "Schwert",  "Brand",     "Wagen",     "Hase",       "Wasser",   "Wolke",    "Schädel",    "Elektrizität",   "Ei",       "Regenschirm",  "Diamant",    "Pferd",    "Baumwolle",  "Karikatur",  "Meer",     "Krone"],
-          ["Neutral",     "Feminine", "Masculine",  "Neutral",  "Masculine",  "Neutral",  "Neutral",      "Masculine",  "Feminine", "Masculine",  "Masculine",  "Masculine",  "Neutral",  "Masculine",  "Neutral",  "Masculine", "Masculine", "Masculine",  "Neutral",  "Feminine", "Masculine",  "Feminine",       "Neutral",  "Masculine",    "Masculine",  "Neutral",  "Feminine",   "Feminine",   "Neutral",  "Feminine"],
-          ["Structure",   "Animal",   "Land",       "Vehicle",  "Natural",    "Object",   "Instrument",   "Object",     "Object",   "Object",     "Object",     "Object",     "Natural",  "Body",       "Object",   "Natural",   "Vehicle",   "Animal",     "Natural",  "Natural",  "Body",       "Natural",        "Natural",  "Object",       "Natural",    "Animal",   "Natural",    "Medium",     "Natural",  "Object"]]
+  clearData(): void
+  {
+    localStorage.clear()
+
+    console.log("Local Storage Cleared...")
+  }
+
 }
 
-export function generateExcercise(col1: number, col2: number, hasAudio: boolean, questionData: string, category: string): void
+export function getWords(): string[][]
+{
+  var sampleArray: string[][] = [[],[],[],[]]
+
+  for(let i = 0; i != sampleWords.nouns.length; i++)
+  {
+    sampleArray[0].push(sampleWords.nouns[i].word)
+    sampleArray[1].push(sampleWords.nouns[i].translation)
+    sampleArray[2].push(sampleWords.nouns[i].gender)
+    sampleArray[3].push(sampleWords.nouns[i].category)
+  }
+
+  return sampleArray
+}
+
+export function saveOfflineData(scoreData: string[]): string[]
+{
+  if(localStorage.getItem("offlineData") == null)
+  {
+    //If answers haven't been stored locally yet, this creates an array of the questions just answered to be stored as a string which can be converted back to a JSON later
+    //Array schema: question_id, word, category, user_id, accuracy, appearances
+    var answers: (string | number)[][] = [[]]
+
+    for(let i = 1; i != scoreData.length; i++)
+    {
+      if(scoreData[i + 1] == "True")
+      {
+        answers.push([-1, scoreData[i], scoreData[0], -1, 1, 1])
+      }
+      else
+      {
+        answers.push([-1, scoreData[i], scoreData[0], -1, 0, 1])
+      }
+
+      i++
+    }
+
+    localStorage.setItem("offlineData", JSON.stringify(answers))
+  }
+  else
+  {
+    //If answeres have been stored locally before, check if the word + category question combo exists and update its data, if it doesn't then create a new entry
+    var offlineData = JSON.parse(localStorage.getItem("offlineData")!)
+
+    for(let i = 1; i != scoreData.length; i++)
+    {
+      var questionExists = false
+
+      for(let k = 0; k != offlineData.length; k++)
+      {
+        if(offlineData[k].indexOf(scoreData[i]) != -1 && offlineData[k].indexOf(scoreData[0]) != -1)
+        {
+          questionExists = true
+        }
+
+        if(questionExists)
+        {
+          if(scoreData[i + 1] == "True")
+          {
+            offlineData[k][4] += 1
+          }
+
+          offlineData[k][5] += 1
+          break
+        }
+      }
+
+      if(!questionExists)
+      {
+        if(scoreData[i + 1] == "True")
+        {
+          offlineData.push([-1, scoreData[i], scoreData[0], -1, 1, 1])
+        }
+        else
+        {
+          offlineData.push([-1, scoreData[i], scoreData[0], -1, 0, 1])
+        }
+      }
+
+      i++
+    }
+
+    localStorage.setItem("offlineData", JSON.stringify(offlineData))
+  }
+
+  return JSON.parse(localStorage.getItem("offlineData")!)
+
+  //once this is working completely offline there will be issues with syncing data stored locally and on the db
+}
+
+export function generateExcercise(col1: number, col2: number, hasAudio: boolean, quesData: (string | number)[][], category: string): void
 {
   document.getElementById("startBtn")!.hidden = true;
   document.getElementById("instructionsTitle")!.hidden = true;
@@ -43,7 +134,6 @@ export function generateExcercise(col1: number, col2: number, hasAudio: boolean,
   var chosenWords: number[] = []    //Used for checking which words have already been randomly chosen for this round
   var chosenOptions: number[] = []  //Contains the random order of chosen words to be used in the selection element
 
-  var quesData = JSON.parse(questionData)
   var removeIndex = []
 
   //Removes questions from the data that don't match the category being used
@@ -77,7 +167,7 @@ export function generateExcercise(col1: number, col2: number, hasAudio: boolean,
       {
         if(quesData[k][1] == sampleWords[0][nextWord])
         {
-          var accuracy = (quesData[k][4] / quesData[k][5]) * 100
+          var accuracy = ((quesData[k][4] as number) / (quesData[k][5] as number)) * 100
 
           if(accuracy < 10)
           {

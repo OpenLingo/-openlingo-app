@@ -18,7 +18,7 @@ export class HomePage {
   {
     localStorage.clear()
 
-    console.log("Local Storage Cleared...")
+    console.log("Local Storage Cleared!")
   }
 
 }
@@ -38,13 +38,13 @@ export function getWords(): string[][]
   return sampleArray
 }
 
-export function saveOfflineData(scoreData: string[]): string[]
+export function saveOfflineData(scoreData: string[]): void
 {
   if(localStorage.getItem("offlineData") == null)
   {
     //If answers haven't been stored locally yet, this creates an array of the questions just answered to be stored as a string which can be converted back to a JSON later
     //Array schema: question_id, word, category, user_id, accuracy, appearances
-    var answers: (string | number)[][] = [[]]
+    var answers: (string | number)[][] = []
 
     for(let i = 1; i != scoreData.length; i++)
     {
@@ -107,10 +107,6 @@ export function saveOfflineData(scoreData: string[]): string[]
 
     localStorage.setItem("offlineData", JSON.stringify(offlineData))
   }
-
-  return JSON.parse(localStorage.getItem("offlineData")!)
-
-  //once this is working completely offline there will be issues with syncing data stored locally and on the db
 }
 
 export function generateExcercise(col1: number, col2: number, hasAudio: boolean, quesData: (string | number)[][], category: string): void

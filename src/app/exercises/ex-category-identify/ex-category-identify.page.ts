@@ -41,9 +41,7 @@ export class ExCategoryIdentifyPage implements OnInit {
       this.serverData = localStorage.getItem("offlineData")!
     }
 
-    var questionData = JSON.parse(this.serverData)
-
-    home.generateExcercise(1, 3, false, questionData, "category")
+    home.generateExcercise(1, 3, false, JSON.parse(this.serverData), "category")
   }
 
   finishEx(): void
@@ -51,12 +49,9 @@ export class ExCategoryIdentifyPage implements OnInit {
     var scoreData: string[] = (home.calculateScore(1, 3, false))
     scoreData.unshift("category")
 
-    if(!this.serverRunning)
-    {
-      scoreData = home.saveOfflineData(scoreData)
-    }
+    home.saveOfflineData(scoreData)
 
     console.log("POSTing Answers...")
-    this.httpInstance.post("http://127.0.0.1:5000/saveScores", scoreData, {responseType: "text"}).subscribe((response) => { console.log(response) })
+    this.httpInstance.post("http://127.0.0.1:5000/saveScores", JSON.parse(localStorage.getItem("offlineData")!), {responseType: "text"}).subscribe((response) => { console.log(response) })
   }
 }

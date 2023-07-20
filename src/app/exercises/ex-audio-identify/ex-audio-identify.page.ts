@@ -20,7 +20,7 @@ export class ExAudioIdentifyPage implements OnInit {
   ngOnInit()
   {
     console.log("GETting Question Data...")
-    this.httpInstance.get("http://127.0.0.1:5000/getQuestions", {responseType: "text"}).subscribe((response) => { this.serverData = response, this.serverRunning = true, console.log("...Success") })
+    this.httpInstance.get("http://127.0.0.1:5000/get_questions", {responseType: "text"}).subscribe((response) => { this.serverData = response, this.serverRunning = true, console.log("...Success") })
   }
 
   finalScore = "Score: 0%"

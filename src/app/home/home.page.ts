@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/angular';
-import { CapacitorSQLite } from '@capacitor-community/sqlite';
 import sampleWords from '../../assets/sampleWords.json';
 
 @Component({
@@ -17,7 +16,6 @@ export class HomePage {
   clearData(): void
   {
     localStorage.clear()
-
     console.log("Local Storage Cleared!")
   }
 
@@ -201,7 +199,7 @@ export function generateExcercise(col1: number, col2: number, hasAudio: boolean,
     chosenOptions.push(nextOption)
   }
 
-  //Create word displays, selection fields and answer symbol slots using the randomly chosen order
+  //Create word displays, selection fields and answer symbol slots, using the randomly chosen order
   for(let i = 0; i != +gameLength.value; i++)
   {
     if(!hasAudio)
@@ -242,12 +240,9 @@ export function calculateScore(col1: number, col2: number, hasAudio: boolean): s
   var sampleWords = getWords()
   var score = 0
 
-
-  var arrayWord = new Array(gameLength)
-  var arrayAnswer = new Array(gameLength)
-
   var userAnswers: string[] = []
 
+  //For each question, the word and answer is recorded and the result is displayed to the user
   for(let i = 0; i != +gameLength.value; i++)
   {
     var currentWord = document.getElementById("word" + i)!  as HTMLInputElement

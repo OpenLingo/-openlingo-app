@@ -20,7 +20,7 @@ export class ExGenderIdentifyPage implements OnInit {
   ngOnInit()
   {
     console.log("GETting Question Data...")
-    this.httpInstance.get("http://127.0.0.1:5000/getQuestions", {responseType: "text"}).subscribe((response) => { this.serverData = response, this.serverRunning = true, console.log("...Success") })
+    this.httpInstance.get("http://127.0.0.1:5000/get_questions", {responseType: "text"}).subscribe((response) => { this.serverData = response, this.serverRunning = true, console.log("...Success") })
   }
 
   finalScore = "Score: 0%"
@@ -52,6 +52,6 @@ export class ExGenderIdentifyPage implements OnInit {
     home.saveOfflineData(scoreData)
 
     console.log("POSTing Answers...")
-    this.httpInstance.post("http://127.0.0.1:5000/saveScores", JSON.parse(localStorage.getItem("offlineData")!), {responseType: "text"}).subscribe((response) => { console.log(response) })
+    this.httpInstance.post("http://127.0.0.1:5000/save_scores", JSON.parse(localStorage.getItem("offlineData")!), {responseType: "text"}).subscribe((response) => { console.log(response) })
   }
 }

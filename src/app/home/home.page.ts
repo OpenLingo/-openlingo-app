@@ -11,14 +11,15 @@ import sampleWords from '../../assets/sampleWords.json';
   imports: [IonicModule],
 })
 
-export class HomePage {
-
+export class HomePage
+{
   clearData(): void
   {
     localStorage.clear()
     console.log("Local Storage Cleared!")
   }
 
+  gameLength = 8
 }
 
 export function getWords(): string[][]
@@ -36,12 +37,25 @@ export function getWords(): string[][]
   return sampleArray
 }
 
+export function pickExercise(currentExercise: string): string
+{
+  var options = ["ex-noun-match", "ex-gender-identify", "ex-audio-identify"]
+  var selection = (Math.floor(Math.random() * 3))
+
+  while(currentExercise == options[selection])
+  {
+    selection = (Math.floor(Math.random() * options.length))
+  }
+
+  return options[selection]
+}
+
 export function saveOfflineData(scoreData: string[]): void
 {
   if(localStorage.getItem("offlineData") == null)
   {
     //If answers haven't been stored locally yet, this creates an array of the questions just answered to be stored as a string which can be converted back to a JSON later
-    //Array schema: question_id, word, category, user_id, accuracy, appearances
+    //Array schema: question_id, word, exercise, user_id, accuracy, appearances
     var answers: (string | number)[][] = []
 
     for(let i = 1; i != scoreData.length; i++)
@@ -62,7 +76,7 @@ export function saveOfflineData(scoreData: string[]): void
   }
   else
   {
-    //If answeres have been stored locally before, check if the word + category question combo exists and update its data, if it doesn't then create a new entry
+    //If answeres have been stored locally before, check if the word + exercise question combo exists and update its data, if it doesn't then create a new entry
     var offlineData = JSON.parse(localStorage.getItem("offlineData")!)
 
     for(let i = 1; i != scoreData.length; i++)
@@ -107,20 +121,19 @@ export function saveOfflineData(scoreData: string[]): void
   }
 }
 
-export function generateExcercise(col1: number, col2: number, hasAudio: boolean, quesData: (string | number)[][], category: string): void
+export function generateExercise(col1: number, col2: number, quesData: (string | number)[][], exercise: string): void
 {
   document.getElementById("startBtn")!.hidden = true;
   document.getElementById("instructionsTitle")!.hidden = true;
   document.getElementById("instructions")!.hidden = true;
-  document.getElementById("lengthInput")!.hidden = true;
 
   document.getElementById("promptTable")!.hidden = false;
   document.getElementById("answerTable")!.hidden = false;
 
   document.getElementById("submitBtn")!.hidden = false;
 
+  var gameLength = 8
   var sampleWords = getWords()
-  var gameLength = document.getElementById("lengthInput")! as HTMLInputElement
   var promptList = document.getElementById("promptList")!
   var answerList = document.getElementById("answerList")!
   var resultsList = document.getElementById("resultsList")!
@@ -130,10 +143,10 @@ export function generateExcercise(col1: number, col2: number, hasAudio: boolean,
 
   var removeIndex = []
 
-  //Removes questions from the data that don't match the category being used
+  //Removes questions from the data that don't match the exercise being used
   for(let i = 0; i != quesData.length; i++)
   {
-    if(quesData[i].indexOf(category) == -1)
+    if(quesData[i].indexOf(exercise) == -1)
     {
       removeIndex.unshift(i)
     }
@@ -147,7 +160,7 @@ export function generateExcercise(col1: number, col2: number, hasAudio: boolean,
   console.log(quesData)
 
   //Set and display random words
-  for(let i = 0; i != +gameLength.value; i++)
+  for(let i = 0; i != gameLength; i++)
   {
     var nextWord = -1
 
@@ -156,20 +169,20 @@ export function generateExcercise(col1: number, col2: number, hasAudio: boolean,
     {
       nextWord = Math.floor(Math.random() * sampleWords[0].length)
 
-      //The inverse of the player's accuracy for a word will be its likelihood of it being chosen with an accuracy limit of 10-90%
+      //The inverse of the player's accuracy for a word will be its likelihood of it being chosen with an accuracy limit of 5-95%
       for(let k = 0; k != quesData.length; k++)
       {
         if(quesData[k][1] == sampleWords[0][nextWord])
         {
           var accuracy = ((quesData[k][4] as number) / (quesData[k][5] as number)) * 100
 
-          if(accuracy < 10)
+          if(accuracy < 5)
           {
-            accuracy = 10
+            accuracy = 5
           }
-          else if(accuracy > 90)
+          else if(accuracy > 95)
           {
-            accuracy = 90
+            accuracy = 95
           }
 
           console.log(quesData[k][1] + ": " + quesData[k][4] + "/" + quesData[k][5] + " = " + (100 - accuracy))
@@ -187,7 +200,7 @@ export function generateExcercise(col1: number, col2: number, hasAudio: boolean,
   }
 
   //Set a random order of the chosen words
-  for(let i = 0; i != +gameLength.value; i++)
+  for(let i = 0; i != gameLength; i++)
   {
     var nextOption = Math.floor(Math.random() * sampleWords[0].length)
 
@@ -200,15 +213,10 @@ export function generateExcercise(col1: number, col2: number, hasAudio: boolean,
   }
 
   //Create word displays, selection fields and answer symbol slots, using the randomly chosen order
-  for(let i = 0; i != +gameLength.value; i++)
+  for(let i = 0; i != gameLength; i++)
   {
-    if(!hasAudio)
-    {
-      promptList.innerHTML = promptList.innerHTML.concat("<ion-item id=word" + i + ">\
-                                                            <ion-label>" + sampleWords[col1][chosenWords[i]] + "</ion-label>\
-                                                          </ion-item>")
-    }
-    else
+    //Generation of first column which are the prompts
+    if(exercise == "audio")
     {
       promptList.innerHTML = promptList.innerHTML.concat("<ion-item>\
                                                             <audio controls>\
@@ -216,24 +224,46 @@ export function generateExcercise(col1: number, col2: number, hasAudio: boolean,
                                                             </audio>\
                                                           </ion-item>")
     }
+    else
+    {
+      promptList.innerHTML = promptList.innerHTML.concat("<ion-item id=word" + i + ">\
+                                                            <ion-label>" + sampleWords[col1][chosenWords[i]] + "</ion-label>\
+                                                          </ion-item>")
+    }
 
-    answerList.innerHTML = answerList.innerHTML.concat("<ion-item id=selection" + i + ">\
-                                                          <ion-label>" + sampleWords[col2][chosenOptions[i]] + "</ion-label>\
-                                                          <ion-reorder slot=\"end\"></ion-reorder>\
-                                                        </ion-item>")
+    //Generation of the second column which are the answer spaces
+    if(exercise == "!gender")
+    {
+      answerList.innerHTML = answerList.innerHTML.concat("<ion-item id=selection" + i + ">\
+                                                            <input type='radio' id=m name='set" + i + "' value='Masculine'>\
+                                                            <label for='m'>&nbsp; M &nbsp; &nbsp;</label>\
+                                                            <input type='radio' id=f name='set" + i + "' value='Feminine'>\
+                                                            <label for='f'>&nbsp; F &nbsp; &nbsp;</label>\
+                                                            <input type='radio' id=n name='set" + i + "' value='Neutral'>\
+                                                            <label for='n'>&nbsp; N &nbsp; &nbsp;</label>\
+                                                          </ion-item>")
+    }
+    else
+    {
+      answerList.innerHTML = answerList.innerHTML.concat("<ion-item id=selection" + i + ">\
+                                                            <ion-label>" + sampleWords[col2][chosenOptions[i]] + "</ion-label>\
+                                                            <ion-reorder slot=\"end\"></ion-reorder>\
+                                                          </ion-item>")
+    }
 
+    //Generation of the third column which display the result of the user's answer when the submit button is pressed
     resultsList.innerHTML = resultsList.innerHTML.concat("<ion-item id=answerResult" + i + ">\
                                                           </ion-item>")
   }
 }
 
-export function calculateScore(col1: number, col2: number, hasAudio: boolean): string[]
+export function calculateScore(col1: number, col2: number, exercise: string): string[]
 {
   document.getElementById("submitBtn")!.hidden = true;
   document.getElementById("scoreDisplay")!.hidden = false;
   document.getElementById("resultsTable")!.hidden = false;
 
-  var gameLength = document.getElementById("lengthInput")! as HTMLInputElement
+  var gameLength = 8
   var answerList = document.getElementById("answerList")! as HTMLSelectElement
   var answerOrder: string[] = answerList.innerText.split("\n")
 
@@ -243,30 +273,14 @@ export function calculateScore(col1: number, col2: number, hasAudio: boolean): s
   var userAnswers: string[] = []
 
   //For each question, the word and answer is recorded and the result is displayed to the user
-  for(let i = 0; i != +gameLength.value; i++)
+  for(let i = 0; i != gameLength; i++)
   {
     var currentWord = document.getElementById("word" + i)!  as HTMLInputElement
     var currentResult = document.getElementById("answerResult" + i)!
 
     answerList.disabled = true
 
-    if(!hasAudio)
-    {
-      userAnswers.push(sampleWords[0][sampleWords[col1].indexOf(currentWord.innerText)])
-
-      if(answerOrder[i] == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
-      {
-        score++;
-        currentResult.innerHTML = currentResult.innerHTML.concat("<td>&#10004</td>")
-        userAnswers.push("True")
-      }
-      else
-      {
-        currentResult.innerHTML = currentResult.innerHTML.concat("<td>&#10006</td>")
-        userAnswers.push("False")
-      }
-    }
-    else
+    if(exercise == "audio")
     {
       var fileName = currentWord.src.slice(0,-4).substring(currentWord.src.indexOf("audio") + 6)
 
@@ -284,9 +298,25 @@ export function calculateScore(col1: number, col2: number, hasAudio: boolean): s
         userAnswers.push("False")
       }
     }
+    else
+    {
+      userAnswers.push(sampleWords[0][sampleWords[col1].indexOf(currentWord.innerText)])
+
+      if(answerOrder[i] == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
+      {
+        score++;
+        currentResult.innerHTML = currentResult.innerHTML.concat("<td>&#10004</td>")
+        userAnswers.push("True")
+      }
+      else
+      {
+        currentResult.innerHTML = currentResult.innerHTML.concat("<td>&#10006</td>")
+        userAnswers.push("False")
+      }
+    }
   }
  
-  document.getElementById("scoreDisplay")!.innerText =  "Score: " + score + "/" + gameLength.value + " (" + (Math.round((score / +gameLength.value) * 100)).toFixed(0) + "%)";
+  document.getElementById("scoreDisplay")!.innerText =  "Score: " + score + "/" + gameLength + " (" + (Math.round((score / gameLength) * 100)).toFixed(0) + "%)";
 
   return userAnswers
 }

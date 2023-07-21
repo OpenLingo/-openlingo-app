@@ -18,8 +18,8 @@ export const routes: Routes = [
     loadComponent: () => import('./exercises/ex-audio-identify/ex-audio-identify.page').then( m => m.ExAudioIdentifyPage)
   },
   {
-    path: 'ex-category-identify',
-    loadComponent: () => import('./exercises/ex-category-identify/ex-category-identify.page').then( m => m.ExCategoryIdentifyPage)
+    path: 'random-exercises',
+    loadComponent: () => import('./exercises/random-exercises/random-exercises.page').then( m => m.RandomExercisesPage)
   },
   {
     path: 'login',

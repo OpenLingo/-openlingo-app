@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Randomised Exercises</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Randomised Exercises</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <h2 id="instructionsTitle">Instructions</h2>
+  <p id="instructions">In this exercise you will be presented with a number of other exercises in a random order.</p>
+  <p id="lengthInputLabel">Number of Exercises: <input id="lengthInput" type="number" min="4" max="10" value="6"></p>
+
+  <div id="startBtn">
+    <ion-button type="button" (click)="startEx()">Start</ion-button>
+  </div>
+  <div style="margin-bottom: 3%">
+    <ion-button href="/home">Home</ion-button>
+  </div>
+</ion-content>

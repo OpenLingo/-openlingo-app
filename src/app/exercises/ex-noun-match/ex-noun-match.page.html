@@ -11,9 +11,8 @@
     </ion-toolbar>
   </ion-header>
   <h2 id="instructionsTitle">Instructions</h2>
-  <p id="instructions">In this excercise you will be presented with two lists, one containing nouns in English, and the other containing the corresponding German translations of those nouns.
+  <p id="instructions">In this exercise you will be presented with two lists, one containing nouns in English, and the other containing the corresponding German translations of those nouns.
   <br>The goal is to match as many nouns with their correct translation as you can.<br>
-  <br>Number of Nouns: <input id="lengthInput" label="Number of Nouns: " type="number" min="2" max={{sampleWords[0].length}} value="6"></p>
 
   <table id="promptTable" hidden="true">
     <tr>
@@ -62,6 +61,9 @@
   </div>
   <div id="submitBtn" hidden="false">
     <ion-button type="button" (click)="finishEx()">Submit</ion-button>
+  </div>
+  <div id="nextBtn" hidden="false">
+    <ion-button type="button" (click)="nextExercise()">Next</ion-button><br>
   </div>
   <div style="margin-bottom: 3%">
     <ion-button href="/home">Home</ion-button>

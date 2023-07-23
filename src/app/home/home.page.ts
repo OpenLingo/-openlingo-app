@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/angular';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import sampleWords from '../../assets/sampleWords.json';
 
 @Component({
@@ -8,15 +9,18 @@ import sampleWords from '../../assets/sampleWords.json';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule],
+  imports: [IonicModule, HttpClientModule],
 })
 
 export class HomePage
 {
+  constructor(private httpInstance: HttpClient) {}
+
   clearData(): void
   {
+    console.log("Clearing data...")
     localStorage.clear()
-    console.log("Local Storage Cleared!")
+    this.httpInstance.post("http://127.0.0.1:5000/views/save_scores", JSON.parse("[]"), {responseType: "text"}).subscribe((response) => { console.log(response) })
   }
 
   gameLength = 8
@@ -315,7 +319,7 @@ export function calculateScore(col1: number, col2: number, exercise: string): st
       }
     }
   }
- 
+
   document.getElementById("scoreDisplay")!.innerText =  "Score: " + score + "/" + gameLength + " (" + (Math.round((score / gameLength) * 100)).toFixed(0) + "%)";
 
   return userAnswers

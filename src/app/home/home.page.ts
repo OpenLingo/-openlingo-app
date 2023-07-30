@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ItemReorderEventDetail } from '@ionic/angular';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -12,18 +12,24 @@ import sampleWords from '../../assets/sampleWords.json';
   imports: [IonicModule, HttpClientModule],
 })
 
-export class HomePage
+export class HomePage implements OnInit
 {
   constructor(private httpInstance: HttpClient) {}
 
-  clearData(): void
+  ngOnInit()
   {
-    console.log("Clearing data...")
-    localStorage.clear()
-    this.httpInstance.post("http://127.0.0.1:5000/views/save_scores", JSON.parse("[]"), {responseType: "text"}).subscribe((response) => { console.log(response) })
+    localStorage.setItem("serverStatus", "False")
+
+    console.log("Checking server status...")
+    this.httpInstance.get("http://127.0.0.1:5000/views/get_questions/noun", {responseType: "text"}).subscribe((response) => { localStorage.setItem("serverStatus", "True"), console.log("...Success") })
   }
 
-  gameLength = 8
+  clearData(): void
+  {
+    console.log("Clearing Data...")
+    localStorage.clear()
+    this.httpInstance.post("http://127.0.0.1:5000/views/save_scores", JSON.parse("[]"), {responseType: "text"}).subscribe((response) => { localStorage.setItem("serverStatus", "True"), console.log(response) })
+  }
 }
 
 export function getWords(): string[][]
@@ -56,73 +62,57 @@ export function pickExercise(currentExercise: string): string
 
 export function saveOfflineData(scoreData: string[]): void
 {
-  if(localStorage.getItem("offlineData") == null)
+  //This function saves each category's data individually, then merges them all together into a different item
+
+  //With this there will always be combined data to send to the server and save as a whole
+  //There will also be data separated into categories locally so the generateExercise function doesn't have to sort through it
+
+  var categoryData = ("offlineData_" + scoreData[0])
+
+  //If data doesn't exist for this category
+  if (localStorage.getItem(categoryData) == null)
   {
-    //If answers haven't been stored locally yet, this creates an array of the questions just answered to be stored as a string which can be converted back to a JSON later
-    //Array schema: question_id, word, exercise, user_id, accuracy, appearances
     var answers: (string | number)[][] = []
 
     for(let i = 1; i != scoreData.length; i++)
     {
-      if(scoreData[i + 1] == "True")
+      if (i % 2 == 1)
       {
-        answers.push([-1, scoreData[i], scoreData[0], -1, 1, 1])
+        answers.push([-1, scoreData[i], scoreData[0], -1, scoreData[i + 1]])
       }
-      else
-      {
-        answers.push([-1, scoreData[i], scoreData[0], -1, 0, 1])
-      }
-
-      i++
     }
 
-    localStorage.setItem("offlineData", JSON.stringify(answers))
+    localStorage.setItem(categoryData, JSON.stringify(answers))
   }
   else
   {
-    //If answeres have been stored locally before, check if the word + exercise question combo exists and update its data, if it doesn't then create a new entry
-    var offlineData = JSON.parse(localStorage.getItem("offlineData")!)
+    var offlineData = JSON.parse(localStorage.getItem(categoryData)!)
 
     for(let i = 1; i != scoreData.length; i++)
     {
-      var questionExists = false
-
-      for(let k = 0; k != offlineData.length; k++)
+      if (i % 2 == 1)
       {
-        if(offlineData[k].indexOf(scoreData[i]) != -1 && offlineData[k].indexOf(scoreData[0]) != -1)
-        {
-          questionExists = true
-        }
-
-        if(questionExists)
-        {
-          if(scoreData[i + 1] == "True")
-          {
-            offlineData[k][4] += 1
-          }
-
-          offlineData[k][5] += 1
-          break
-        }
+        offlineData.push([-1, scoreData[i], scoreData[0], -1, scoreData[i + 1]])
       }
-
-      if(!questionExists)
-      {
-        if(scoreData[i + 1] == "True")
-        {
-          offlineData.push([-1, scoreData[i], scoreData[0], -1, 1, 1])
-        }
-        else
-        {
-          offlineData.push([-1, scoreData[i], scoreData[0], -1, 0, 1])
-        }
-      }
-
-      i++
     }
 
-    localStorage.setItem("offlineData", JSON.stringify(offlineData))
+    localStorage.setItem(categoryData, JSON.stringify(offlineData))
   }
+
+  //Combine the data for existing categories
+  var allData = ""
+  var categories = ["noun", "gender", "audio"]
+
+  for (let i = 0; i != categories.length; i++)
+  {
+    if (localStorage.getItem(("offlineData_" + categories[i])) != null)
+    {
+      allData += localStorage.getItem(("offlineData_" + categories[i]))!
+      allData = allData.replace("][", ",")
+    }
+  }
+
+  localStorage.setItem("offlineData", allData)
 }
 
 export function generateExercise(col1: number, col2: number, quesData: (string | number)[][], exercise: string): void
@@ -136,30 +126,14 @@ export function generateExercise(col1: number, col2: number, quesData: (string |
 
   document.getElementById("submitBtn")!.hidden = false;
 
-  var gameLength = 8
-  var sampleWords = getWords()
   var promptList = document.getElementById("promptList")!
   var answerList = document.getElementById("answerList")!
   var resultsList = document.getElementById("resultsList")!
 
+  var gameLength = 8
+  var sampleWords = getWords()
   var chosenWords: number[] = []    //Used for checking which words have already been randomly chosen for this round
   var chosenOptions: number[] = []  //Contains the random order of chosen words to be used in the selection element
-
-  var removeIndex = []
-
-  //Removes questions from the data that don't match the exercise being used
-  for(let i = 0; i != quesData.length; i++)
-  {
-    if(quesData[i].indexOf(exercise) == -1)
-    {
-      removeIndex.unshift(i)
-    }
-  }
-
-  for(let i = 0; i != removeIndex.length; i++)
-  {
-    quesData.splice(removeIndex[i], 1)
-  }
 
   console.log(quesData)
 
@@ -168,33 +142,56 @@ export function generateExercise(col1: number, col2: number, quesData: (string |
   {
     var nextWord = -1
 
-    //If the chosen word has already been chosen, choose another one
+    //If the chosen word has already been chosen then don't add it to the list again
     while(chosenWords.indexOf(nextWord) != -1 || nextWord == -1)
     {
       nextWord = Math.floor(Math.random() * sampleWords[0].length)
 
-      //The inverse of the player's accuracy for a word will be its likelihood of it being chosen with an accuracy limit of 5-95%
-      for(let k = 0; k != quesData.length; k++)
+      //If the chosen word has already been chosen, don't bother looking at its accuracy
+      if (chosenWords.indexOf(nextWord) == -1)
       {
-        if(quesData[k][1] == sampleWords[0][nextWord])
+        var appearances = 0
+        var correct = 0
+
+        var accuracy = 0
+        var exists = false
+
+        //The inverse of the player's accuracy for a word will be its likelihood of it being chosen with an accuracy limit of 5-95%
+        for(let k = 0; k != quesData.length; k++)
         {
-          var accuracy = ((quesData[k][4] as number) / (quesData[k][5] as number)) * 100
-
-          if(accuracy < 5)
+          //If the word has been chosen before
+          if(quesData[k][1] == sampleWords[0][nextWord])
           {
-            accuracy = 5
+            appearances++
+
+            if (quesData[k][1] == quesData[k][4] || quesData[k][4] == "True")
+            {
+              correct++
+            }
+
+            exists = true
           }
-          else if(accuracy > 95)
-          {
-            accuracy = 95
-          }
 
-          console.log(quesData[k][1] + ": " + quesData[k][4] + "/" + quesData[k][5] + " = " + (100 - accuracy))
-
-          if(Math.floor(Math.random() * 100) >= (100 - accuracy))
+          if (exists && k == quesData.length - 1)
           {
-            nextWord = -1
-            console.log("REJECTED")
+            accuracy = (correct / appearances) * 100
+
+            if (accuracy < 5)
+            {
+              accuracy = 5
+            }
+            else if (accuracy > 95)
+            {
+              accuracy = 95
+            }
+
+            console.log(sampleWords[0][nextWord] + ": " + correct + "/" + appearances + " = " + (100 - accuracy))
+
+            if (Math.floor(Math.random() * 100) >= (100 - accuracy))
+            {
+              nextWord = -1
+              console.log("REJECTED")
+            }
           }
         }
       }
@@ -236,20 +233,20 @@ export function generateExercise(col1: number, col2: number, quesData: (string |
     }
 
     //Generation of the second column which are the answer spaces
-    if(exercise == "!gender")
+    if(exercise == "gender")
     {
-      answerList.innerHTML = answerList.innerHTML.concat("<ion-item id=selection" + i + ">\
-                                                            <input type='radio' id=m name='set" + i + "' value='Masculine'>\
-                                                            <label for='m'>&nbsp; M &nbsp; &nbsp;</label>\
-                                                            <input type='radio' id=f name='set" + i + "' value='Feminine'>\
-                                                            <label for='f'>&nbsp; F &nbsp; &nbsp;</label>\
-                                                            <input type='radio' id=n name='set" + i + "' value='Neutral'>\
-                                                            <label for='n'>&nbsp; N &nbsp; &nbsp;</label>\
+      answerList.innerHTML = answerList.innerHTML.concat("<ion-item>\
+                                                            <input type='radio' name='radioSet" + i + "' value='Masculine'>\
+                                                            <label for='m'>&nbsp; Masc &nbsp; &nbsp;</label>\
+                                                            <input type='radio' name='radioSet" + i + "' value='Feminine'>\
+                                                            <label for='f'>&nbsp; Fem &nbsp; &nbsp;</label>\
+                                                            <input type='radio' name='radioSet" + i + "' value='Neutral'>\
+                                                            <label for='n'>&nbsp; Neutral &nbsp; &nbsp;</label>\
                                                           </ion-item>")
     }
     else
     {
-      answerList.innerHTML = answerList.innerHTML.concat("<ion-item id=selection" + i + ">\
+      answerList.innerHTML = answerList.innerHTML.concat("<ion-item>\
                                                             <ion-label>" + sampleWords[col2][chosenOptions[i]] + "</ion-label>\
                                                             <ion-reorder slot=\"end\"></ion-reorder>\
                                                           </ion-item>")
@@ -267,11 +264,11 @@ export function calculateScore(col1: number, col2: number, exercise: string): st
   document.getElementById("scoreDisplay")!.hidden = false;
   document.getElementById("resultsTable")!.hidden = false;
 
-  var gameLength = 8
   var answerList = document.getElementById("answerList")! as HTMLSelectElement
   var answerOrder: string[] = answerList.innerText.split("\n")
 
   var sampleWords = getWords()
+  var gameLength = 8
   var score = 0
 
   var userAnswers: string[] = []
@@ -286,27 +283,55 @@ export function calculateScore(col1: number, col2: number, exercise: string): st
 
     if(exercise == "audio")
     {
-      var fileName = currentWord.src.slice(0,-4).substring(currentWord.src.indexOf("audio") + 6)
+      currentWord.innerText = currentWord.src.slice(0,-4).substring(currentWord.src.indexOf("audio") + 6)
+    }
 
-      userAnswers.push(sampleWords[0][sampleWords[col1].indexOf(fileName)])
+    userAnswers.push(sampleWords[0][sampleWords[col1].indexOf(currentWord.innerText)])
 
-      if(answerOrder[i] == sampleWords[col2][sampleWords[col1].indexOf(fileName)])
+    //Audio-----------------------------------------------------------------------------------------------------------
+    if(exercise == "audio")
+    {
+      if(answerOrder[i] == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
       {
         score++;
         currentResult.innerHTML = currentResult.innerHTML.concat("<ion-label>&#10004</ion-label>")
-        userAnswers.push("True")
       }
       else
       {
         currentResult.innerHTML = currentResult.innerHTML.concat("<ion-label>&#10006</ion-label>")
-        userAnswers.push("False")
       }
-    }
-    else
-    {
-      userAnswers.push(sampleWords[0][sampleWords[col1].indexOf(currentWord.innerText)])
 
-      if(answerOrder[i] == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
+      userAnswers.push(sampleWords[0][sampleWords[col2].indexOf(answerOrder[i])])
+    }
+    //Gender-----------------------------------------------------------------------------------------------------------
+    else if(exercise == "gender")
+    {
+      var genderOptions = ["Masculine", "Feminine", "Neutral", "null"]
+      var currentAnswer = document.getElementsByName("radioSet" + i)!
+      var currentSelection
+      var k = 0
+
+      //Disables all radio buttons
+      for(let j = 0; j != 3; j++)
+      {
+        currentSelection = currentAnswer[j] as HTMLInputElement
+        currentSelection.disabled = true
+      }
+
+      //Goes through the three radio buttons until the checked one is found
+      while(k != 3)
+      {
+        currentSelection = currentAnswer[k] as HTMLInputElement
+
+        if(currentSelection.checked)
+        {
+          break
+        }
+        k++
+      }
+
+      //The index of the checked radio button is used to get the user's answer
+      if(genderOptions[k] == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
       {
         score++;
         currentResult.innerHTML = currentResult.innerHTML.concat("<td>&#10004</td>")
@@ -318,10 +343,24 @@ export function calculateScore(col1: number, col2: number, exercise: string): st
         userAnswers.push("False")
       }
     }
+    //Noun-----------------------------------------------------------------------------------------------------------
+    else
+    {
+      if(answerOrder[i] == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
+      {
+        score++;
+        currentResult.innerHTML = currentResult.innerHTML.concat("<td>&#10004</td>")
+      }
+      else
+      {
+        currentResult.innerHTML = currentResult.innerHTML.concat("<td>&#10006</td>")
+      }
+
+      userAnswers.push(sampleWords[0][sampleWords[col2].indexOf(answerOrder[i])])
+    }
   }
 
   document.getElementById("scoreDisplay")!.innerText =  "Score: " + score + "/" + gameLength + " (" + (Math.round((score / gameLength) * 100)).toFixed(0) + "%)";
-
   return userAnswers
 }
 

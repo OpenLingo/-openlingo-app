@@ -11,8 +11,9 @@
     </ion-toolbar>
   </ion-header>
   <h2 id="instructionsTitle">Instructions</h2>
-  <p id="instructions">In this exercise you will be presented with two lists, one containing nouns in English, and the other containing the corresponding German translations of those nouns.
+  <p id="instructions">In this exercise you will be presented with two lists, one containing nouns in English, and the other containing the corresponding German translations of those nouns.<br>
   <br>The goal is to match as many nouns with their correct translation as you can.<br>
+  </p>
 
   <table id="promptTable" hidden="true">
     <tr>
@@ -54,17 +55,25 @@
   </table>
 
   <div>
-    <h3 id="scoreDisplay" hidden="true">{{finalScore}} </h3>
+    <h3 id="remainingEx" hidden="true">Exercises Remaining: {{loops + 1}}</h3>
   </div>
+  <div>
+    <h3 id="scoreDisplay" hidden="true">{{finalScore}}</h3>
+  </div>
+
   <div id="startBtn">
     <ion-button type="button" (click)="startEx()">Start</ion-button>
   </div>
-  <div id="submitBtn" hidden="false">
-    <ion-button type="button" (click)="finishEx()">Submit</ion-button>
+  <div id="submitBtn" hidden="true">
+    <ion-button type="button" (click)="submitEx()">Submit</ion-button>
   </div>
-  <div id="nextBtn" hidden="false">
-    <ion-button type="button" (click)="nextExercise()">Next</ion-button><br>
+  <div id="nextBtn" hidden="true">
+    <ion-button type="button" (click)="nextEx()">Next</ion-button><br>
   </div>
+  <div id="finishBtn" hidden="true">
+    <ion-button type="button" (click)="finishEx()">Finish</ion-button>
+  </div>
+  
   <div style="margin-bottom: 3%">
     <ion-button href="/home">Home</ion-button>
   </div>

@@ -11,7 +11,7 @@
     </ion-toolbar>
   </ion-header>
   <h2 id="instructionsTitle">Instructions</h2>
-  <p id="instructions">In this exercise you will be presented with a list of words being pronounced in German.
+  <p id="instructions">In this exercise you will be presented with a list of words being pronounced in German.<br>
   <br>The goal is to correctly match the pronunciation with its correct answer from the list of either English or German words.
   <br>In this exercise you have the option to change which language you are matching the pronunciations with.<br>
   <br><em>Match Pronunciations with English Nouns?  </em>  <input id="gerBox" type="checkbox">
@@ -57,17 +57,25 @@
   </table>
 
   <div>
+    <h3 id="remainingEx" hidden="true">Exercises Remaining: {{loops + 1}}</h3>
+  </div>
+  <div>
     <h3 id="scoreDisplay" hidden="true">{{finalScore}} </h3>
   </div>
+
   <div id="startBtn">
     <ion-button type="button" (click)="startEx()">Start</ion-button>
   </div>
-  <div id="submitBtn" hidden="false">
-    <ion-button type="button" (click)="finishEx()">Submit</ion-button>
+  <div id="submitBtn" hidden="true">
+    <ion-button type="button" (click)="submitEx()">Submit</ion-button>
   </div>
-  <div id="nextBtn" hidden="false">
-    <ion-button type="button" (click)="nextExercise()">Next</ion-button><br>
+  <div id="nextBtn" hidden="true">
+    <ion-button type="button" (click)="nextEx()">Next</ion-button><br>
   </div>
+  <div id="finishBtn" hidden="true">
+    <ion-button type="button" (click)="finishEx()">Finish</ion-button>
+  </div>
+
   <div style="margin-bottom: 3%">
     <ion-button href="/home">Home</ion-button>
   </div>

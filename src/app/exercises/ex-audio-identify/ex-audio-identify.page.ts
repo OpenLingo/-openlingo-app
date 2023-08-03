@@ -21,15 +21,18 @@ export class ExAudioIdentifyPage implements OnInit {
 
   ngOnInit()
   {
+    var state = this.router.getCurrentNavigation()!.extras!.state!
+
     if(this.serverStatus)
     {
       console.log("GETting Question Data...")
       this.httpInstance.get("http://127.0.0.1:5000/views/get_questions/audio", {responseType: "text"}).subscribe((response) => { this.serverData = response, console.log("...Success") })
     }
 
-    if(this.router.getCurrentNavigation()!.extras!.state! != null)
+    if(state != null)
     {
-      this.loops = this.router.getCurrentNavigation()!.extras!.state!["loops"]
+      this.loops = state["loops"]
+      this.scores = state["scores"]
 
       this.startEx()
       document.getElementById("remainingEx")!.hidden = false
@@ -39,16 +42,30 @@ export class ExAudioIdentifyPage implements OnInit {
   //-------------------------------------------------------------------------------------------------------
 
   loops = -1
+  scores: string[][] = []
 
   finalScore = "Score: 0%"
-  sampleWords: string[][] = home.getWords()
-
   serverData = "[]"
   serverStatus = Boolean(localStorage.getItem("serverStatus")! == "True")
+
+  sampleWords: string[][] = home.getWords()
+  chosenData: number[][] = []
+  chosenWords: number[] = []
+  chosenOptions: number[] = []
+
+  //Controls what language of words are displayed for answers, 0 for English
+  langCol = 1
 
   getHandleReorder(ev: CustomEvent<ItemReorderEventDetail>)
   {
     home.handleReorder(ev)
+  }
+
+  playAudio(audioName: string): void
+  {
+    var audioElement = document.getElementById(audioName)! as HTMLAudioElement
+
+    audioElement.play()
   }
 
   //-------------------------------------------------------------------------------------------------------
@@ -62,14 +79,14 @@ export class ExAudioIdentifyPage implements OnInit {
       this.serverData = localStorage.getItem("offlineData_audio")!
     }
 
-    if(!langOption.checked)
+    if(langOption.checked)
     {
-      home.generateExercise(0, 1, JSON.parse(this.serverData), "audio")
+      this.langCol = 0
     }
-    else
-    {
-      home.generateExercise(0, 0, JSON.parse(this.serverData), "audio")
-    }
+
+    this.chosenData = home.generateExercise(JSON.parse(this.serverData))
+    this.chosenWords = this.chosenData[0]
+    this.chosenOptions = this.chosenData[1]
   }
 
   //-------------------------------------------------------------------------------------------------------
@@ -108,17 +125,19 @@ export class ExAudioIdentifyPage implements OnInit {
       document.getElementById("finishBtn")!.hidden = false
       document.getElementById("remainingEx")!.innerHTML = ("Exercises Remaining: " + this.loops)
     }
+
+    this.scores.push(["audio", document.getElementById("scoreDisplay")!.innerText])
   }
 
   //-------------------------------------------------------------------------------------------------------
 
   nextEx(): void
   {
-    this.router.navigate([home.pickExercise("ex-audio-identify")], { state: { loops: this.loops - 1} }).then(() => {window.location.reload()})
+    this.router.navigate([home.pickExercise("ex-audio-identify")], { state: { loops: this.loops - 1, scores: this.scores} }).then(() => {window.location.reload()})
   }
 
   finishEx(): void
   {
-    this.router.navigate(["random-exercises"], { state: { finish: true } }).then(() => {window.location.reload()})
+    this.router.navigate(["random-exercises"], { state: { finish: true, scores: this.scores } }).then(() => {window.location.reload()})
   }
 }

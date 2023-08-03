@@ -115,7 +115,7 @@ export function saveOfflineData(scoreData: string[]): void
   localStorage.setItem("offlineData", allData)
 }
 
-export function generateExercise(col1: number, col2: number, quesData: (string | number)[][], exercise: string): void
+export function generateExercise(quesData: (string | number)[][]): number[][]
 {
   document.getElementById("startBtn")!.hidden = true;
   document.getElementById("instructionsTitle")!.hidden = true;
@@ -213,49 +213,7 @@ export function generateExercise(col1: number, col2: number, quesData: (string |
     chosenOptions.push(nextOption)
   }
 
-  //Create word displays, selection fields and answer symbol slots, using the randomly chosen order
-  for(let i = 0; i != gameLength; i++)
-  {
-    //Generation of first column which are the prompts
-    if(exercise == "audio")
-    {
-      promptList.innerHTML = promptList.innerHTML.concat("<ion-item>\
-                                                            <audio controls>\
-                                                              <source  id=word" + i + " src='assets/audio/" + sampleWords[col1][chosenWords[i]] + ".mp3' type='audio/mpeg'>\
-                                                            </audio>\
-                                                          </ion-item>")
-    }
-    else
-    {
-      promptList.innerHTML = promptList.innerHTML.concat("<ion-item id=word" + i + ">\
-                                                            <ion-label>" + sampleWords[col1][chosenWords[i]] + "</ion-label>\
-                                                          </ion-item>")
-    }
-
-    //Generation of the second column which are the answer spaces
-    if(exercise == "gender")
-    {
-      answerList.innerHTML = answerList.innerHTML.concat("<ion-item>\
-                                                            <input type='radio' name='radioSet" + i + "' value='Masculine'>\
-                                                            <label for='m'>&nbsp; Masc &nbsp; &nbsp;</label>\
-                                                            <input type='radio' name='radioSet" + i + "' value='Feminine'>\
-                                                            <label for='f'>&nbsp; Fem &nbsp; &nbsp;</label>\
-                                                            <input type='radio' name='radioSet" + i + "' value='Neutral'>\
-                                                            <label for='n'>&nbsp; Neutral &nbsp; &nbsp;</label>\
-                                                          </ion-item>")
-    }
-    else
-    {
-      answerList.innerHTML = answerList.innerHTML.concat("<ion-item>\
-                                                            <ion-label>" + sampleWords[col2][chosenOptions[i]] + "</ion-label>\
-                                                            <ion-reorder slot=\"end\"></ion-reorder>\
-                                                          </ion-item>")
-    }
-
-    //Generation of the third column which display the result of the user's answer when the submit button is pressed
-    resultsList.innerHTML = resultsList.innerHTML.concat("<ion-item id=answerResult" + i + ">\
-                                                          </ion-item>")
-  }
+  return [chosenWords, chosenOptions]
 }
 
 export function calculateScore(col1: number, col2: number, exercise: string): string[]

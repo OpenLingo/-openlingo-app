@@ -22,7 +22,9 @@
     <tr>
       <ion-list>
         <ion-reorder-group id="promptList" [disabled]="true">
-
+          <ion-item *ngFor="let word of chosenWords; let i = index" id="{{'word' + i}}">
+            <ion-label>{{sampleWords[0][chosenWords[i]]}}</ion-label>
+          </ion-item>
         </ion-reorder-group>
       </ion-list>
     </tr>
@@ -35,7 +37,10 @@
     <tr>
       <ion-list>
         <ion-reorder-group id="answerList" [disabled]="false" (ionItemReorder)="getHandleReorder($any($event))">
-
+          <ion-item *ngFor="let option of chosenOptions; let i = index">
+            <ion-label>{{sampleWords[1][chosenOptions[i]]}}</ion-label>
+            <ion-reorder slot="end"></ion-reorder>
+          </ion-item>
         </ion-reorder-group>
       </ion-list>
     </tr>
@@ -48,7 +53,7 @@
     <tr>
       <ion-list>
         <ion-reorder-group id="resultsList" [disabled]="true">
-
+          <ion-item *ngFor="let option of chosenOptions; let i = index" id="{{'answerResult' + i}}"></ion-item>
         </ion-reorder-group>
       </ion-list>
     </tr>
@@ -58,7 +63,7 @@
     <h3 id="remainingEx" hidden="true">Exercises Remaining: {{loops + 1}}</h3>
   </div>
   <div>
-    <h3 id="scoreDisplay" hidden="true">{{finalScore}}</h3>
+    <h3 id="scoreDisplay" hidden="true"></h3>
   </div>
 
   <div id="startBtn">
@@ -73,7 +78,7 @@
   <div id="finishBtn" hidden="true">
     <ion-button type="button" (click)="finishEx()">Finish</ion-button>
   </div>
-  
+
   <div style="margin-bottom: 3%">
     <ion-button href="/home">Home</ion-button>
   </div>

@@ -16,7 +16,6 @@
   <br>In this exercise you have the option to change which language you are matching the pronunciations with.<br>
   <br><em>Match Pronunciations with English Nouns?  </em>  <input id="gerBox" type="checkbox">
   </p>
-
   <table id="promptTable" hidden="true">
     <tr>
       <th>German</th>
@@ -24,7 +23,15 @@
     <tr>
       <ion-list>
         <ion-reorder-group id="promptList" [disabled]="true">
+          <ion-item *ngFor="let word of chosenWords; let i = index">
+            <audio id="{{'audio' + i}}">
+              <source id="{{'word' + i}}" src="assets/audio/{{sampleWords[0][chosenWords[i]]}}.mp3" type="audio/mpeg">
+            </audio>
 
+            <ion-button (click)="playAudio('audio' + i)">
+              &#9658;
+            </ion-button>
+          </ion-item>
         </ion-reorder-group>
       </ion-list>
     </tr>
@@ -37,7 +44,10 @@
     <tr>
       <ion-list>
         <ion-reorder-group id="answerList" [disabled]="false" (ionItemReorder)="getHandleReorder($any($event))">
-
+          <ion-item *ngFor="let option of chosenOptions; let i = index">
+            <ion-label>{{sampleWords[langCol][chosenOptions[i]]}}</ion-label>
+            <ion-reorder slot="end"></ion-reorder>
+          </ion-item>
         </ion-reorder-group>
       </ion-list>
     </tr>
@@ -50,7 +60,7 @@
     <tr>
       <ion-list>
         <ion-reorder-group id="resultsList" [disabled]="true">
-
+          <ion-item *ngFor="let option of chosenOptions; let i = index" id="{{'answerResult' + i}}"></ion-item>
         </ion-reorder-group>
       </ion-list>
     </tr>
@@ -60,7 +70,7 @@
     <h3 id="remainingEx" hidden="true">Exercises Remaining: {{loops + 1}}</h3>
   </div>
   <div>
-    <h3 id="scoreDisplay" hidden="true">{{finalScore}} </h3>
+    <h3 id="scoreDisplay" hidden="true"></h3>
   </div>
 
   <div id="startBtn">

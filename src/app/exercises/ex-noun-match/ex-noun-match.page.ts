@@ -21,15 +21,18 @@ export class ExNounMatchPage implements OnInit {
 
   ngOnInit()
   {
+    var state = this.router.getCurrentNavigation()!.extras!.state!
+
     if(this.serverStatus)
     {
       console.log("GETting Question Data...")
       this.httpInstance.get("http://127.0.0.1:5000/views/get_questions/noun", {responseType: "text"}).subscribe((response) => { this.serverData = response, console.log("...Success") })
     }
 
-    if(this.router.getCurrentNavigation()!.extras!.state! != null)
+    if(state != null)
     {
-      this.loops = this.router.getCurrentNavigation()!.extras!.state!["loops"]
+      this.loops = state["loops"]
+      this.scores = state["scores"]
 
       this.startEx()
       document.getElementById("remainingEx")!.hidden = false
@@ -39,12 +42,16 @@ export class ExNounMatchPage implements OnInit {
   //-------------------------------------------------------------------------------------------------------
 
   loops = -1
+  scores: string[][] = []
 
   finalScore = "Score: 0%"
-  sampleWords: string[][] = home.getWords()
-
   serverData = "[]"
   serverStatus = Boolean(localStorage.getItem("serverStatus")! == "True")
+
+  sampleWords: string[][] = home.getWords()
+  chosenData: number[][] = []
+  chosenWords: number[] = []
+  chosenOptions: number[] = []
 
   getHandleReorder(ev: CustomEvent<ItemReorderEventDetail>)
   {
@@ -60,7 +67,9 @@ export class ExNounMatchPage implements OnInit {
       this.serverData = localStorage.getItem("offlineData_noun")!
     }
 
-    home.generateExercise(0, 1, JSON.parse(this.serverData), "noun")
+    this.chosenData = home.generateExercise(JSON.parse(this.serverData))
+    this.chosenWords = this.chosenData[0]
+    this.chosenOptions = this.chosenData[1]
   }
 
   //-------------------------------------------------------------------------------------------------------
@@ -89,17 +98,19 @@ export class ExNounMatchPage implements OnInit {
       document.getElementById("finishBtn")!.hidden = false
       document.getElementById("remainingEx")!.innerHTML = ("Exercises Remaining: " + this.loops)
     }
+
+    this.scores.push(["noun", document.getElementById("scoreDisplay")!.innerText])
   }
 
   //-------------------------------------------------------------------------------------------------------
 
   nextEx(): void
   {
-    this.router.navigate([home.pickExercise("ex-noun-match")], { state: { loops: this.loops - 1} }).then(() => {window.location.reload()})
+    this.router.navigate([home.pickExercise("ex-noun-match")], { state: { loops: this.loops - 1, scores: this.scores } }).then(() => {window.location.reload()})
   }
 
   finishEx(): void
   {
-    this.router.navigate(["random-exercises"], { state: { finish: true } }).then(() => {window.location.reload()})
+    this.router.navigate(["random-exercises"], { state: { finish: true, scores: this.scores } }).then(() => {window.location.reload()})
   }
 }

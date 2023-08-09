@@ -8,14 +8,14 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-ex-audio-identify',
-  templateUrl: './ex-audio-identify.page.html',
-  styleUrls: ['./ex-audio-identify.page.scss'],
+  selector: 'app-ex-definition-match',
+  templateUrl: './ex-definition-match.page.html',
+  styleUrls: ['./ex-definition-match.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, HttpClientModule]
 })
 
-export class ExAudioIdentifyPage implements OnInit {
+export class ExDefinitionMatchPage implements OnInit {
 
   constructor(private httpInstance: HttpClient, private router: Router) {}
 
@@ -26,7 +26,7 @@ export class ExAudioIdentifyPage implements OnInit {
     if(this.serverStatus)
     {
       console.log("GETting Question Data...")
-      this.httpInstance.get("http://127.0.0.1:5000/views/get_questions/audio", {responseType: "text"}).subscribe((response) => { this.serverData = response, console.log("...Success") })
+      this.httpInstance.get("http://127.0.0.1:5000/views/get_questions/definition", {responseType: "text"}).subscribe((response) => { this.serverData = response, console.log("...Success") })
     }
 
     if(state != null)
@@ -58,40 +58,13 @@ export class ExAudioIdentifyPage implements OnInit {
     home.handleReorder(ev)
   }
 
-  playAudio(audioName: string): void
-  {
-    var audioElement = document.getElementById(audioName)! as HTMLAudioElement
-
-    audioElement.play()
-  }
-
-  toggleDisplay(): void
-  {
-    var langOption = document.getElementById("gerBox")! as HTMLInputElement
-
-    for(let i = 0; i != this.chosenWords.length; i++)
-    {
-      if(langOption.checked)
-      {
-        document.getElementById("option" + i)!.innerText = this.sampleWords[0][this.chosenOptions[i]]
-      }
-      else
-      {
-        document.getElementById("option" + i)!.innerText = this.sampleWords[1][this.chosenOptions[i]]
-      }
-    }
-
-  }
-
   //-------------------------------------------------------------------------------------------------------
 
   startEx(): void
   {
-    document.getElementById("togglePrompt")!.hidden = false
-
-    if(localStorage.getItem("offlineData_audio") != null && !this.serverStatus)
+    if(localStorage.getItem("offlineData_definition") != null && !this.serverStatus)
     {
-      this.serverData = localStorage.getItem("offlineData_audio")!
+      this.serverData = localStorage.getItem("offlineData_definition")!
     }
 
     this.chosenData = home.generateExercise(JSON.parse(this.serverData))
@@ -103,18 +76,8 @@ export class ExAudioIdentifyPage implements OnInit {
 
   submitEx(): void
   {
-    var langOption = document.getElementById("gerBox")! as HTMLInputElement
-
-    if(!langOption.checked)
-    {
-      var scoreData: string[] = (home.calculateScore(0, 1, "audio"))
-    }
-    else
-    {
-      var scoreData: string[] = (home.calculateScore(0, 0, "audio"))
-    }
-
-    scoreData.unshift("audio")
+    var scoreData: string[] = (home.calculateScore(1, 3, "definition"))
+    scoreData.unshift("definition")
 
     home.saveOfflineData(scoreData)
 
@@ -136,14 +99,14 @@ export class ExAudioIdentifyPage implements OnInit {
       document.getElementById("remainingEx")!.innerHTML = ("Exercises Remaining: " + this.loops)
     }
 
-    this.scores.push(["audio", document.getElementById("scoreDisplay")!.innerText])
+    this.scores.push(["definition", document.getElementById("scoreDisplay")!.innerText])
   }
 
   //-------------------------------------------------------------------------------------------------------
 
   nextEx(): void
   {
-    this.router.navigate([home.pickExercise("ex-audio-identify")], { state: { loops: this.loops - 1, scores: this.scores} }).then(() => {window.location.reload()})
+    this.router.navigate([home.pickExercise("ex-definition-match")], { state: { loops: this.loops - 1, scores: this.scores } }).then(() => {window.location.reload()})
   }
 
   finishEx(): void

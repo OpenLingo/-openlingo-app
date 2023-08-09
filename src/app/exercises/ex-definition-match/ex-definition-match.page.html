@@ -1,51 +1,44 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Match Noun Pronunciations</ion-title>
+    <ion-title>Match Definitions</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Match Noun Pronunciations</ion-title>
+      <ion-title size="large">Match Definitions</ion-title>
     </ion-toolbar>
   </ion-header>
   <h2 id="instructionsTitle">Instructions</h2>
-  <p id="instructions">In this exercise you will be presented with a list of words being pronounced in German.<br>
-  <br>The goal is to correctly match the pronunciation with its correct answer from the list of either English or German words.
-  <br>In this exercise you have the option to change which language you are matching the pronunciations with.<br>
+  <p id="instructions">In this exercise you will be presented with two lists, one containing nouns in German, and the other containing definitions of those nouns in English.<br>
+  <br>The goal is to match as many nouns with their correct definition as you can.<br>
   </p>
 
   <table id="promptTable" hidden="true">
     <tr>
-      <th>German</th>
+      <th>English</th>
     </tr>
     <tr>
       <ion-list>
         <ion-reorder-group id="promptList" [disabled]="true">
-          <ion-item *ngFor="let word of chosenWords; let i = index">
-            <audio id="{{'audio' + i}}">
-              <source id="{{'word' + i}}" src="assets/audio/{{sampleWords[0][chosenWords[i]]}}.mp3" type="audio/mpeg">
-            </audio>
-
-            <ion-button (click)="playAudio('audio' + i)">
-              &#9658;
-            </ion-button>
+          <ion-item *ngFor="let word of chosenWords; let i = index" id="{{'word' + i}}">
+            <ion-label>{{sampleWords[1][chosenWords[i]]}}</ion-label>
           </ion-item>
         </ion-reorder-group>
       </ion-list>
     </tr>
   </table>
 
-  <table id="answerTable" hidden="true">
+  <table width="60%" id="answerTable" hidden="true">
     <tr>
-      <th>Word</th>
+      <th>German</th>
     </tr>
     <tr>
-      <ion-list>
+      <ion-list text-wrap >
         <ion-reorder-group id="answerList" [disabled]="false" (ionItemReorder)="getHandleReorder($any($event))">
           <ion-item *ngFor="let option of chosenOptions; let i = index">
-            <ion-label id="{{'option' + i}}">{{sampleWords[1][chosenOptions[i]]}}</ion-label>
+            <ion-label text-wrap>{{sampleWords[3][chosenOptions[i]]}}</ion-label>
             <ion-reorder slot="end"></ion-reorder>
           </ion-item>
         </ion-reorder-group>
@@ -65,10 +58,6 @@
       </ion-list>
     </tr>
   </table>
-  
-  <div height="200%" hidden="true" id="togglePrompt">
-	<em>Display English Words: </em> <input (click)="toggleDisplay()" id="gerBox" type="checkbox">
-  </div>
 
   <div>
     <h3 id="remainingEx" hidden="true">Exercises Remaining: {{loops + 1}}</h3>

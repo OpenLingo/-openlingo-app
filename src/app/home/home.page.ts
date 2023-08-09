@@ -41,7 +41,7 @@ export function getWords(): string[][]
     sampleArray[0].push(sampleWords.nouns[i].word)
     sampleArray[1].push(sampleWords.nouns[i].translation)
     sampleArray[2].push(sampleWords.nouns[i].gender)
-    sampleArray[3].push(sampleWords.nouns[i].category)
+    sampleArray[3].push(sampleWords.nouns[i].definition)
   }
 
   return sampleArray
@@ -49,7 +49,7 @@ export function getWords(): string[][]
 
 export function pickExercise(currentExercise: string): string
 {
-  var options = ["ex-noun-match", "ex-gender-identify", "ex-audio-identify"]
+  var options = ["ex-noun-match", "ex-definition-match", "ex-gender-identify", "ex-audio-identify"]
   var selection = (Math.floor(Math.random() * 3))
 
   while(currentExercise == options[selection])
@@ -101,7 +101,7 @@ export function saveOfflineData(scoreData: string[]): void
 
   //Combine the data for existing categories
   var allData = ""
-  var categories = ["noun", "gender", "audio"]
+  var categories = ["noun", "definition", "gender", "audio"]
 
   for (let i = 0; i != categories.length; i++)
   {
@@ -231,13 +231,14 @@ export function calculateScore(col1: number, col2: number, exercise: string): st
 
   var userAnswers: string[] = []
 
+  answerList.disabled = true
+
   //For each question, the word and answer is recorded and the result is displayed to the user
+  //Variables currentWord and answerList are what is being compared to get the user's result
   for(let i = 0; i != gameLength; i++)
   {
     var currentWord = document.getElementById("word" + i)!  as HTMLInputElement
-    var currentResult = document.getElementById("answerResult" + i)!
-
-    answerList.disabled = true
+    var currentResult = document.getElementById("answerResult" + i)!  //Element containing cross or check symbol
 
     if(exercise == "audio")
     {
@@ -246,23 +247,8 @@ export function calculateScore(col1: number, col2: number, exercise: string): st
 
     userAnswers.push(sampleWords[0][sampleWords[col1].indexOf(currentWord.innerText)])
 
-    //Audio-----------------------------------------------------------------------------------------------------------
-    if(exercise == "audio")
-    {
-      if(answerOrder[i] == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
-      {
-        score++;
-        currentResult.innerHTML = currentResult.innerHTML.concat("<ion-label>&#10004</ion-label>")
-      }
-      else
-      {
-        currentResult.innerHTML = currentResult.innerHTML.concat("<ion-label>&#10006</ion-label>")
-      }
-
-      userAnswers.push(sampleWords[0][sampleWords[col2].indexOf(answerOrder[i])])
-    }
     //Gender-----------------------------------------------------------------------------------------------------------
-    else if(exercise == "gender")
+    if(exercise == "gender")
     {
       var genderOptions = ["Masculine", "Feminine", "Neutral", "null"]
       var currentAnswer = document.getElementsByName("radioSet" + i)!
@@ -301,7 +287,7 @@ export function calculateScore(col1: number, col2: number, exercise: string): st
         userAnswers.push("False")
       }
     }
-    //Noun-----------------------------------------------------------------------------------------------------------
+    //All other exercises----------------------------------------------------------------------------------------------
     else
     {
       if(answerOrder[i] == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])

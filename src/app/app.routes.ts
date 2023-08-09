@@ -10,6 +10,10 @@ export const routes: Routes = [
     loadComponent: () => import('./exercises/ex-noun-match/ex-noun-match.page').then( m => m.ExNounMatchPage)
   },
   {
+    path: 'ex-definition-match',
+    loadComponent: () => import('./exercises/ex-definition-match/ex-definition-match.page').then( m => m.ExDefinitionMatchPage)
+  },
+  {
     path: 'ex-gender-identify',
     loadComponent: () => import('./exercises/ex-gender-identify/ex-gender-identify.page').then( m => m.ExGenderIdentifyPage)
   },

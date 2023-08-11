@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import * as home  from '../../home/home.page';
+import { ExerciseService } from "../../../services/exercise.service";
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class RandomExercisesPage implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private exerciseService: ExerciseService, private router: Router) { }
 
   ngOnInit()
   {
@@ -50,6 +50,6 @@ export class RandomExercisesPage implements OnInit {
 
   startEx(): void
   {
-    this.router.navigate([home.pickExercise("ex-random-excercises")], { state: { loops: 10 - 1, scores: [] } }).then(() => {window.location.reload()})
+    this.router.navigate([this.exerciseService.pickExercise("ex-random-excercises")], { state: { loops: 10 - 1, scores: [] } }).then(() => {window.location.reload()})
   }
 }

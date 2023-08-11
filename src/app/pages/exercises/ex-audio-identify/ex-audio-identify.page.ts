@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import * as home  from '../../home/home.page';
+import { ExerciseService } from "../../../services/exercise.service";
+import { ServerDataService } from "../../../services/server-data.service";
 import { ItemReorderEventDetail } from '@ionic/angular';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -12,22 +12,16 @@ import { Router } from '@angular/router';
   templateUrl: './ex-audio-identify.page.html',
   styleUrls: ['./ex-audio-identify.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, HttpClientModule]
+  imports: [IonicModule, CommonModule, HttpClientModule]
 })
 
 export class ExAudioIdentifyPage implements OnInit {
 
-  constructor(private httpInstance: HttpClient, private router: Router) {}
+  constructor(private exerciseService: ExerciseService, private serverDataService: ServerDataService, private http: HttpClient, private router: Router) {}
 
-  ngOnInit()
+  async ngOnInit()
   {
     var state = this.router.getCurrentNavigation()!.extras!.state!
-
-    if(this.serverStatus)
-    {
-      console.log("GETting Question Data...")
-      this.httpInstance.get("http://127.0.0.1:5000/views/get_questions/audio", {responseType: "text"}).subscribe((response) => { this.serverData = response, console.log("...Success") })
-    }
 
     if(state != null)
     {
@@ -37,25 +31,26 @@ export class ExAudioIdentifyPage implements OnInit {
       this.startEx()
       document.getElementById("remainingEx")!.hidden = false
     }
+
+    this.serverData = await this.serverDataService.getServerData(this.http, "audio")
   }
 
   //-------------------------------------------------------------------------------------------------------
 
   loops = -1
-  scores: string[][] = []
-
   finalScore = "Score: 0%"
-  serverData = "[]"
-  serverStatus = Boolean(localStorage.getItem("serverStatus")! == "True")
 
-  sampleWords: string[][] = home.getWords()
-  chosenData: number[][] = []
+  scores: string[][] = []
+  serverData: string[][] = []
+
+  sampleWords: string[][] = this.serverDataService.getWords()
+
   chosenWords: number[] = []
   chosenOptions: number[] = []
 
   getHandleReorder(ev: CustomEvent<ItemReorderEventDetail>)
   {
-    home.handleReorder(ev)
+    this.exerciseService.handleReorder(ev)
   }
 
   playAudio(audioName: string): void
@@ -80,7 +75,6 @@ export class ExAudioIdentifyPage implements OnInit {
         document.getElementById("option" + i)!.innerText = this.sampleWords[1][this.chosenOptions[i]]
       }
     }
-
   }
 
   //-------------------------------------------------------------------------------------------------------
@@ -89,14 +83,14 @@ export class ExAudioIdentifyPage implements OnInit {
   {
     document.getElementById("togglePrompt")!.hidden = false
 
-    if(localStorage.getItem("offlineData_audio") != null && !this.serverStatus)
+    if(localStorage.getItem("offlineData_audio") != null && !this.serverDataService.getServerStatus())
     {
-      this.serverData = localStorage.getItem("offlineData_audio")!
+      this.serverData = JSON.parse(localStorage.getItem("offlineData_audio")!)
     }
 
-    this.chosenData = home.generateExercise(JSON.parse(this.serverData))
-    this.chosenWords = this.chosenData[0]
-    this.chosenOptions = this.chosenData[1]
+    var chosenData = this.exerciseService.generateExercise(this.serverData)
+    this.chosenWords = chosenData[0]
+    this.chosenOptions = chosenData[1]
   }
 
   //-------------------------------------------------------------------------------------------------------
@@ -107,22 +101,17 @@ export class ExAudioIdentifyPage implements OnInit {
 
     if(!langOption.checked)
     {
-      var scoreData: string[] = (home.calculateScore(0, 1, "audio"))
+      var scoreData: string[] = (this.exerciseService.calculateScore(0, 1, "audio"))
     }
     else
     {
-      var scoreData: string[] = (home.calculateScore(0, 0, "audio"))
+      var scoreData: string[] = (this.exerciseService.calculateScore(0, 0, "audio"))
     }
 
     scoreData.unshift("audio")
 
-    home.saveOfflineData(scoreData)
-
-    if(this.serverStatus)
-    {
-      console.log("POSTing Answers...")
-      this.httpInstance.post("http://127.0.0.1:5000/views/save_scores", JSON.parse(localStorage.getItem("offlineData")!), {responseType: "text"}).subscribe((response) => { console.log(response) })
-    }
+    this.serverDataService.saveOfflineData(scoreData)
+    this.serverDataService.postServerData(this.http)
 
     //Used for chaining exercises
     if(this.loops > 0)
@@ -143,7 +132,7 @@ export class ExAudioIdentifyPage implements OnInit {
 
   nextEx(): void
   {
-    this.router.navigate([home.pickExercise("ex-audio-identify")], { state: { loops: this.loops - 1, scores: this.scores} }).then(() => {window.location.reload()})
+    this.router.navigate([this.exerciseService.pickExercise("ex-audio-identify")], { state: { loops: this.loops - 1, scores: this.scores} }).then(() => {window.location.reload()})
   }
 
   finishEx(): void

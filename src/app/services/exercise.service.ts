@@ -6,14 +6,14 @@ import { ServerDataService } from "../services/server-data.service";
   providedIn: 'root'
 })
 
-export class ExerciseService {
+export class ExerciseService{
 
-  constructor(private serverDataService: ServerDataService) { }
+  constructor(private serverDataService: ServerDataService) {}
 
   //Used for looping through multiple exercises
   pickExercise(currentExercise: string): string
   {
-    var selection = (Math.floor(Math.random() * 3))
+    var selection = (Math.floor(Math.random() * 4))
 
     while(currentExercise == this.serverDataService.exercises[selection])
     {
@@ -23,7 +23,7 @@ export class ExerciseService {
     return this.serverDataService.exercises[selection]
   }
 
-  generateExercise(quesData: string[][]): number[][]
+  generateExercise(quesData: string[][], sampleWords: string[][]): number[][]
   {
     document.getElementById("startBtn")!.hidden = true;
     document.getElementById("instructionsTitle")!.hidden = true;
@@ -39,7 +39,6 @@ export class ExerciseService {
     var resultsList = document.getElementById("resultsList")!
 
     var gameLength = 8
-    var sampleWords = this.serverDataService.getWords()
     var chosenWords: number[] = []    //Used for checking which words have already been randomly chosen for this round
     var chosenOptions: number[] = []  //Contains the random order of chosen words to be used in the selection element
 
@@ -124,7 +123,7 @@ export class ExerciseService {
     return [chosenWords, chosenOptions]
   }
 
-  calculateScore(col1: number, col2: number, exercise: string): string[]
+  calculateScore(col1: number, col2: number, exercise: string, sampleWords: string[][]): string[]
   {
     document.getElementById("submitBtn")!.hidden = true;
     document.getElementById("scoreDisplay")!.hidden = false;
@@ -133,7 +132,6 @@ export class ExerciseService {
     var answerList = document.getElementById("answerList")! as HTMLSelectElement
     var answerOrder: string[] = answerList.innerText.split("\n")
 
-    var sampleWords = this.serverDataService.getWords()
     var gameLength = 8
     var score = 0
 
@@ -158,7 +156,7 @@ export class ExerciseService {
       //Gender-----------------------------------------------------------------------------------------------------------
       if(exercise == "gender")
       {
-        var genderOptions = ["Masculine", "Feminine", "Neutral", "null"]
+        var genderOptions = ["m", "f", "n", "null"]
         var currentAnswer = document.getElementsByName("radioSet" + i)!
         var currentSelection
         var k = 0

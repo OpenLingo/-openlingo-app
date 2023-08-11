@@ -22,13 +22,7 @@ export class HomePage implements OnInit
     localStorage.setItem("serverStatus", "False")
     localStorage.setItem("databaseStatus", "False")
 
-    console.log("Checking server status...")
-    this.httpInstance.get(this.serverDataService.serverGetURL + "noun",{responseType: "text"})
-    .subscribe((response) => { localStorage.setItem("serverStatus", "True"), console.log("...Success") })
-
-    console.log("Checking database status...")
-    this.httpInstance.get(this.serverDataService.databaseURL + "/api/noun", {responseType: "text"})
-    .subscribe((response) => { localStorage.setItem("databaseStatus", "True"), console.log("...Success") })
+    this.checkStatus()
   }
 
   clearData(): void
@@ -37,5 +31,18 @@ export class HomePage implements OnInit
     localStorage.clear()
     this.httpInstance.post(this.serverDataService.serverPostURL, JSON.parse("[]"), {responseType: "text"})
     .subscribe((response) => { localStorage.setItem("serverStatus", "True"), console.log(response) })
+
+    this.checkStatus()
+  }
+
+  checkStatus()
+  {
+    console.log("Checking server status...")
+    this.httpInstance.get(this.serverDataService.serverGetURL + "noun",{responseType: "text"})
+    .subscribe((response) => { localStorage.setItem("serverStatus", "True"), console.log("...Server Success") })
+
+    console.log("Checking database status...")
+    this.httpInstance.get(this.serverDataService.databaseURL + "noun", {responseType: "text"})
+    .subscribe((response) => { localStorage.setItem("databaseStatus", "True"), console.log("...Database Success") })
   }
 }

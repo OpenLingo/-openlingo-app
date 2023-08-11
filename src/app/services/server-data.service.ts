@@ -15,10 +15,14 @@ export class ServerDataService {
 
   serverGetURL = "http://127.0.0.1:5000/views/get_questions/"
   serverPostURL = "http://127.0.0.1:5000/views/save_scores"
-  databaseURL = "http://10.1.10.90:5000"
+  databaseURL = "http://127.0.0.2:5000/api/"
 
-  categories = ["noun", "deffinition", "gender", "audio"]
+  categories = ["noun", "definition", "gender", "audio"]
   exercises = ["ex-noun-match", "ex-definition-match", "ex-gender-identify", "ex-audio-identify"]
+
+  sampleWords: string[][] = []
+
+  testString = "empty"
 
   getServerStatus(): boolean
   {
@@ -30,14 +34,14 @@ export class ServerDataService {
     return localStorage.getItem("databaseStatus")! == "True"
   }
 
-  async getServerData(http: HttpClient, category: string): Promise<any>
+  async getServerData(category: string): Promise<any>
   {
     if(this.getServerStatus())
     {
       const response = await fetch(this.serverGetURL + category)
 
       console.log("GETing Question Data...")
-      console.log("...Success")
+      console.log("...GET Success")
 
       return await response.json()
     }
@@ -53,12 +57,18 @@ export class ServerDataService {
     }
   }
 
-  getWords(): string[][]
+  async getDatabaseData(options: string): Promise<any>
+  {
+    const response = await fetch(this.databaseURL + options)
+
+    return await response.json()
+  }
+
+  async getWords(): Promise<string[][]>
   {
     var sampleArray: string[][] = [[],[],[],[]]
-    var databaseWords = localStorage.getItem("databaseWords")!
 
-    if(databaseWords == null)
+    if(!this.getDatabaseStatus())
     {
       for(let i = 0; i != sampleWords.nouns.length; i++)
       {
@@ -70,9 +80,20 @@ export class ServerDataService {
     }
     else
     {
+      var databaseData = await this.getDatabaseData("noun")
+
+      for(let i = 0; i != 9; i++)
+      {
+        var translation = await this.getDatabaseData("noun_translation/" + (i + 1))
+        var translationData = await this.getDatabaseData("noun/" + translation[0].id)
+
+        sampleArray[0].push(databaseData[i].word)
+        sampleArray[1].push(translation[0].word)
+        sampleArray[2].push(translationData.gender)
+        sampleArray[3].push("definition " + i)
+      }
 
     }
-
     return sampleArray
   }
 

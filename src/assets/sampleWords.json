@@ -4,301 +4,301 @@
 		{
 			"word": "House",
 			"translation": "Hause",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "A building for human habitation."
 		},
 		{
 			"word": "Cat",
 			"translation": "Katze",
-			"gender": "Feminine",
+			"gender": "f",
 			"definition": "A small domesticated carnivorous mammal with soft fur."
 		},
 		{
 			"word": "Mountain",
 			"translation": "Berg",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A large natural elevation of the earth's surface."
 		},
 		{
 			"word": "Bicycle",
 			"translation": "Fahrrad",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "A vehicle consisting of two wheels held in a frame."
 		},
 		{
 			"word": "Tree",
 			"translation": "Baum",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A woody perennial plant."
 		},
 		{
 			"word": "Book",
 			"translation": "Buch",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "A printed work consisting of pages glued or sewn together."
 		},
 		{
 			"word": "Piano",
 			"translation": "Klavier",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "A large keyboard musical instrument with a wooden case."
 		},
 		{
 			"word": "Box",
 			"translation": "Kasten",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A container with a flat base and sides."
 		},
 		{
 			"word": "Shell",
 			"translation": "Hülse",
-			"gender": "Feminine",
+			"gender": "f",
 			"definition": "A hard protective outer case of a crustacean."
 		},
 		{
 			"word": "Mirror",
 			"translation": "Spiegel",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A glass surface which reflects a clear image."
 		},
 		{
 			"word": "Frame",
 			"translation": "Rahmen",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A rigid structure that surrounds something such as a picture."
 		},
 		{
 			"word": "Scope",
 			"translation": "Umfang",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "The extent of the area or subject matter that something deals with."
 		},
 		{
 			"word": "Light",
 			"translation": "Licht",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "The the natural agent that stimulates sight and makes things visible."
 		},
 		{
 			"word": "Teeth",
 			"translation": "Zähne",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A set of hard, bony enamel-coated structures in the jaws."
 		},
 		{
 			"word": "Sword",
 			"translation": "Schwert",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "A weapon with a long metal blade and a hilt with a hand guard."
 		},
 		{
 			"word": "Fire",
 			"translation": "Brand",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "The burning of material, giving off heat and light."
 		},
 		{
 			"word": "Carriage",
 			"translation": "Wagen",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A private four-wheeled vehicle."
 		},
 		{
 			"word": "Hare",
 			"translation": "Hase",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A fast-running, long-eared mammal."
 		},
 		{
 			"word": "Water",
 			"translation": "Wasser",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "A colourless, transparent, odourless liquid."
 		},
 		{
 			"word": "Cloud",
 			"translation": "Wolke",
-			"gender": "Feminine",
+			"gender": "f",
 			"definition": "A visible mass of condensed watery vapour."
 		},
 		{
 			"word": "Skull",
 			"translation": "Schädel",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A bone framework enclosing the brain of a vertebrate."
 		},
 		{
 			"word": "Electricity",
 			"translation": "Elektrizität",
-			"gender": "Feminine",
+			"gender": "f",
 			"definition": "A form of energy resulting from the existence of charged particles."
 		},
 		{
 			"word": "Egg",
 			"translation": "Ei",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "An oval or round object laid by a female bird or reptile."
 		},
 		{
 			"word": "Umbrella",
 			"translation": "Regenschirm",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A device consisting of a circular canopy used as protection against rain."
 		},
 		{
 			"word": "Diamond",
 			"translation": "Diamant",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A stone consisting of a clear and colourless crystalline form of pure carbon."
 		},
 		{
 			"word": "Horse",
 			"translation": "Pferd",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "A large plant-eating domesticated mammal with solid hoofs."
 		},
 		{
 			"word": "Cotton",
 			"translation": "Baumwolle",
-			"gender": "Feminine",
+			"gender": "f",
 			"definition": "A soft white fibrous substance which surrounds the seeds of a plant"
 		},
 		{
 			"word": "Cartoon",
 			"translation": "Karikatur",
-			"gender": "Feminine",
+			"gender": "f",
 			"definition": "A visual art that is typically drawn and frequently animated."
 		},
 		{
 			"word": "Sea",
 			"translation": "Meer",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "The expanse of salt water that covers most of the earth's surface."
 		},
 		{
 			"word": "Crown",
 			"translation": "Krone",
-			"gender": "Feminine",
+			"gender": "f",
 			"definition": "A circular ornamental headdress worn by a monarch."
 		},
 		{
 			"word": "Bacon",
 			"translation": "Speck",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "Cured meat from the back or sides of a pig."
 		},
 		{
 			"word": "Bread",
 			"translation": "Brot",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "A food made of flour, water, and yeast mixed together and baked."
 		},
 		{
 			"word": "Chocolate",
 			"translation": "Schokolade",
-			"gender": "Feminine",
+			"gender": "f",
 			"definition": "A sweet food made from roasted and ground cacao seed kernels."
 		},
 		{
 			"word": "Heart",
 			"translation": "Herz",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "A hollow muscular organ that pumps blood through the circulatory system."
 		},
 		{
 			"word": "Potato",
 			"translation": "Kartoffel",
-			"gender": "Feminine",
+			"gender": "f",
 			"definition": "A starchy plant tuber which is one of the most important food crops."
 		},
 		{
 			"word": "Office",
 			"translation": "Amtsstube",
-			"gender": "Feminine",
+			"gender": "f",
 			"definition": "A room used as a place for professional work."
 		},
 		{
 			"word": "Coffin",
 			"translation": "Sarg",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A long, narrow box in which a dead body is buried."
 		},
 		{
 			"word": "Blood",
 			"translation": "Blut",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "A body fluid in the circulatory system which provides oxygen to cells."
 		},
 				{
 			"word": "Recipe",
 			"translation": "Rezept",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "A set of instructions for preparing a particular dish."
 		},
 		{
 			"word": "Direction",
 			"translation": "Himmelsrichtung",
-			"gender": "Feminine",
+			"gender": "f",
 			"definition": "A course along which someone or something moves."
 		},
 		{
 			"word": "Teacher",
 			"translation": "Lehrer",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A person who helps students to acquire knowledge."
 		},
 		{
 			"word": "Grandmother",
 			"translation": "Großmutter",
-			"gender": "Feminine",
+			"gender": "f",
 			"definition": "The mother of one's father or mother."
 		},
 		{
 			"word": "Brother",
 			"translation": "Bruder",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A male who shares one or more parents with another."
 		},
 		{
 			"word": "Friend",
 			"translation": "Freund",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A person with whom one has a bond of mutual affection."
 		},
 		{
 			"word": "Birthday",
 			"translation": "Geburtstag",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "The anniversary of the day on which a person was born."
 		},
 				{
 			"word": "Weather",
 			"translation": "Wetter",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "The state of the atmosphere at a particular place and time."
 		},
 		{
 			"word": "Street",
 			"translation": "Straße",
-			"gender": "Feminine",
+			"gender": "f",
 			"definition": "A public road in a city or town."
 		},
 				{
 			"word": "Beer",
 			"translation": "Bier",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "An alcoholic drink made from yeast-fermented malt."
 		},
 		{
 			"word": "Employee",
 			"translation": "Angestellter",
-			"gender": "Masculine",
+			"gender": "m",
 			"definition": "A worker that performs specific tasks for a business."
 		},
 		{
 			"word": "Money",
 			"translation": "Geld",
-			"gender": "Neutral",
+			"gender": "n",
 			"definition": "A medium of exchange in the form of coins and banknotes."
 		}
 	]

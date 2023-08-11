@@ -19,9 +19,29 @@ export class ExNounMatchPage implements OnInit {
 
   constructor(private exerciseService: ExerciseService, private serverDataService: ServerDataService, private http: HttpClient, private router: Router) {}
 
+  loops = -1
+  finalScore = "Score: 0%"
+
+  scores: string[][] = []
+  serverData: string[][] = []
+
+  sampleWords: string[][] = []
+
+  chosenWords: number[] = []
+  chosenOptions: number[] = []
+
+  //-------------------------------------------------------------------------------------------------------
+
   async ngOnInit()
   {
     var state = this.router.getCurrentNavigation()!.extras!.state!
+
+    if(this.serverDataService.getServerStatus())
+    {
+      this.serverData = await this.serverDataService.getServerData("noun")
+    }
+
+    this.sampleWords = await this.serverDataService.getWords()
 
     if(state != null)
     {
@@ -31,22 +51,7 @@ export class ExNounMatchPage implements OnInit {
       this.startEx()
       document.getElementById("remainingEx")!.hidden = false
     }
-
-    this.serverData = await this.serverDataService.getServerData(this.http, "noun")
   }
-
-  //-------------------------------------------------------------------------------------------------------
-
-  loops = -1
-  finalScore = "Score: 0%"
-
-  scores: string[][] = []
-  serverData: string[][] = []
-  
-  sampleWords: string[][] = this.serverDataService.getWords()
-
-  chosenWords: number[] = []
-  chosenOptions: number[] = []
 
   getHandleReorder(ev: CustomEvent<ItemReorderEventDetail>)
   {
@@ -62,7 +67,7 @@ export class ExNounMatchPage implements OnInit {
       this.serverData = JSON.parse(localStorage.getItem("offlineData_noun")!)
     }
 
-    var chosenData = this.exerciseService.generateExercise(this.serverData)
+    var chosenData = this.exerciseService.generateExercise(this.serverData, this.sampleWords)
     this.chosenWords = chosenData[0]
     this.chosenOptions = chosenData[1]
   }
@@ -71,7 +76,7 @@ export class ExNounMatchPage implements OnInit {
 
   submitEx(): void
   {
-    var scoreData: string[] = (this.exerciseService.calculateScore(0, 1, "noun"))
+    var scoreData: string[] = (this.exerciseService.calculateScore(0, 1, "noun", this.sampleWords))
     scoreData.unshift("noun")
 
     this.serverDataService.saveOfflineData(scoreData)

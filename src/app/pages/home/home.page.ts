@@ -13,36 +13,33 @@ import { HttpClientModule, HttpClient, HttpHandler } from '@angular/common/http'
 
 export class HomePage implements OnInit
 {
-  constructor(private serverDataService: ServerDataService, private httpInstance: HttpClient) {}
+  constructor(private serverDataService: ServerDataService, private http: HttpClient) {}
 
-  ngOnInit()
+  async ngOnInit()
   {
-    //Server refers to the app server that is used to store user data
-    //Database refers to the external server containing word and language data
-    localStorage.setItem("serverStatus", "False")
-    localStorage.setItem("databaseStatus", "False")
-
-    this.checkStatus()
+    this.connectOnline()
   }
 
-  clearData(): void
+  async connectOnline()
+  {
+    await this.serverDataService.checkStatus(this.http, "server")
+    await this.serverDataService.checkStatus(this.http, "database")
+  }
+
+  async clearData()
   {
     console.log("Clearing Data...")
+
+    if(this.serverDataService.getServerStatus())
+    {
+      this.serverDataService.postServerData(this.http, "[]")
+      console.log("...all data cleared")
+    }
+    else
+    {
+      console.log("...server data could not be cleared, only local storage has been cleared")
+    }
+
     localStorage.clear()
-    this.httpInstance.post(this.serverDataService.serverPostURL, JSON.parse("[]"), {responseType: "text"})
-    .subscribe((response) => { localStorage.setItem("serverStatus", "True"), console.log(response) })
-
-    this.checkStatus()
-  }
-
-  checkStatus()
-  {
-    console.log("Checking server status...")
-    this.httpInstance.get(this.serverDataService.serverGetURL + "noun",{responseType: "text"})
-    .subscribe((response) => { localStorage.setItem("serverStatus", "True"), console.log("...Server Success") })
-
-    console.log("Checking database status...")
-    this.httpInstance.get(this.serverDataService.databaseURL + "noun", {responseType: "text"})
-    .subscribe((response) => { localStorage.setItem("databaseStatus", "True"), console.log("...Database Success") })
   }
 }

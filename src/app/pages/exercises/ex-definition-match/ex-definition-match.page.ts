@@ -36,12 +36,12 @@ export class ExDefinitionMatchPage implements OnInit {
   {
     var state = this.router.getCurrentNavigation()!.extras!.state!
 
-    if(this.serverDataService.getServerStatus())
+    this.sampleWords = await this.serverDataService.getWords()
+
+    if(await this.serverDataService.getServerStatus())
     {
       this.serverData = await this.serverDataService.getServerData("definition")
     }
-
-    this.sampleWords = await this.serverDataService.getWords()
 
     if(state != null)
     {

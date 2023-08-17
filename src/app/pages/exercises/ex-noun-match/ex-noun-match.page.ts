@@ -36,12 +36,12 @@ export class ExNounMatchPage implements OnInit {
   {
     var state = this.router.getCurrentNavigation()!.extras!.state!
 
+    this.sampleWords = await this.serverDataService.getWords()
+
     if(this.serverDataService.getServerStatus())
     {
       this.serverData = await this.serverDataService.getServerData("noun")
     }
-
-    this.sampleWords = await this.serverDataService.getWords()
 
     if(state != null)
     {

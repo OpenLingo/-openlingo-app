@@ -13,6 +13,9 @@ export class ServerDataService {
 
   constructor() { }
 
+  //Server refers to the app server that is used to store user data
+  //Database refers to the external server containing word and language data
+
   serverGetURL = "http://127.0.0.1:5000/views/get_questions/"
   serverPostURL = "http://127.0.0.1:5000/views/save_scores"
   databaseURL = "http://127.0.0.2:5000/api/"
@@ -23,6 +26,39 @@ export class ServerDataService {
   sampleWords: string[][] = []
 
   testString = "empty"
+
+  async checkStatus(http: HttpClient, service: string): Promise<void>
+  {
+    var response = null
+
+    document.getElementById("onlineStatus")!.innerHTML = "<em>Online &#10006;</em>"
+
+    localStorage.setItem(service + "Status", "False")
+    console.log("Checking " + service + " status...")
+
+    try
+    {
+      if(service == "server")
+      {
+        response  = await fetch(this.serverGetURL + "noun")
+      }
+      else
+      {
+        response  = await fetch(this.databaseURL + "noun")
+        document.getElementById("onlineStatus")!.innerHTML = "<em>Online &#10004;</em>"
+      }
+    }
+    catch
+    {
+      console.log("...could not connect to " + service)
+    }
+
+    if(response != null)
+    {
+      localStorage.setItem(service + "Status", "True")
+      console.log("..." + service + " Success")
+    }
+  }
 
   getServerStatus(): boolean
   {
@@ -47,12 +83,19 @@ export class ServerDataService {
     }
   }
 
-  postServerData(http: HttpClient): void
+  postServerData(http: HttpClient, postData?: string): void
   {
+    var data = JSON.parse(localStorage.getItem("offlineData")!)
+
+    if(postData != null)
+    {
+      data = JSON.parse(postData)
+    }
+
     if(this.getServerStatus())
     {
       console.log("POSTing Question Data...")
-      http.post(this.serverPostURL, JSON.parse(localStorage.getItem("offlineData")!), {responseType: "text"})
+      http.post(this.serverPostURL, data, {responseType: "text"})
       .subscribe(response => console.log(response))
     }
   }
@@ -70,12 +113,19 @@ export class ServerDataService {
 
     if(!this.getDatabaseStatus())
     {
-      for(let i = 0; i != sampleWords.nouns.length; i++)
+      if(localStorage.getItem("offlineWordData") == null)
       {
-        sampleArray[0].push(sampleWords.nouns[i].word)
-        sampleArray[1].push(sampleWords.nouns[i].translation)
-        sampleArray[2].push(sampleWords.nouns[i].gender)
-        sampleArray[3].push(sampleWords.nouns[i].definition)
+        for(let i = 0; i != sampleWords.nouns.length; i++)
+        {
+          sampleArray[0].push(sampleWords.nouns[i].word)
+          sampleArray[1].push(sampleWords.nouns[i].translation)
+          sampleArray[2].push(sampleWords.nouns[i].gender)
+          sampleArray[3].push(sampleWords.nouns[i].definition)
+        }
+      }
+      else
+      {
+        sampleArray = JSON.parse(localStorage.getItem("offlineWordData")!)
       }
     }
     else
@@ -91,6 +141,8 @@ export class ServerDataService {
         sampleArray[1].push(translation[0].word)
         sampleArray[2].push(translationData.gender)
         sampleArray[3].push("definition " + i)
+
+        localStorage.setItem("offlineWordData", JSON.stringify(sampleArray))
       }
 
     }

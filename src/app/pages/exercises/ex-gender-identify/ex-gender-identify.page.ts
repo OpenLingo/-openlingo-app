@@ -35,13 +35,13 @@ export class ExGenderIdentifyPage implements OnInit {
   async ngOnInit()
   {
     var state = this.router.getCurrentNavigation()!.extras!.state!
-    
+
+    this.sampleWords = await this.serverDataService.getWords()
+
     if(this.serverDataService.getServerStatus())
     {
       this.serverData = await this.serverDataService.getServerData("gender")
     }
-
-    this.sampleWords = await this.serverDataService.getWords()
 
     if(state != null)
     {

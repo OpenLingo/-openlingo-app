@@ -1,15 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Match Nouns</ion-title>
+    <ion-title size="large">Match Nouns</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Match Nouns</ion-title>
-    </ion-toolbar>
-  </ion-header>
   <h2 id="instructionsTitle">Instructions</h2>
   <p id="instructions">In this exercise you will be presented with two lists, one containing nouns in English, and the other containing the corresponding German translations of those nouns.<br>
   <br>The goal is to match as many nouns with their correct translation as you can.<br>
@@ -53,7 +48,9 @@
     <tr>
       <ion-list>
         <ion-reorder-group id="resultsList" [disabled]="true">
-          <ion-item *ngFor="let option of chosenOptions; let i = index" id="{{'answerResult' + i}}"></ion-item>
+          <ion-item *ngFor="let option of chosenOptions; let i = index">
+            <ion-label id="{{'answerResult' + i}}"></ion-label>
+          </ion-item>
         </ion-reorder-group>
       </ion-list>
     </tr>

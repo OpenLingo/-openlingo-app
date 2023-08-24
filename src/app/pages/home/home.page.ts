@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
+import { ExerciseService } from "../../services/exercise.service";
 import { ServerDataService } from "../../services/server-data.service";
 import { HttpClientModule, HttpClient, HttpHandler } from '@angular/common/http';
 
@@ -13,7 +14,7 @@ import { HttpClientModule, HttpClient, HttpHandler } from '@angular/common/http'
 
 export class HomePage implements OnInit
 {
-  constructor(private serverDataService: ServerDataService, private http: HttpClient) {}
+  constructor(private exerciseService: ExerciseService, private serverDataService: ServerDataService, private http: HttpClient) {}
 
   async ngOnInit()
   {
@@ -22,13 +23,21 @@ export class HomePage implements OnInit
 
   async connectOnline()
   {
-    await this.serverDataService.checkStatus(this.http, "server")
     await this.serverDataService.checkStatus(this.http, "database")
+    await this.serverDataService.checkStatus(this.http, "server")
   }
 
   async clearData()
   {
     console.log("Clearing Data...")
+
+    localStorage.removeItem("offlineData")
+    localStorage.removeItem("offlineWordData")
+
+    for(let i = 0; i != this.exerciseService.exercises[0].length; i++)
+    {
+      localStorage.removeItem("offlineData_" + this.exerciseService.exercises[0][i])
+    }
 
     if(this.serverDataService.getServerStatus())
     {
@@ -39,7 +48,5 @@ export class HomePage implements OnInit
     {
       console.log("...server data could not be cleared, only local storage has been cleared")
     }
-
-    localStorage.clear()
   }
 }

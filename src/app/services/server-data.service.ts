@@ -2,6 +2,7 @@ import { Injectable, Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from "rxjs";
 import { catchError, map, tap } from 'rxjs/operators';
+import { ExerciseService } from "../services/exercise.service";
 
 import sampleWords from '../../assets/sampleWords.json';
 
@@ -11,7 +12,7 @@ import sampleWords from '../../assets/sampleWords.json';
 
 export class ServerDataService {
 
-  constructor() { }
+  constructor(private exerciseService: ExerciseService) { }
 
   //Server refers to the app server that is used to store user data
   //Database refers to the external server containing word and language data
@@ -20,9 +21,6 @@ export class ServerDataService {
   serverPostURL = "http://127.0.0.1:5000/views/save_scores"
   databaseURL = "http://127.0.0.2:5000/api/"
 
-  categories = ["noun", "definition", "gender", "audio"]
-  exercises = ["ex-noun-match", "ex-definition-match", "ex-gender-identify", "ex-audio-identify"]
-
   sampleWords: string[][] = []
 
   testString = "empty"
@@ -30,27 +28,44 @@ export class ServerDataService {
   async checkStatus(http: HttpClient, service: string): Promise<void>
   {
     var response = null
+    var onlineButton = document.getElementById("onlineButton")! as HTMLInputElement
 
-    document.getElementById("onlineStatus")!.innerHTML = "<em>Online &#10006;</em>"
+    if(!this.getDatabaseStatus() && service == "database")
+    {
+      onlineButton.disabled = true
+      onlineButton.innerHTML = "<em>Connecting Online...</em>"
+    }
 
     localStorage.setItem(service + "Status", "False")
     console.log("Checking " + service + " status...")
 
-    try
+    if(service == "server")
     {
-      if(service == "server")
+      try
       {
         response  = await fetch(this.serverGetURL + "noun")
       }
-      else
+      catch
       {
-        response  = await fetch(this.databaseURL + "noun")
-        document.getElementById("onlineStatus")!.innerHTML = "<em>Online &#10004;</em>"
+        console.log("...could not connect to " + service)
       }
     }
-    catch
+    else
     {
-      console.log("...could not connect to " + service)
+      try
+      {
+        response  = await fetch(this.databaseURL + "noun")
+
+        onlineButton.disabled = true
+        onlineButton.innerHTML = "<em>Online &#10004;</em>"
+      }
+      catch
+      {
+        onlineButton.disabled = false
+        onlineButton.innerHTML = "Connect Online"
+
+        console.log("...could not connect to " + service)
+      }
     }
 
     if(response != null)
@@ -132,19 +147,20 @@ export class ServerDataService {
     {
       var databaseData = await this.getDatabaseData("noun")
 
-      for(let i = 0; i != 9; i++)
+      for(let i = 0; i != databaseData.length; i++)
       {
-        var translation = await this.getDatabaseData("noun_translation/" + (i + 1))
-        var translationData = await this.getDatabaseData("noun/" + translation[0].id)
+        if(databaseData[i].title == "English")
+        {
+          var translation = await this.getDatabaseData("noun_translation/" + (i + 1))
+          var translationData = await this.getDatabaseData("noun/" + translation[0].id)
 
-        sampleArray[0].push(databaseData[i].word)
-        sampleArray[1].push(translation[0].word)
-        sampleArray[2].push(translationData.gender)
-        sampleArray[3].push("definition " + i)
-
-        localStorage.setItem("offlineWordData", JSON.stringify(sampleArray))
+          sampleArray[0].push(databaseData[i].word)
+          sampleArray[1].push(translation[0].word)
+          sampleArray[2].push(translationData.gender)
+          sampleArray[3].push("definition " + i)
+        }
       }
-
+      localStorage.setItem("offlineWordData", JSON.stringify(sampleArray))
     }
     return sampleArray
   }
@@ -191,11 +207,11 @@ export class ServerDataService {
     //Combine the data for existing categories
     var allData = ""
 
-    for (let i = 0; i != this.categories.length; i++)
+    for (let i = 0; i != this.exerciseService.exercises[0].length; i++)
     {
-      if (localStorage.getItem(("offlineData_" + this.categories[i])) != null)
+      if (localStorage.getItem(("offlineData_" + this.exerciseService.exercises[0][i])) != null)
       {
-        allData += localStorage.getItem(("offlineData_" + this.categories[i]))!
+        allData += localStorage.getItem(("offlineData_" + this.exerciseService.exercises[0][i]))!
         allData = allData.replace("][", ",")
       }
     }

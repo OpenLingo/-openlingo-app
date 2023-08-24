@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ItemReorderEventDetail } from '@ionic/angular';
-import { ServerDataService } from "../services/server-data.service";
 
 @Injectable({
   providedIn: 'root'
@@ -8,19 +7,25 @@ import { ServerDataService } from "../services/server-data.service";
 
 export class ExerciseService{
 
-  constructor(private serverDataService: ServerDataService) {}
+  constructor() {}
+
+  gameLength = 8
+
+  exercises = [["noun", "definition", "gender", "audio"],
+               ["ex-noun-match", "ex-definition-match", "ex-gender-identify", "ex-audio-identify"],
+               ["Match Nouns","Match Definitions","Match Noun Genders","Match Noun Pronunciations"]]
 
   //Used for looping through multiple exercises
   pickExercise(currentExercise: string): string
   {
     var selection = (Math.floor(Math.random() * 4))
 
-    while(currentExercise == this.serverDataService.exercises[selection])
+    while(currentExercise == this.exercises[1][selection])
     {
-      selection = (Math.floor(Math.random() * this.serverDataService.exercises.length))
+      selection = (Math.floor(Math.random() * this.exercises[1].length))
     }
 
-    return this.serverDataService.exercises[selection]
+    return this.exercises[1][selection]
   }
 
   generateExercise(quesData: string[][], sampleWords: string[][]): number[][]
@@ -38,14 +43,13 @@ export class ExerciseService{
     var answerList = document.getElementById("answerList")!
     var resultsList = document.getElementById("resultsList")!
 
-    var gameLength = 8
     var chosenWords: number[] = []    //Used for checking which words have already been randomly chosen for this round
     var chosenOptions: number[] = []  //Contains the random order of chosen words to be used in the selection element
 
     console.log(quesData)
 
     //Set and display random words
-    for(let i = 0; i != gameLength; i++)
+    for(let i = 0; i != this.gameLength; i++)
     {
       var nextWord = -1
 
@@ -108,7 +112,7 @@ export class ExerciseService{
     }
 
     //Set a random order of the chosen words
-    for(let i = 0; i != gameLength; i++)
+    for(let i = 0; i != this.gameLength; i++)
     {
       var nextOption = Math.floor(Math.random() * sampleWords[0].length)
 
@@ -132,7 +136,6 @@ export class ExerciseService{
     var answerList = document.getElementById("answerList")! as HTMLSelectElement
     var answerOrder: string[] = answerList.innerText.split("\n")
 
-    var gameLength = 8
     var score = 0
 
     var userAnswers: string[] = []
@@ -141,14 +144,16 @@ export class ExerciseService{
 
     //For each question, the word and answer is recorded and the result is displayed to the user
     //Variables currentWord and answerList are what is being compared to get the user's result
-    for(let i = 0; i != gameLength; i++)
+    for(let i = 0; i != this.gameLength; i++)
     {
       var currentWord = document.getElementById("word" + i)!  as HTMLInputElement
       var currentResult = document.getElementById("answerResult" + i)!  //Element containing cross or check symbol
 
       if(exercise == "audio")
       {
-        currentWord.innerText = currentWord.src.slice(0,-4).substring(currentWord.src.indexOf("audio") + 6)
+        currentWord.innerText = currentWord.src.slice(0,-4).substring(currentWord.src.indexOf("audio") + 6 + 4)
+
+        console.log(currentWord.innerText)
       }
 
       userAnswers.push(sampleWords[0][sampleWords[col1].indexOf(currentWord.innerText)])
@@ -184,12 +189,12 @@ export class ExerciseService{
         if(genderOptions[k] == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
         {
           score++;
-          currentResult.innerHTML = currentResult.innerHTML.concat("<td>&#10004</td>")
+          currentResult.innerHTML = currentResult.innerHTML.concat("&#10004")
           userAnswers.push("True")
         }
         else
         {
-          currentResult.innerHTML = currentResult.innerHTML.concat("<td>&#10006</td>")
+          currentResult.innerHTML = currentResult.innerHTML.concat("&#10006")
           userAnswers.push("False")
         }
       }
@@ -199,18 +204,18 @@ export class ExerciseService{
         if(answerOrder[i] == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
         {
           score++;
-          currentResult.innerHTML = currentResult.innerHTML.concat("<td>&#10004</td>")
+          currentResult.innerHTML = currentResult.innerHTML.concat("&#10004")
         }
         else
         {
-          currentResult.innerHTML = currentResult.innerHTML.concat("<td>&#10006</td>")
+          currentResult.innerHTML = currentResult.innerHTML.concat("&#10006")
         }
 
         userAnswers.push(sampleWords[0][sampleWords[col2].indexOf(answerOrder[i])])
       }
     }
 
-    document.getElementById("scoreDisplay")!.innerText =  "Score: " + score + "/" + gameLength + " (" + (Math.round((score / gameLength) * 100)).toFixed(0) + "%)";
+    document.getElementById("scoreDisplay")!.innerText =  "Score: " + score + "/" + this.gameLength + " (" + (Math.round((score / this.gameLength) * 100)).toFixed(0) + "%)";
     return userAnswers
   }
 

@@ -1,29 +1,120 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>OpenLingo <img src="assets/icon/favicon.png" width="40px" height="40px"></ion-title>
+    <ion-title size="large">OpenLingo <img src="assets/icon/favicon.png" width="25rem" height="25rem"></ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">OpenLingo</ion-title>
-    </ion-toolbar>
-  </ion-header>
-    <h2>Excercises</h2>
-      <ion-button href="/ex-noun-match">Match Nouns</ion-button><br>
-      <ion-button href="/ex-definition-match">Match Definitions</ion-button><br>
-      <ion-button href="/ex-gender-identify">Match Noun Genders</ion-button><br>
-      <ion-button href="/ex-audio-identify">Match Noun Pronunciations</ion-button><br>
+<style>
+  td
+  {
+    padding: 15px;
+  }
+</style>
 
-      <br>
-      <ion-button href="/random-exercises">Randomised Exercises</ion-button><br>
+<ion-content [fullscreen]="true" class="ion-justify-content-center">
+  <table class="center">
+    <tr>
+      <td>
+        <a href="/ex-noun-match" class="cardlink">
+          <div class="card">
+            <div class="cardtitle">
+              <picture>
+                <source srcset="assets/img/container_dark.png" media="(prefers-color-scheme: dark)">
+                <img class="center" src="assets/img/container.png" alt="cube">
+              </picture>
+              <h3>Match Nouns</h3>
+            </div>
 
-    <br>
-    <ion-button (click)="clearData()">Clear Data</ion-button><br>
-	  <ion-button href="../login">Exit/Logout</ion-button><br>
-    <br>
-    <ion-button (click)="connectOnline()">Connect Online</ion-button><br>
-    <br>
-    <p id="onlineStatus"><em>Offline &#10006;</em></p>
+            <div class="cardtext">
+              <p>Match English and German nouns with eachother.</p>
+            </div>
+          </div>
+        </a>
+      </td>
+      <!--New Column----------------------------------------->
+      <td>
+        <a href="/ex-definition-match" class="cardlink">
+          <div class="card">
+            <div class="cardtitle">
+              <picture>
+                <source srcset="assets/img/book_dark.png" media="(prefers-color-scheme: dark)">
+                <img class="center" src="assets/img/book.png" alt="book">
+              </picture>
+              <h3>Match Definitions</h3>
+            </div>
+
+            <div class="cardtext">
+              <p>Match German words with their corresponding English definition.</p>
+            </div>
+          </div>
+        </a>
+      </td>
+    </tr>
+    <!--New Row---------------------------------------------------------------------------------------------------->
+    <tr>
+      <td>
+        <a href="/ex-gender-identify" class="cardlink">
+          <div class="card">
+            <div class="cardtitle">
+              <picture>
+                <source srcset="assets/img/gender_dark.png" media="(prefers-color-scheme: dark)">
+                <img class="center" src="assets/img/gender.png" alt="gender">
+              </picture>
+
+              <h3>Match Genders</h3>
+              </div>
+              <div class="cardtext">
+                <p>Match German words with their corresponding gender.</p>
+            </div>
+          </div>
+        </a>
+      </td>
+      <!--New Column----------------------------------------->
+      <td>
+        <a href="/ex-audio-identify" class="cardlink">
+          <div class="card">
+            <div class="cardtitle">
+              <picture>
+                <source srcset="assets/img/speak_dark.png" media="(prefers-color-scheme: dark)">
+                <img class="center" src="assets/img/speak.png" alt="speaking">
+              </picture>
+              <h3>Listen to Pronunciations</h3>
+            </div>
+
+            <div class="cardtext">
+              <p>Match spellings with their German pronunciations.</p>
+            </div>
+          </div>
+        </a>
+      </td>
+    </tr>
+    <!--New Row---------------------------------------------------------------------------------------------------->
+    <tr>
+      <td colspan="2">
+        <a href="/random-exercises" class="centerlink">
+          <div class="card">
+            <div class="cardtitle">
+              <picture>
+                <source srcset="assets/img/arrow_dark.png" media="(prefers-color-scheme: dark)">
+                <img class="center" src="assets/img/arrow.png" alt="shuffle">
+              </picture>
+              <h3>Randomised Exercises</h3>
+            </div>
+
+            <div class="cardtext">
+              <p>Play through a selection of 10 random exercises.</p>
+            </div>
+          </div>
+        </a>
+      </td>
+    </tr>
+  </table>
 </ion-content>
+
+<ion-footer>
+  <ion-button (click)="clearData()">Clear Data</ion-button>
+  <!--<ion-button href="../login">Exit/Logout</ion-button><br>-->
+  <ion-button id="onlineButton" (click)="connectOnline()" disabled=true><em>Checking Online...</em></ion-button><br>
+</ion-footer>
+
+

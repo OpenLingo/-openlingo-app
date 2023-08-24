@@ -1,15 +1,22 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Match Definitions</ion-title>
+    <ion-title size="large">Match Definitions</ion-title>
   </ion-toolbar>
 </ion-header>
 
+<style>
+  ion-item
+  {
+    height: 8rem;
+  }
+  ion-label
+  {
+    font-size: 1rem;
+    height: 6rem;
+  }
+</style>
+
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Match Definitions</ion-title>
-    </ion-toolbar>
-  </ion-header>
   <h2 id="instructionsTitle">Instructions</h2>
   <p id="instructions">In this exercise you will be presented with two lists, one containing nouns in German, and the other containing definitions of those nouns in English.<br>
   <br>The goal is to match as many nouns with their correct definition as you can.<br>
@@ -23,7 +30,7 @@
       <ion-list>
         <ion-reorder-group id="promptList" [disabled]="true">
           <ion-item *ngFor="let word of chosenWords; let i = index" id="{{'word' + i}}">
-            <ion-label>{{sampleWords[1][chosenWords[i]]}}</ion-label>
+            <ion-label id="{{'wordLabel' + i}}">{{sampleWords[1][chosenWords[i]]}}</ion-label>
           </ion-item>
         </ion-reorder-group>
       </ion-list>
@@ -38,7 +45,7 @@
       <ion-list text-wrap >
         <ion-reorder-group id="answerList" [disabled]="false" (ionItemReorder)="getHandleReorder($any($event))">
           <ion-item *ngFor="let option of chosenOptions; let i = index">
-            <ion-label text-wrap>{{sampleWords[3][chosenOptions[i]]}}</ion-label>
+            <ion-label id="{{'answerLabel' + i}}" text-wrap>{{sampleWords[3][chosenOptions[i]]}}</ion-label>
             <ion-reorder slot="end"></ion-reorder>
           </ion-item>
         </ion-reorder-group>
@@ -53,7 +60,9 @@
     <tr>
       <ion-list>
         <ion-reorder-group id="resultsList" [disabled]="true">
-          <ion-item *ngFor="let option of chosenOptions; let i = index" id="{{'answerResult' + i}}"></ion-item>
+          <ion-item *ngFor="let option of chosenOptions; let i = index">
+            <ion-label  id="{{'answerResult' + i}}"></ion-label>
+          </ion-item>
         </ion-reorder-group>
       </ion-list>
     </tr>

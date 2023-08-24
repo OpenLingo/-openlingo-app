@@ -1,15 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Match Noun Pronunciations</ion-title>
+    <ion-title size="large">Listen to Pronunciations</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Match Noun Pronunciations</ion-title>
-    </ion-toolbar>
-  </ion-header>
   <h2 id="instructionsTitle">Instructions</h2>
   <p id="instructions">In this exercise you will be presented with a list of words being pronounced in German.<br>
   <br>The goal is to correctly match the pronunciation with its correct answer from the list of either English or German words.
@@ -25,7 +20,9 @@
         <ion-reorder-group id="promptList" [disabled]="true">
           <ion-item *ngFor="let word of chosenWords; let i = index">
             <audio id="{{'audio' + i}}">
-              <source id="{{'word' + i}}" src="assets/audio/{{sampleWords[0][chosenWords[i]]}}.mp3" type="audio/mpeg">
+              <source id="{{'word' + i}}" src="assets/audio/mp3/{{sampleWords[0][chosenWords[i]]}}.mp3" type="audio/mp3">
+              <source src="assets/audio/ogg/{{sampleWords[0][chosenWords[i]]}}.ogg" type="audio/ogg">
+              Audio Error.
             </audio>
 
             <ion-button (click)="playAudio('audio' + i)">
@@ -60,12 +57,14 @@
     <tr>
       <ion-list>
         <ion-reorder-group id="resultsList" [disabled]="true">
-          <ion-item *ngFor="let option of chosenOptions; let i = index" id="{{'answerResult' + i}}"></ion-item>
+          <ion-item *ngFor="let option of chosenOptions; let i = index">
+            <ion-label  id="{{'answerResult' + i}}"></ion-label>
+          </ion-item>
         </ion-reorder-group>
       </ion-list>
     </tr>
   </table>
-  
+
   <div height="200%" hidden="true" id="togglePrompt">
 	<em>Display English Words: </em> <input (click)="toggleDisplay()" id="gerBox" type="checkbox">
   </div>

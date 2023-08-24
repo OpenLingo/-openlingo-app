@@ -1,15 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Randomised Exercises</ion-title>
+    <ion-title size="large">Randomised Exercises</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Randomised Exercises</ion-title>
-    </ion-toolbar>
-  </ion-header>
   <h2 id="instructionsTitle">Instructions</h2>
   <p id="instructions">In this exercise you will be presented with 10 different exercises in a random order.</p>
 
@@ -20,6 +15,12 @@
       th {font-size:1rem; font-weight:bold; text-decoration:none;}
       table {float:none;}
     </style>
+
+    <table *ngFor="let category of categories; let i = index" id="{{categories[i] + 'Scores'}}" hidden="true">
+      <tr>
+        <th>{{titles[i]}}</th>
+      </tr>
+    </table>
 
     <table id="nounScores" hidden="true">
       <tr>

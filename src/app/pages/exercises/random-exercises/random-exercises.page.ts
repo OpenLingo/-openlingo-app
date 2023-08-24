@@ -16,6 +16,9 @@ export class RandomExercisesPage implements OnInit {
 
   constructor(private exerciseService: ExerciseService, private router: Router) { }
 
+  categories: string[] = this.exerciseService.exercises[0]
+  titles: string[] = this.exerciseService.exercises[2]
+
   ngOnInit()
   {
     var state = this.router.getCurrentNavigation()!.extras!.state!

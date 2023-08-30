@@ -12,10 +12,9 @@ export class ExerciseService{
   gameLength = 8
 
   exercises = [["noun", "definition", "gender", "audio"],
-               ["ex-noun-match", "ex-definition-match", "ex-gender-identify", "ex-audio-identify"],
-               ["Match Nouns","Match Definitions","Match Noun Genders","Match Noun Pronunciations"]]
+               ["ex-noun-match", "ex-definition-match", "ex-gender-identify", "ex-audio-identify"]]
 
-  //Used for looping through multiple exercises
+  //Used when looping through multiple exercises
   pickExercise(currentExercise: string): string
   {
     var selection = (Math.floor(Math.random() * 4))
@@ -26,6 +25,24 @@ export class ExerciseService{
     }
 
     return this.exercises[1][selection]
+  }
+
+  handleLoop(loops: number)
+  {
+    if(loops > 0)
+    {
+      document.getElementById("nextBtn")!.hidden = false
+      document.getElementById("remainingEx")!.innerHTML = ("Exercises Remaining: " + loops)
+    }
+    else if(loops == 0)
+    {
+      document.getElementById("finishBtn")!.hidden = false
+      document.getElementById("remainingEx")!.innerHTML = ("Exercises Remaining: " + loops)
+    }
+    else
+    {
+      document.getElementById("againBtn")!.hidden = false;
+    }
   }
 
   generateExercise(quesData: string[][], sampleWords: string[][]): number[][]
@@ -98,7 +115,8 @@ export class ExerciseService{
 
               console.log(sampleWords[0][nextWord] + ": " + correct + "/" + appearances + " = " + (100 - accuracy))
 
-              if (Math.floor(Math.random() * 100) >= (100 - accuracy))
+              //The word needs to appear a few times before it can start being rejected
+              if (Math.floor(Math.random() * 100) >= (100 - accuracy) && appearances > 2)
               {
                 nextWord = -1
                 console.log("REJECTED")
@@ -152,8 +170,6 @@ export class ExerciseService{
       if(exercise == "audio")
       {
         currentWord.innerText = currentWord.src.slice(0,-4).substring(currentWord.src.indexOf("audio") + 6 + 4)
-
-        console.log(currentWord.innerText)
       }
 
       userAnswers.push(sampleWords[0][sampleWords[col1].indexOf(currentWord.innerText)])

@@ -9,6 +9,10 @@
   {
     padding: 15px;
   }
+  p
+  {
+    padding-right: 0;
+  }
 </style>
 
 <ion-content [fullscreen]="true" class="ion-justify-content-center">
@@ -44,7 +48,7 @@
             </div>
 
             <div class="cardtext">
-              <p>Match German words with their corresponding English definition.</p>
+              <p>Match German words with their English definition.</p>
             </div>
           </div>
         </a>
@@ -64,7 +68,7 @@
               <h3>Match Genders</h3>
               </div>
               <div class="cardtext">
-                <p>Match German words with their corresponding gender.</p>
+                <p>Match German words with their gender.</p>
             </div>
           </div>
         </a>
@@ -114,7 +118,8 @@
 <ion-footer>
   <ion-button (click)="clearData()">Clear Data</ion-button>
   <!--<ion-button href="../login">Exit/Logout</ion-button><br>-->
-  <ion-button id="onlineButton" (click)="connectOnline()" disabled=true><em>Checking Online...</em></ion-button><br>
+  <ion-button id="onlineButton" (click)="connectOnline()" disabled=true><em>Checking Online...</em></ion-button>
+  <button style="float:right; color:grey; font-size:150%; margin:2rem" (click)="moreInfo()">&#9432;</button>
 </ion-footer>
 
 

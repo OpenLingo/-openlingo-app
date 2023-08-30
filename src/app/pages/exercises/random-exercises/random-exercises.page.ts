@@ -17,7 +17,6 @@ export class RandomExercisesPage implements OnInit {
   constructor(private exerciseService: ExerciseService, private router: Router) { }
 
   categories: string[] = this.exerciseService.exercises[0]
-  titles: string[] = this.exerciseService.exercises[2]
 
   ngOnInit()
   {
@@ -36,12 +35,14 @@ export class RandomExercisesPage implements OnInit {
       document.getElementById("resultsTables")!.hidden = false
       document.getElementById("scoreDisplay")!.hidden = false
 
+      this.exerciseService.handleLoop(-1)
+
       for(let i = 0; i != state["scores"].length; i++)
       {
         var scoreTable = document.getElementById(state["scores"][i][0] + "Scores")!
 
         scoreTable.hidden = false
-        scoreTable.innerHTML = scoreTable.innerHTML.concat("<tr><td>" + state["scores"][i][1] + "</td></tr>")
+        scoreTable.innerHTML = scoreTable.innerHTML.concat("<tr><td>" + state["scores"][i][1].substring(6) + "</td></tr>")
 
         totalQuestions += +state["scores"][i][1][9]
         totalCorrect += +state["scores"][i][1][7]
@@ -54,5 +55,10 @@ export class RandomExercisesPage implements OnInit {
   startEx(): void
   {
     this.router.navigate([this.exerciseService.pickExercise("ex-random-excercises")], { state: { loops: 10 - 1, scores: [] } }).then(() => {window.location.reload()})
+  }
+
+  playAgain(): void
+  {
+    this.startEx();
   }
 }

@@ -61,7 +61,7 @@
       <ion-list>
         <ion-reorder-group id="resultsList" [disabled]="true">
           <ion-item *ngFor="let option of chosenOptions; let i = index">
-            <ion-label  id="{{'answerResult' + i}}"></ion-label>
+            <ion-label id="{{'answerResult' + i}}"></ion-label>
           </ion-item>
         </ion-reorder-group>
       </ion-list>
@@ -86,6 +86,9 @@
   </div>
   <div id="finishBtn" hidden="true">
     <ion-button type="button" (click)="finishEx()">Finish</ion-button>
+  </div>
+  <div id="againBtn" hidden="true">
+    <ion-button type="button" (click)="playAgain()">Play Again</ion-button>
   </div>
 
   <div style="margin-bottom: 3%">

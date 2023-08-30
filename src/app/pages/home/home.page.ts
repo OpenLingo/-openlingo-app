@@ -29,24 +29,32 @@ export class HomePage implements OnInit
 
   async clearData()
   {
-    console.log("Clearing Data...")
-
-    localStorage.removeItem("offlineData")
-    localStorage.removeItem("offlineWordData")
-
-    for(let i = 0; i != this.exerciseService.exercises[0].length; i++)
+    if(confirm("Are you sure you want to clear all of your performance data?\n\nThis data is used to better choose questions based on your answers."))
     {
-      localStorage.removeItem("offlineData_" + this.exerciseService.exercises[0][i])
-    }
+      console.log("Clearing Data...")
 
-    if(this.serverDataService.getServerStatus())
-    {
-      this.serverDataService.postServerData(this.http, "[]")
-      console.log("...all data cleared")
+      localStorage.removeItem("offlineData")
+      //localStorage.removeItem("offlineWordData")
+
+      for(let i = 0; i != this.exerciseService.exercises[0].length; i++)
+      {
+        localStorage.removeItem("offlineData_" + this.exerciseService.exercises[0][i])
+      }
+
+      if(this.serverDataService.getServerStatus())
+      {
+        this.serverDataService.postServerData(this.http, "[]")
+        console.log("...all data cleared")
+      }
+      else
+      {
+        console.log("...server data could not be cleared, only local storage has been cleared")
+      }
     }
-    else
-    {
-      console.log("...server data could not be cleared, only local storage has been cleared")
-    }
+  }
+
+  moreInfo()
+  {
+    alert("Icons from: https://www.flaticon.com.")
   }
 }

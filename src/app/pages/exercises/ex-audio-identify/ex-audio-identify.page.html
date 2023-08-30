@@ -20,11 +20,10 @@
         <ion-reorder-group id="promptList" [disabled]="true">
           <ion-item *ngFor="let word of chosenWords; let i = index">
             <audio id="{{'audio' + i}}">
-              <source id="{{'word' + i}}" src="assets/audio/mp3/{{sampleWords[0][chosenWords[i]]}}.mp3" type="audio/mp3">
+              <source id="{{'word' + i}}" src="assets/audio/mp3/{{sampleWords[0][chosenWords[i]]}}.mp3" type="audio/mpeg">
               <source src="assets/audio/ogg/{{sampleWords[0][chosenWords[i]]}}.ogg" type="audio/ogg">
               Audio Error.
             </audio>
-
             <ion-button (click)="playAudio('audio' + i)">
               &#9658;
             </ion-button>
@@ -87,6 +86,9 @@
   </div>
   <div id="finishBtn" hidden="true">
     <ion-button type="button" (click)="finishEx()">Finish</ion-button>
+  </div>
+  <div id="againBtn" hidden="true">
+    <ion-button type="button" (click)="playAgain()">Play Again</ion-button>
   </div>
 
   <div style="margin-bottom: 3%">

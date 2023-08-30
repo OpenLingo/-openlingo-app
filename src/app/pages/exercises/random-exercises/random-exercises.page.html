@@ -16,12 +16,6 @@
       table {float:none;}
     </style>
 
-    <table *ngFor="let category of categories; let i = index" id="{{categories[i] + 'Scores'}}" hidden="true">
-      <tr>
-        <th>{{titles[i]}}</th>
-      </tr>
-    </table>
-
     <table id="nounScores" hidden="true">
       <tr>
         <th>Match Nouns</th>
@@ -36,13 +30,13 @@
 
     <table id="genderScores" hidden="true">
       <tr>
-        <th>Match Noun Genders</th>
+        <th>Match Genders</th>
       </tr>
     </table>
 
     <table id="audioScores" hidden="true">
       <tr>
-        <th>Match Noun Pronunciations</th>
+        <th>Listen to Pronunciations</th>
       </tr>
     </table>
   </div>
@@ -53,6 +47,9 @@
 
   <div id="startBtn">
     <ion-button type="button" (click)="startEx()">Start</ion-button>
+  </div>
+  <div id="againBtn" hidden="true">
+    <ion-button type="button" (click)="playAgain()">Play Again</ion-button>
   </div>
 
   <div style="margin-bottom: 3%">

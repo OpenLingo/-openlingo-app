@@ -118,17 +118,7 @@ export class ExAudioIdentifyPage implements OnInit {
     this.serverDataService.saveOfflineData(scoreData)
     this.serverDataService.postServerData(this.http)
 
-    //Used for chaining exercises
-    if(this.loops > 0)
-    {
-      document.getElementById("nextBtn")!.hidden = false
-      document.getElementById("remainingEx")!.innerHTML = ("Exercises Remaining: " + this.loops)
-    }
-    else if(this.loops == 0)
-    {
-      document.getElementById("finishBtn")!.hidden = false
-      document.getElementById("remainingEx")!.innerHTML = ("Exercises Remaining: " + this.loops)
-    }
+    this.exerciseService.handleLoop(this.loops)
 
     this.scores.push(["audio", document.getElementById("scoreDisplay")!.innerText])
   }
@@ -143,5 +133,10 @@ export class ExAudioIdentifyPage implements OnInit {
   finishEx(): void
   {
     this.router.navigate(["random-exercises"], { state: { finish: true, scores: this.scores } }).then(() => {window.location.reload()})
+  }
+
+  playAgain(): void
+  {
+    window.location.reload()
   }
 }

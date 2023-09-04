@@ -6,7 +6,7 @@
 
 <ion-content [fullscreen]="true">
   <h2 id="instructionsTitle">Instructions</h2>
-  <p id="instructions">In this exercise you will be presented with two lists, one containing nouns in English, and the other containing the corresponding German translations of those nouns.<br>
+  <p id="instructions">In this exercise you will be presented with two lists, one containing nouns in English, and the other containing the matching German translations.<br>
   <br>The goal is to match as many nouns with their correct translation as you can.<br>
   </p>
 
@@ -35,21 +35,10 @@
           <ion-item *ngFor="let option of chosenOptions; let i = index">
             <ion-label>{{sampleWords[1][chosenOptions[i]]}}</ion-label>
             <ion-reorder slot="end"></ion-reorder>
-          </ion-item>
-        </ion-reorder-group>
-      </ion-list>
-    </tr>
-  </table>
 
-  <table id="resultsTable" hidden="true">
-    <tr>
-      <th style="text-decoration: none">&nbsp;</th>
-    </tr>
-    <tr>
-      <ion-list>
-        <ion-reorder-group id="resultsList" [disabled]="true">
-          <ion-item *ngFor="let option of chosenOptions; let i = index">
-            <ion-label id="{{'answerResult' + i}}"></ion-label>
+            <div>
+              <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
+            </div>
           </ion-item>
         </ion-reorder-group>
       </ion-list>

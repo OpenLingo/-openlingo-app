@@ -14,64 +14,48 @@ export class ServerDataService {
 
   constructor(private exerciseService: ExerciseService) { }
 
-  //Server refers to the app server that is used to store user data
-  //Database refers to the external server containing word and language data
+  serverURL = "http://127.0.0.1:5000/views/"
 
-  serverGetURL = "http://127.0.0.1:5000/views/get_questions/"
-  serverPostURL = "http://127.0.0.1:5000/views/save_scores"
-  databaseURL = "http://127.0.0.2:5000/api/"
-
-  sampleWords: string[][] = []
-
-  testString = "empty"
-
-  async checkStatus(http: HttpClient, service: string): Promise<void>
+  async checkStatus(http: HttpClient): Promise<void>
   {
     var response = null
-    var onlineButton = document.getElementById("onlineButton")! as HTMLInputElement
 
-    if(!this.getDatabaseStatus() && service == "database")
+    var onlineStatus = document.getElementById("onlineStatus")!
+    var onlineButton = document.getElementById("onlineButton")! as HTMLInputElement
+    var updateButton = document.getElementById("updateButton")! as HTMLInputElement
+
+    if(!this.getServerStatus())
     {
       onlineButton.disabled = true
-      onlineButton.innerHTML = "<em>Connecting Online...</em>"
+      updateButton.disabled = true
+      onlineStatus.innerHTML = "<em>Connecting...</em>"
     }
 
-    localStorage.setItem(service + "Status", "False")
-    console.log("Checking " + service + " status...")
+    localStorage.setItem("serverStatus", "False")
+    console.log("Checking server status...")
 
-    if(service == "server")
+    try
     {
-      try
-      {
-        response  = await fetch(this.serverGetURL + "noun")
-      }
-      catch
-      {
-        console.log("...could not connect to " + service)
-      }
+      response  = await fetch(this.serverURL + "database/noun/1")
+
+      onlineButton.disabled = true
+      onlineStatus.innerHTML = "<em>Online &#10004;</em>"
+
+      updateButton.disabled = false
     }
-    else
+    catch
     {
-      try
-      {
-        response  = await fetch(this.databaseURL + "noun")
+      onlineButton.disabled = false
+      updateButton.disabled = true
+      onlineStatus.innerHTML = "<em>Offline &#10006;</em>"
 
-        onlineButton.disabled = true
-        onlineButton.innerHTML = "<em>Online &#10004;</em>"
-      }
-      catch
-      {
-        onlineButton.disabled = false
-        onlineButton.innerHTML = "Connect Online"
-
-        console.log("...could not connect to " + service)
-      }
+      console.log("...could not connect to server.")
     }
 
     if(response != null)
     {
-      localStorage.setItem(service + "Status", "True")
-      console.log("..." + service + " Success")
+      localStorage.setItem("serverStatus", "True")
+      console.log("...server Success")
     }
   }
 
@@ -80,18 +64,18 @@ export class ServerDataService {
     return localStorage.getItem("serverStatus")! == "True"
   }
 
-  getDatabaseStatus(): boolean
+  getDownloadStatus(): boolean
   {
-    return localStorage.getItem("databaseStatus")! == "True"
+    return JSON.parse(localStorage.getItem("offlineWordData")!)[0][0] != "House"
   }
 
   async getServerData(category: string): Promise<any>
   {
     if(this.getServerStatus())
     {
-      const response = await fetch(this.serverGetURL + category)
+      const response = await fetch(this.serverURL + "performance_data/get_data/" + category)
 
-      console.log("GETing Question Data...")
+      console.log("GETing Performance Data...")
       console.log("...GET Success")
 
       return await response.json()
@@ -109,49 +93,59 @@ export class ServerDataService {
 
     if(this.getServerStatus())
     {
-      console.log("POSTing Question Data...")
-      http.post(this.serverPostURL, data, {responseType: "text"})
+      console.log("POSTing Performance Data...")
+      http.post(this.serverURL + "performance_data/save_data", data, {responseType: "text"})
       .subscribe(response => console.log(response))
     }
   }
 
   async getDatabaseData(options: string): Promise<any>
   {
-    const response = await fetch(this.databaseURL + options)
+    const response = await fetch(this.serverURL + "database/" + options)
 
     return await response.json()
   }
 
-  async getWords(): Promise<string[][]>
+  generateOfflineWords(): string[][]
   {
     var sampleArray: string[][] = [[],[],[],[]]
 
-    if(!this.getDatabaseStatus())
+    for(let i = 0; i != sampleWords.nouns.length; i++)
     {
-      if(localStorage.getItem("offlineWordData") == null)
-      {
-        for(let i = 0; i != sampleWords.nouns.length; i++)
-        {
-          sampleArray[0].push(sampleWords.nouns[i].word)
-          sampleArray[1].push(sampleWords.nouns[i].translation)
-          sampleArray[2].push(sampleWords.nouns[i].gender)
-          sampleArray[3].push(sampleWords.nouns[i].definition)
-        }
-      }
-      else
-      {
-        sampleArray = JSON.parse(localStorage.getItem("offlineWordData")!)
-      }
+      sampleArray[0].push(sampleWords.nouns[i].word)
+      sampleArray[1].push(sampleWords.nouns[i].translation)
+      sampleArray[2].push(sampleWords.nouns[i].gender)
+      sampleArray[3].push(sampleWords.nouns[i].definition)
+    }
+
+    return sampleArray
+  }
+
+  async getWords(reset?: boolean): Promise<void>
+  {
+    var updateButton = document.getElementById("updateButton")! as HTMLInputElement
+    var sampleArray: string[][] = [[],[],[],[]]
+
+    updateButton.disabled = true
+
+    if(!this.getServerStatus())
+    {
+      sampleArray = this.generateOfflineWords()
     }
     else
     {
+      document.getElementById("downloadStatus")!.innerHTML = "<em>Downloading Word Data...</em>"
+
       var databaseData = await this.getDatabaseData("noun")
 
       for(let i = 0; i != databaseData.length; i++)
       {
-        if(databaseData[i].title == "English")
+        if(databaseData[i].language_id == 1)
         {
-          var translation = await this.getDatabaseData("noun_translation/" + (i + 1))
+          //Gets the German word and id that matches the current English word
+          var translation = await this.getDatabaseData("noun_translation/" + (databaseData[i].id))
+
+          //Gets the rest of the German word's data using the id just found
           var translationData = await this.getDatabaseData("noun/" + translation[0].id)
 
           sampleArray[0].push(databaseData[i].word)
@@ -160,9 +154,13 @@ export class ServerDataService {
           sampleArray[3].push("definition " + i)
         }
       }
-      localStorage.setItem("offlineWordData", JSON.stringify(sampleArray))
+
+      updateButton.disabled = false
+
+      document.getElementById("downloadStatus")!.innerHTML = "<em>Using Downloaded Data &#10004;</em>"
     }
-    return sampleArray
+
+    localStorage.setItem("offlineWordData", JSON.stringify(sampleArray))
   }
 
   saveOfflineData(scoreData: string[]): void

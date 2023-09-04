@@ -110,6 +110,7 @@ html{
 
 
 /* Application-wide Styles */
+/*Classes--------------------------------------------------------------------------------------------------------*/
 .card {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
@@ -170,6 +171,47 @@ html{
   text-decoration: none;
   color: inherit;
 }
+/*----------------------------------------------------------*/
+.wifiButton .wifiDark {
+  display: none;
+}
+.wifiButton:hover .wifiLight {
+  display: none;
+}
+.wifiButton:hover .wifiDark {
+  display: inline;
+}
+/*----------------------------------------------------------*/
+.downloadButton .downloadDark {
+  display: none;
+}
+.downloadButton:hover .downloadLight {
+  display: none;
+}
+.downloadButton:hover .downloadDark {
+  display: inline;
+}
+/*----------------------------------------------------------*/
+.binButton .binDark {
+  display: none;
+}
+.binButton:hover .binLight {
+  display: none;
+}
+.binButton:hover .binDark {
+  display: inline;
+}
+/*----------------------------------------------------------*/
+.warningButton .warningDark {
+  display: none;
+}
+.warningButton:hover .warningLight {
+  display: none;
+}
+.warningButton:hover .warningDark {
+  display: inline;
+}
+/*--------------------------------------------------------------------------------------------------------------*/
 
 ion-title {
   color: #07a86d;

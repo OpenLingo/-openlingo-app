@@ -149,13 +149,21 @@ export class ExerciseService{
   {
     document.getElementById("submitBtn")!.hidden = true;
     document.getElementById("scoreDisplay")!.hidden = false;
-    document.getElementById("resultsTable")!.hidden = false;
 
     var answerList = document.getElementById("answerList")! as HTMLSelectElement
-    var answerOrder: string[] = answerList.innerText.split("\n")
+    var listCopy: string[] = answerList.innerText.split("\n")
+    var answerOrder = []
+
+    //Removes blank space from HTML innertext to be used for answer checking
+    for(let i = listCopy.length - 1; i != -1; i--)
+    {
+      if(listCopy[i].trim().length)
+      {
+        answerOrder.unshift(listCopy[i])
+      }
+    }
 
     var score = 0
-
     var userAnswers: string[] = []
 
     answerList.disabled = true
@@ -205,12 +213,12 @@ export class ExerciseService{
         if(genderOptions[k] == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
         {
           score++;
-          currentResult.innerHTML = currentResult.innerHTML.concat("&#10004")
+          currentResult.innerHTML = currentResult.innerHTML.concat("<b>&#10004</b>")
           userAnswers.push("True")
         }
         else
         {
-          currentResult.innerHTML = currentResult.innerHTML.concat("&#10006")
+          currentResult.innerHTML = currentResult.innerHTML.concat("<b>&#10006</b>")
           userAnswers.push("False")
         }
       }
@@ -220,11 +228,11 @@ export class ExerciseService{
         if(answerOrder[i] == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
         {
           score++;
-          currentResult.innerHTML = currentResult.innerHTML.concat("&#10004")
+          currentResult.innerHTML = currentResult.innerHTML.concat("<b>&#10004</b>")
         }
         else
         {
-          currentResult.innerHTML = currentResult.innerHTML.concat("&#10006")
+          currentResult.innerHTML = currentResult.innerHTML.concat("<b>&#10006</b>")
         }
 
         userAnswers.push(sampleWords[0][sampleWords[col2].indexOf(answerOrder[i])])

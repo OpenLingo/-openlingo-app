@@ -7,7 +7,7 @@
 <ion-content [fullscreen]="true">
   <h2 id="instructionsTitle">Instructions</h2>
   <p id="instructions">In this exercise you will be presented with a list of words being pronounced in German.<br>
-  <br>The goal is to correctly match the pronunciation with its correct answer from the list of either English or German words.
+  <br>The goal is to correctly match the pronunciation with the correct answer from the list of words.
   <br>In this exercise you have the option to change which language you are matching the pronunciations with.<br>
   </p>
 
@@ -43,21 +43,10 @@
           <ion-item *ngFor="let option of chosenOptions; let i = index">
             <ion-label id="{{'option' + i}}">{{sampleWords[1][chosenOptions[i]]}}</ion-label>
             <ion-reorder slot="end"></ion-reorder>
-          </ion-item>
-        </ion-reorder-group>
-      </ion-list>
-    </tr>
-  </table>
 
-  <table id="resultsTable" hidden="true">
-    <tr>
-      <th style="text-decoration: none">&nbsp;</th>
-    </tr>
-    <tr>
-      <ion-list>
-        <ion-reorder-group id="resultsList" [disabled]="true">
-          <ion-item *ngFor="let option of chosenOptions; let i = index">
-            <ion-label  id="{{'answerResult' + i}}"></ion-label>
+            <div>
+              <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
+            </div>
           </ion-item>
         </ion-reorder-group>
       </ion-list>

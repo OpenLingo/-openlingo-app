@@ -1,13 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title size="large">Identify Noun Genders</ion-title>
+    <ion-title size="large">Match Genders</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <h2 id="instructionsTitle">Instructions</h2>
   <p id="instructions">In this exercise you will be presented with a list of German nouns.<br>
-  <br>The goal is to identify the gender of the noun from the list of options for as many that are presented.<br>
+  <br>The goal is to identify the gender of the noun from the list of options.<br>
   </p>
 
   <table id="promptTable" hidden="true">
@@ -38,22 +38,11 @@
           <label for="f">&nbsp; Fem &nbsp; &nbsp;</label>
           <input type="radio" name="{{'radioSet' + i}}" value="Neutral">
           <label for="n">&nbsp; Neutral &nbsp; &nbsp;</label>
-        </ion-item>
-      </ion-list>
-    </tr>
-  </table>
 
-  <table id="resultsTable" hidden="true">
-    <tr>
-      <th style="text-decoration: none">&nbsp;</th>
-    </tr>
-    <tr>
-      <ion-list>
-        <ion-reorder-group id="resultsList" [disabled]="true">
-          <ion-item *ngFor="let option of chosenOptions; let i = index">
-            <ion-label  id="{{'answerResult' + i}}"></ion-label>
-          </ion-item>
-        </ion-reorder-group>
+          <div>
+            <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
+          </div>
+        </ion-item>
       </ion-list>
     </tr>
   </table>

@@ -36,7 +36,7 @@ export class ExAudioIdentifyPage implements OnInit {
   {
     var state = this.router.getCurrentNavigation()!.extras!.state!
 
-    this.sampleWords = await this.serverDataService.getWords()
+    this.sampleWords = JSON.parse(localStorage.getItem("offlineWordData")!)
 
     if(this.serverDataService.getServerStatus())
     {

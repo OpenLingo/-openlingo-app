@@ -18,13 +18,56 @@ export class HomePage implements OnInit
 
   async ngOnInit()
   {
-    this.connectOnline()
+    var updateButton = document.getElementById("updateButton")! as HTMLInputElement
+
+    this.updateDisplays()
+
+    await this.connectOnline()
+
+    if(localStorage.getItem("offlineWordData") == null)
+    {
+      await this.serverDataService.getWords()
+    }
   }
 
   async connectOnline()
   {
-    await this.serverDataService.checkStatus(this.http, "database")
-    await this.serverDataService.checkStatus(this.http, "server")
+    await this.serverDataService.checkStatus(this.http)
+  }
+
+  async updateData()
+  {
+    await this.serverDataService.getWords()
+  }
+
+  updateDisplays()
+  {
+    if(this.serverDataService.getDownloadStatus())
+    {
+      document.getElementById("downloadStatus")!.innerHTML = "<em>Using Downloaded Data &#10004;</em>"
+    }
+    else
+    {
+      document.getElementById("downloadStatus")!.innerHTML = "<em>Using Offline Data &#10006;</em>"
+    }
+  }
+
+  async deleteWordData()
+  {
+    var sampleArray: string[][] = [[],[],[],[]]
+
+    if(confirm("This will delete all word data that has been downloaded from the database.\n\nUse this if any exercises are not functioning."))
+    {
+      localStorage.removeItem("offlineWordData")
+      localStorage.setItem("offlineWordData", JSON.stringify(this.serverDataService.generateOfflineWords()))
+
+      this.updateDisplays()
+    }
+  }
+
+  moreInfo()
+  {
+    alert("Icons from: https://www.flaticon.com.")
   }
 
   async clearData()
@@ -34,7 +77,6 @@ export class HomePage implements OnInit
       console.log("Clearing Data...")
 
       localStorage.removeItem("offlineData")
-      //localStorage.removeItem("offlineWordData")
 
       for(let i = 0; i != this.exerciseService.exercises[0].length; i++)
       {
@@ -51,10 +93,5 @@ export class HomePage implements OnInit
         console.log("...server data could not be cleared, only local storage has been cleared")
       }
     }
-  }
-
-  moreInfo()
-  {
-    alert("Icons from: https://www.flaticon.com.")
   }
 }

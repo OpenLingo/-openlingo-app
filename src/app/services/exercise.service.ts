@@ -147,14 +147,17 @@ export class ExerciseService{
 
   calculateScore(col1: number, col2: number, exercise: string, sampleWords: string[][]): string[]
   {
+    var score = 0
+    var userAnswers: string[] = []
+    var answerList = document.getElementById("answerList")! as HTMLSelectElement
+
     document.getElementById("submitBtn")!.hidden = true;
     document.getElementById("scoreDisplay")!.hidden = false;
-
-    var answerList = document.getElementById("answerList")! as HTMLSelectElement
-    var listCopy: string[] = answerList.innerText.split("\n")
-    var answerOrder = []
+    answerList.disabled = true
 
     //Removes blank space from HTML innertext to be used for answer checking
+    var listCopy: string[] = answerList.innerText.split("\n")
+    var answerOrder = []
     for(let i = listCopy.length - 1; i != -1; i--)
     {
       if(listCopy[i].trim().length)
@@ -163,17 +166,22 @@ export class ExerciseService{
       }
     }
 
-    var score = 0
-    var userAnswers: string[] = []
+    //Finds the arrangement of answers to display the correct result
+    var currentIndex = 0
+    var resultIndexes = []
+    for(let i = 0; i != this.gameLength; i++)
+    {
+      currentIndex = answerList.innerHTML.indexOf("answerResult", currentIndex + 2)
 
-    answerList.disabled = true
+      resultIndexes.push(answerList.innerHTML[currentIndex + 12])
+    }
 
     //For each question, the word and answer is recorded and the result is displayed to the user
     //Variables currentWord and answerList are what is being compared to get the user's result
     for(let i = 0; i != this.gameLength; i++)
     {
       var currentWord = document.getElementById("word" + i)!  as HTMLInputElement
-      var currentResult = document.getElementById("answerResult" + i)!  //Element containing cross or check symbol
+      var currentResult = document.getElementById("answerResult" + resultIndexes[i])!    //Element containing cross or check symbol
 
       if(exercise == "audio")
       {
@@ -225,7 +233,7 @@ export class ExerciseService{
       //All other exercises----------------------------------------------------------------------------------------------
       else
       {
-        if(answerOrder[i] == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
+        if(sampleWords[col1].indexOf(currentWord.innerText) == sampleWords[col2].indexOf(answerOrder[i]))
         {
           score++;
           currentResult.innerHTML = currentResult.innerHTML.concat("<b>&#10004</b>")

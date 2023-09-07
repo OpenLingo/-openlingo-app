@@ -14,7 +14,7 @@ export class ServerDataService {
 
   constructor(private exerciseService: ExerciseService) { }
 
-  serverURL = "http://127.0.0.1:5000/views/"
+  serverURL = "https://openlingo.app/api/views/"
 
   async checkStatus(http: HttpClient): Promise<void>
   {
@@ -66,7 +66,15 @@ export class ServerDataService {
 
   getDownloadStatus(): boolean
   {
-    return JSON.parse(localStorage.getItem("offlineWordData")!)[0][0] != "House"
+    if(localStorage.getItem("offlineWordData")! != null)
+    {
+      return JSON.parse(localStorage.getItem("offlineWordData")!)[0][0] != "House"
+    }
+    else
+    {
+      this.generateOfflineData()
+      return false
+    }
   }
 
   async getServerData(category: string): Promise<any>
@@ -106,7 +114,7 @@ export class ServerDataService {
     return await response.json()
   }
 
-  generateOfflineWords(): string[][]
+  generateOfflineData(): void
   {
     var sampleArray: string[][] = [[],[],[],[]]
 
@@ -118,10 +126,10 @@ export class ServerDataService {
       sampleArray[3].push(sampleWords.nouns[i].definition)
     }
 
-    return sampleArray
+    localStorage.setItem("offlineWordData", JSON.stringify(sampleArray))
   }
 
-  async getWords(reset?: boolean): Promise<void>
+  async getWords(): Promise<void>
   {
     var updateButton = document.getElementById("updateButton")! as HTMLInputElement
     var sampleArray: string[][] = [[],[],[],[]]
@@ -130,7 +138,7 @@ export class ServerDataService {
 
     if(!this.getServerStatus())
     {
-      sampleArray = this.generateOfflineWords()
+      this.generateOfflineData()
     }
     else
     {
@@ -148,19 +156,31 @@ export class ServerDataService {
           //Gets the rest of the German word's data using the id just found
           var translationData = await this.getDatabaseData("noun/" + translation[0].id)
 
+          //Gets the definition of the English word
+          var definition = await this.getDatabaseData("definition/" + databaseData[i].id)
+
+          length = sampleArray.length
+
           sampleArray[0].push(databaseData[i].word)
           sampleArray[1].push(translation[0].word)
           sampleArray[2].push(translationData.gender)
-          sampleArray[3].push("definition " + i)
+
+          if(definition[0].text == "N/A")
+          {
+            sampleArray[3].push(definition[0].text + " - " + i)
+          }
+          else
+          {
+            sampleArray[3].push(definition[0].text.charAt(0).toUpperCase() + definition[0].text.slice(1))
+          }
         }
       }
 
       updateButton.disabled = false
+      localStorage.setItem("offlineWordData", JSON.stringify(sampleArray))
 
       document.getElementById("downloadStatus")!.innerHTML = "<em>Using Downloaded Data &#10004;</em>"
     }
-
-    localStorage.setItem("offlineWordData", JSON.stringify(sampleArray))
   }
 
   saveOfflineData(scoreData: string[]): void

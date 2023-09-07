@@ -5,10 +5,10 @@
         <button style="float:right; color:grey; font-size:150%; margin-right:2rem" (click)="moreInfo()">&#9432;</button>
       </tr>
       <tr>
-        <ion-text id="onlineStatus" style="float:right; color:grey; margin-right:2rem"><em>Online &#10004;</em></ion-text>
+        <ion-text id="onlineStatus" style="float:right; color:grey; margin-right:2rem"><em>Offline &#10006;</em></ion-text>
       </tr>
       <tr>
-        <ion-text id="downloadStatus" style="float:right; color:grey; margin-right:2rem"><em>Using Offline Data</em></ion-text>
+        <ion-text id="downloadStatus" style="float:right; color:grey; margin-right:2rem"><em>Using Offline Data &#10006;</em></ion-text>
       </tr>
     </table>
     <ion-title size="large">OpenLingo <img src="assets/icon/favicon.png" width="25rem" height="25rem"></ion-title>
@@ -144,7 +144,7 @@
     <img class="downloadDark" src="assets/img/download_dark.png" height="80%" alt="download">
   </ion-button>
 
-  <ion-button class="warningButton" style="float:right" (click)="deleteWordData()">
+  <ion-button class="warningButton" style="float:right; margin-right:5%" (click)="deleteWordData()">
     <img class="warningLight" src="assets/img/warning.png" height="80%" alt="hazard">
     <img class="warningDark" src="assets/img/warning_dark.png" height="80%" alt="hazard">
   </ion-button>

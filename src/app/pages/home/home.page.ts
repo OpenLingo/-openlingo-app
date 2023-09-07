@@ -24,7 +24,7 @@ export class HomePage implements OnInit
 
     await this.connectOnline()
 
-    if(localStorage.getItem("offlineWordData") == null)
+    if(localStorage.getItem("offlineWordData")! == null)
     {
       await this.serverDataService.getWords()
     }
@@ -54,13 +54,11 @@ export class HomePage implements OnInit
 
   async deleteWordData()
   {
-    var sampleArray: string[][] = [[],[],[],[]]
-
     if(confirm("This will delete all word data that has been downloaded from the database.\n\nUse this if any exercises are not functioning."))
     {
       localStorage.removeItem("offlineWordData")
-      localStorage.setItem("offlineWordData", JSON.stringify(this.serverDataService.generateOfflineWords()))
 
+      this.serverDataService.generateOfflineData()
       this.updateDisplays()
     }
   }

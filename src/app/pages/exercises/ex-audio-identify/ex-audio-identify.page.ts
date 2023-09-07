@@ -51,6 +51,11 @@ export class ExAudioIdentifyPage implements OnInit {
       this.startEx()
       document.getElementById("remainingEx")!.hidden = false
     }
+
+    if(this.serverDataService.getDownloadStatus())
+    {
+      document.getElementById("audioWarning")!.hidden = false
+    }
   }
 
   getHandleReorder(ev: CustomEvent<ItemReorderEventDetail>)
@@ -96,6 +101,8 @@ export class ExAudioIdentifyPage implements OnInit {
     var chosenData = this.exerciseService.generateExercise(this.serverData, this.sampleWords)
     this.chosenWords = chosenData[0]
     this.chosenOptions = chosenData[1]
+
+    console.log(this.sampleWords[0][this.chosenWords[0]])
   }
 
   //-------------------------------------------------------------------------------------------------------

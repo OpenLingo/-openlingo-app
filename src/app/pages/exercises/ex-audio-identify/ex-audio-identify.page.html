@@ -11,6 +11,8 @@
   <br>In this exercise you have the option to change which language you are matching the pronunciations with.<br>
   </p>
 
+  <p id="audioWarning" style="color:red" hidden="true"><b>There are currently no audio files to be played while using downloaded data.</b></p>
+
   <table id="promptTable" hidden="true">
     <tr>
       <th>German</th>
@@ -22,7 +24,6 @@
             <audio id="{{'audio' + i}}">
               <source id="{{'word' + i}}" src="assets/audio/mp3/{{sampleWords[0][chosenWords[i]]}}.mp3" type="audio/mpeg">
               <source src="assets/audio/ogg/{{sampleWords[0][chosenWords[i]]}}.ogg" type="audio/ogg">
-              Audio Error.
             </audio>
             <ion-button (click)="playAudio('audio' + i)">
               &#9658;

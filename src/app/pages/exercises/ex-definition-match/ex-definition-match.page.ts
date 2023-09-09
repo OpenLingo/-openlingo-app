@@ -40,7 +40,15 @@ export class ExDefinitionMatchPage implements OnInit {
 
     if(await this.serverDataService.getServerStatus())
     {
-      this.serverData = await this.serverDataService.getServerData("definition")
+      try
+      {
+        this.serverData = await this.serverDataService.getServerData("definition")
+      }
+      catch
+      {
+        this.serverData = []
+        console.log("...Server error")
+      }
     }
 
     if(state != null)

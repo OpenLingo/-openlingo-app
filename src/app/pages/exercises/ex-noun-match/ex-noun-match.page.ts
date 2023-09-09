@@ -40,7 +40,15 @@ export class ExNounMatchPage implements OnInit {
 
     if(this.serverDataService.getServerStatus())
     {
-      this.serverData = await this.serverDataService.getServerData("noun")
+      try
+      {
+        this.serverData = await this.serverDataService.getServerData("noun")
+      }
+      catch
+      {
+        this.serverData = []
+        console.log("...Server error")
+      }
     }
 
     if(state != null)

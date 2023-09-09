@@ -40,7 +40,15 @@ export class ExGenderIdentifyPage implements OnInit {
 
     if(this.serverDataService.getServerStatus())
     {
-      this.serverData = await this.serverDataService.getServerData("gender")
+      try
+      {
+        this.serverData = await this.serverDataService.getServerData("gender")
+      }
+      catch
+      {
+        this.serverData = []
+        console.log("...Server error")
+      }
     }
 
     if(state != null)

@@ -40,7 +40,15 @@ export class ExAudioIdentifyPage implements OnInit {
 
     if(this.serverDataService.getServerStatus())
     {
-      this.serverData = await this.serverDataService.getServerData("audio")
+      try
+      {
+        this.serverData = await this.serverDataService.getServerData("audio")
+      }
+      catch
+      {
+        this.serverData = []
+        console.log("...Server error")
+      }
     }
 
     if(state != null)

@@ -39,7 +39,7 @@ export class ServerDataService {
       response  = await fetch(this.serverURL + "database/noun/1")
 
       onlineButton.disabled = true
-      onlineStatus.innerHTML = "<em>Online &#10004;</em>"
+      onlineStatus.innerHTML = "<em>Online</em>"
 
       updateButton.disabled = false
     }
@@ -47,7 +47,7 @@ export class ServerDataService {
     {
       onlineButton.disabled = false
       updateButton.disabled = true
-      onlineStatus.innerHTML = "<em>Offline &#10006;</em>"
+      onlineStatus.innerHTML = "<em>Offline</em>"
 
       console.log("...could not connect to server.")
     }
@@ -116,7 +116,8 @@ export class ServerDataService {
 
   generateOfflineData(): void
   {
-    var sampleArray: string[][] = [[],[],[],[]]
+      var sampleArray: string[][] = [[],[],[],[]]
+      var accuracyValues: number[] = []
 
     for(let i = 0; i != sampleWords.nouns.length; i++)
     {
@@ -124,15 +125,17 @@ export class ServerDataService {
       sampleArray[1].push(sampleWords.nouns[i].translation)
       sampleArray[2].push(sampleWords.nouns[i].gender)
       sampleArray[3].push(sampleWords.nouns[i].definition)
+
+      accuracyValues.push(-1)
     }
 
     localStorage.setItem("offlineWordData", JSON.stringify(sampleArray))
+    localStorage.setItem("accuracyValues", JSON.stringify(accuracyValues))
   }
 
   async getWords(): Promise<void>
   {
     var updateButton = document.getElementById("updateButton")! as HTMLInputElement
-    var sampleArray: string[][] = [[],[],[],[]]
 
     updateButton.disabled = true
 
@@ -142,6 +145,9 @@ export class ServerDataService {
     }
     else
     {
+      var sampleArray: string[][] = [[],[],[],[]]
+      var accuracyValues: number[] = []
+
       document.getElementById("downloadStatus")!.innerHTML = "<em>Downloading Word Data...</em>"
 
       var databaseData = await this.getDatabaseData("noun")
@@ -167,19 +173,22 @@ export class ServerDataService {
 
           if(definition[0].text == "N/A")
           {
-            sampleArray[3].push(definition[0].text + " - " + i)
+            sampleArray[3].push("Definition with ID: " + i + " is Not Available.")
           }
           else
           {
             sampleArray[3].push(definition[0].text.charAt(0).toUpperCase() + definition[0].text.slice(1))
           }
+
+          accuracyValues.push(-1)
         }
       }
 
       updateButton.disabled = false
       localStorage.setItem("offlineWordData", JSON.stringify(sampleArray))
+      localStorage.setItem("accuracyValues", JSON.stringify(accuracyValues))
 
-      document.getElementById("downloadStatus")!.innerHTML = "<em>Using Downloaded Data &#10004;</em>"
+      document.getElementById("downloadStatus")!.innerHTML = "<em>Using Downloaded Data</em>"
     }
   }
 
@@ -235,5 +244,60 @@ export class ServerDataService {
     }
 
     localStorage.setItem("offlineData", allData)
+
+    this.saveAccuracy()
+  }
+
+  saveAccuracy()
+  {
+    //Saves the accuracy as a percentage for each word across all exercises for the dictionary page
+    var offlineData = JSON.parse(localStorage.getItem("offlineWordData")!)
+    var quesData = JSON.parse(localStorage.getItem("offlineData")!)
+
+    var accuracyValues: number[] = JSON.parse(localStorage.getItem("accuracyValues")!)
+    var checkedWords: string[] = []
+
+    if(quesData != null)
+    {
+      for(var word of quesData)
+      {
+        if(checkedWords.indexOf(word[1]) == -1)
+        {
+          var appearances = 0
+          var correct = 0
+
+          for(var check of quesData)
+          {
+            if(word[1] == check[1])
+            {
+              appearances++
+
+              if(check[1] == check[4])
+              {
+                correct++
+              }
+            }
+          }
+
+          checkedWords.push(word[1])
+          accuracyValues[offlineData[0].indexOf(word[1])] = Math.round((correct/appearances) * 100)
+        }
+      }
+
+      localStorage.setItem("accuracyValues", JSON.stringify(accuracyValues))
+    }
+  }
+
+  clearAccuracy(): void
+  {
+    var sampleWords = JSON.parse(localStorage.getItem("offlineWordData")!)
+    var accuracyValues: number[] = []
+
+    for(let i = 0; i != sampleWords[0].length; i++)
+    {
+      accuracyValues.push(-1)
+    }
+
+    localStorage.setItem("accuracyValues", JSON.stringify(accuracyValues))
   }
 }

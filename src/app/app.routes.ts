@@ -26,6 +26,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/exercises/random-exercises/random-exercises.page').then( m => m.RandomExercisesPage)
   },
   {
+    path: 'dictionary',
+    loadComponent: () => import('./pages/dictionary/dictionary.page').then( m => m.DictionaryPage)
+  },
+  {
     path: 'login',
     loadComponent: () => import('./pages/login/login.page').then( m => m.LoginPage)
   },

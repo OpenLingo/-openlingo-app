@@ -47,7 +47,6 @@ export class ExAudioIdentifyPage implements OnInit {
       catch
       {
         this.serverData = []
-        console.log("...Server error")
       }
     }
 

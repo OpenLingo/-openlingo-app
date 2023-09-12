@@ -47,7 +47,6 @@ export class ExNounMatchPage implements OnInit {
       catch
       {
         this.serverData = []
-        console.log("...Server error")
       }
     }
 

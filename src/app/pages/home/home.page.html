@@ -5,10 +5,10 @@
         <button style="float:right; color:grey; font-size:150%; margin-right:2rem" (click)="moreInfo()">&#9432;</button>
       </tr>
       <tr>
-        <ion-text id="onlineStatus" style="float:right; color:grey; margin-right:2rem"><em>Offline &#10006;</em></ion-text>
+        <ion-text id="onlineStatus" style="float:right; color:grey; margin-right:2rem"><em>Offline</em></ion-text>
       </tr>
       <tr>
-        <ion-text id="downloadStatus" style="float:right; color:grey; margin-right:2rem"><em>Using Offline Data &#10006;</em></ion-text>
+        <ion-text id="downloadStatus" style="float:right; color:grey; margin-right:2rem"><em>Using Offline Data</em></ion-text>
       </tr>
     </table>
     <ion-title size="large">OpenLingo <img src="assets/icon/favicon.png" width="25rem" height="25rem"></ion-title>
@@ -110,8 +110,8 @@
     </tr>
     <!--New Row---------------------------------------------------------------------------------------------------->
     <tr>
-      <td colspan="2">
-        <a href="/random-exercises" class="centerlink">
+      <td>
+        <a href="/random-exercises" class="cardlink">
           <div class="card">
             <div class="cardtitle">
               <picture>
@@ -123,6 +123,24 @@
 
             <div class="cardtext">
               <p>Play through a selection of 10 random exercises.</p>
+            </div>
+          </div>
+        </a>
+      </td>
+      <!--New Column----------------------------------------->
+      <td>
+        <a href="/dictionary" class="cardlink">
+          <div class="card">
+            <div class="cardtitle">
+              <picture>
+                <source srcset="assets/img/dictionary_dark.png" media="(prefers-color-scheme: dark)">
+                <img class="center" src="assets/img/dictionary.png" alt="dictionary">
+              </picture>
+              <h3>Dictionary</h3>
+            </div>
+
+            <div class="cardtext">
+              <p>View a list of available words.</p>
             </div>
           </div>
         </a>

@@ -44,11 +44,11 @@ export class HomePage implements OnInit
   {
     if(this.serverDataService.getDownloadStatus())
     {
-      document.getElementById("downloadStatus")!.innerHTML = "<em>Using Downloaded Data &#10004;</em>"
+      document.getElementById("downloadStatus")!.innerHTML = "<em>Using Downloaded Data</em>"
     }
     else
     {
-      document.getElementById("downloadStatus")!.innerHTML = "<em>Using Offline Data &#10006;</em>"
+      document.getElementById("downloadStatus")!.innerHTML = "<em>Using Offline Data</em>"
     }
   }
 
@@ -59,13 +59,10 @@ export class HomePage implements OnInit
       localStorage.removeItem("offlineWordData")
 
       this.serverDataService.generateOfflineData()
+      this.serverDataService.saveAccuracy()
+
       this.updateDisplays()
     }
-  }
-
-  moreInfo()
-  {
-    alert("Icons from: https://www.flaticon.com.")
   }
 
   async clearData()
@@ -75,6 +72,7 @@ export class HomePage implements OnInit
       console.log("Clearing Data...")
 
       localStorage.removeItem("offlineData")
+      this.serverDataService.clearAccuracy()
 
       for(let i = 0; i != this.exerciseService.exercises[0].length; i++)
       {
@@ -83,7 +81,7 @@ export class HomePage implements OnInit
 
       if(this.serverDataService.getServerStatus())
       {
-        this.serverDataService.postServerData(this.http, "[]")
+        await this.serverDataService.postServerData(this.http, "[]")
         console.log("...all data cleared")
       }
       else
@@ -91,5 +89,10 @@ export class HomePage implements OnInit
         console.log("...server data could not be cleared, only local storage has been cleared")
       }
     }
+  }
+
+  moreInfo()
+  {
+    alert("Icons from: https://www.flaticon.com.")
   }
 }

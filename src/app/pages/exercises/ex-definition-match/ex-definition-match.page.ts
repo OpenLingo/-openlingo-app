@@ -19,6 +19,10 @@ export class ExDefinitionMatchPage implements OnInit {
 
   constructor(private exerciseService: ExerciseService, private serverDataService: ServerDataService, private http: HttpClient, private router: Router) {}
 
+  gameLength = 5
+  exName = this.exerciseService.exercises[0][1]
+  exTitle = this.exerciseService.exercises[1][1]
+
   loops = -1
   finalScore = "Score: 0%"
 
@@ -42,7 +46,7 @@ export class ExDefinitionMatchPage implements OnInit {
     {
       try
       {
-        this.serverData = await this.serverDataService.getServerData("definition")
+        this.serverData = await this.serverDataService.getServerData(this.exName)
       }
       catch
       {
@@ -58,6 +62,18 @@ export class ExDefinitionMatchPage implements OnInit {
       this.startEx()
       document.getElementById("remainingEx")!.hidden = false
     }
+
+    if(this.serverDataService.getDownloadStatus())
+    {
+      for(var definition of this.sampleWords[3])
+      {
+        if(definition == "-")
+        {
+          document.getElementById("definitionWarning")!.hidden = false
+          this.gameLength = 1
+        }
+      }
+    }
   }
 
   getHandleReorder(ev: CustomEvent<ItemReorderEventDetail>)
@@ -69,12 +85,14 @@ export class ExDefinitionMatchPage implements OnInit {
 
   startEx(): void
   {
-    if(localStorage.getItem("offlineData_definition") != null && this.serverDataService.getServerStatus())
+    document.getElementById("definitionWarning")!.hidden = true
+
+    if(localStorage.getItem("offlineData_" + this.exName) != null && this.serverDataService.getServerStatus())
     {
-      this.serverData = JSON.parse(localStorage.getItem("offlineData_definition")!)
+      this.serverData = JSON.parse(localStorage.getItem("offlineData_" + this.exName)!)
     }
 
-    var chosenData = this.exerciseService.generateExercise(this.serverData, this.sampleWords)
+    var chosenData = this.exerciseService.generateExercise(this.gameLength, this.exName, this.serverData, this.sampleWords)
     this.chosenWords = chosenData[0]
     this.chosenOptions = chosenData[1]
   }
@@ -83,22 +101,22 @@ export class ExDefinitionMatchPage implements OnInit {
 
   submitEx(): void
   {
-    var scoreData: string[] = (this.exerciseService.calculateScore(1, 3, "definition", this.sampleWords))
-    scoreData.unshift("definition")
+    var scoreData: string[] = (this.exerciseService.calculateScore(this.gameLength, this.exName, 1, 3, this.sampleWords))
+    scoreData.unshift(this.exName)
 
     this.serverDataService.saveOfflineData(scoreData)
     this.serverDataService.postServerData(this.http)
 
     this.exerciseService.handleLoop(this.loops)
 
-    this.scores.push(["definition", document.getElementById("scoreDisplay")!.innerText])
+    this.scores.push([this.exName, document.getElementById("scoreDisplay")!.innerText])
   }
 
   //-------------------------------------------------------------------------------------------------------
 
   nextEx(): void
   {
-    this.router.navigate([this.exerciseService.pickExercise("ex-definition-match")], { state: { loops: this.loops - 1, scores: this.scores } }).then(() => {window.location.reload()})
+    this.router.navigate([this.exerciseService.pickExercise(this.exTitle)], { state: { loops: this.loops - 1, scores: this.scores } }).then(() => {window.location.reload()})
   }
 
   finishEx(): void

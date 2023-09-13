@@ -19,6 +19,10 @@ export class ExNounMatchPage implements OnInit {
 
   constructor(private exerciseService: ExerciseService, private serverDataService: ServerDataService, private http: HttpClient, private router: Router) {}
 
+  gameLength = 5
+  exName = this.exerciseService.exercises[0][0]
+  exTitle = this.exerciseService.exercises[1][0]
+
   loops = -1
   finalScore = "Score: 0%"
 
@@ -42,7 +46,7 @@ export class ExNounMatchPage implements OnInit {
     {
       try
       {
-        this.serverData = await this.serverDataService.getServerData("noun")
+        this.serverData = await this.serverDataService.getServerData(this.exName)
       }
       catch
       {
@@ -69,12 +73,12 @@ export class ExNounMatchPage implements OnInit {
 
   startEx(): void
   {
-    if(localStorage.getItem("offlineData_noun") != null && !this.serverDataService.getServerStatus())
+    if(localStorage.getItem("offlineData_" + this.exName) != null && !this.serverDataService.getServerStatus())
     {
-      this.serverData = JSON.parse(localStorage.getItem("offlineData_noun")!)
+      this.serverData = JSON.parse(localStorage.getItem("offlineData_" + this.exName)!)
     }
 
-    var chosenData = this.exerciseService.generateExercise(this.serverData, this.sampleWords)
+    var chosenData = this.exerciseService.generateExercise(this.gameLength, this.exName, this.serverData, this.sampleWords)
     this.chosenWords = chosenData[0]
     this.chosenOptions = chosenData[1]
   }
@@ -83,22 +87,22 @@ export class ExNounMatchPage implements OnInit {
 
   submitEx(): void
   {
-    var scoreData: string[] = (this.exerciseService.calculateScore(0, 1, "noun", this.sampleWords))
-    scoreData.unshift("noun")
+    var scoreData: string[] = (this.exerciseService.calculateScore(this.gameLength, this.exName, 0, 1, this.sampleWords))
+    scoreData.unshift(this.exName)
 
     this.serverDataService.saveOfflineData(scoreData)
     this.serverDataService.postServerData(this.http)
 
     this.exerciseService.handleLoop(this.loops)
 
-    this.scores.push(["noun", document.getElementById("scoreDisplay")!.innerText])
+    this.scores.push([this.exName, document.getElementById("scoreDisplay")!.innerText])
   }
 
   //-------------------------------------------------------------------------------------------------------
 
   nextEx(): void
   {
-    this.router.navigate([this.exerciseService.pickExercise("ex-noun-match")], { state: { loops: this.loops - 1, scores: this.scores } }).then(() => {window.location.reload()})
+    this.router.navigate([this.exerciseService.pickExercise(this.exTitle)], { state: { loops: this.loops - 1, scores: this.scores } }).then(() => {window.location.reload()})
   }
 
   finishEx(): void

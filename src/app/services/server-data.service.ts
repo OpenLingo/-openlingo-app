@@ -131,6 +131,8 @@ export class ServerDataService {
 
     localStorage.setItem("offlineWordData", JSON.stringify(sampleArray))
     localStorage.setItem("accuracyValues", JSON.stringify(accuracyValues))
+
+    this.saveAccuracy()
   }
 
   async getWords(): Promise<void>
@@ -173,7 +175,7 @@ export class ServerDataService {
 
           if(definition[0].text == "N/A")
           {
-            sampleArray[3].push("Definition with ID: " + i + " is Not Available.")
+            sampleArray[3].push("-")
           }
           else
           {
@@ -188,7 +190,9 @@ export class ServerDataService {
       localStorage.setItem("offlineWordData", JSON.stringify(sampleArray))
       localStorage.setItem("accuracyValues", JSON.stringify(accuracyValues))
 
-      document.getElementById("downloadStatus")!.innerHTML = "<em>Using Downloaded Data</em>"
+      this.saveAccuracy()
+
+      document.getElementById("downloadStatus")!.innerHTML = "<em>Using Online Data</em>"
     }
   }
 

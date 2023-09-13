@@ -9,8 +9,6 @@ export class ExerciseService{
 
   constructor() {}
 
-  gameLength = 8
-
   exercises = [["noun", "definition", "gender", "audio"],
                ["ex-noun-match", "ex-definition-match", "ex-gender-identify", "ex-audio-identify"]]
 
@@ -45,7 +43,7 @@ export class ExerciseService{
     }
   }
 
-  generateExercise(quesData: string[][], sampleWords: string[][]): number[][]
+  generateExercise(gameLength: number, exercise: string, quesData: string[][], sampleWords: string[][]): number[][]
   {
     document.getElementById("startBtn")!.hidden = true;
     document.getElementById("instructionsTitle")!.hidden = true;
@@ -66,12 +64,12 @@ export class ExerciseService{
     console.log(quesData)
 
     //Set and display random words
-    for(let i = 0; i != this.gameLength; i++)
+    for(let i = 0; i != gameLength; i++)
     {
       var nextWord = -1
 
       //If the chosen word has already been chosen then don't add it to the list again
-      while(chosenWords.indexOf(nextWord) != -1 || nextWord == -1)
+      while(chosenWords.indexOf(nextWord) != -1 || nextWord == -1 || (sampleWords[3][nextWord] == "-" && exercise == "definition"))
       {
         nextWord = Math.floor(Math.random() * sampleWords[0].length)
 
@@ -130,7 +128,7 @@ export class ExerciseService{
     }
 
     //Set a random order of the chosen words
-    for(let i = 0; i != this.gameLength; i++)
+    for(let i = 0; i != gameLength; i++)
     {
       var nextOption = Math.floor(Math.random() * sampleWords[0].length)
 
@@ -145,7 +143,7 @@ export class ExerciseService{
     return [chosenWords, chosenOptions]
   }
 
-  calculateScore(col1: number, col2: number, exercise: string, sampleWords: string[][]): string[]
+  calculateScore(gameLength: number, exercise: string, col1: number, col2: number, sampleWords: string[][]): string[]
   {
     var score = 0
     var userAnswers: string[] = []
@@ -169,7 +167,7 @@ export class ExerciseService{
     //Finds the arrangement of answers to display the correct result
     var currentIndex = 0
     var resultIndexes = []
-    for(let i = 0; i != this.gameLength; i++)
+    for(let i = 0; i != gameLength; i++)
     {
       currentIndex = answerList.innerHTML.indexOf("answerResult", currentIndex + 2)
 
@@ -178,7 +176,7 @@ export class ExerciseService{
 
     //For each question, the word and answer is recorded and the result is displayed to the user
     //Variables currentWord and answerList are what is being compared to get the user's result
-    for(let i = 0; i != this.gameLength; i++)
+    for(let i = 0; i != gameLength; i++)
     {
       var currentWord = document.getElementById("word" + i)!  as HTMLInputElement
       var currentResult = document.getElementById("answerResult" + resultIndexes[i])!    //Element containing cross or check symbol
@@ -247,7 +245,7 @@ export class ExerciseService{
       }
     }
 
-    document.getElementById("scoreDisplay")!.innerText =  "Score: " + score + "/" + this.gameLength + " (" + (Math.round((score / this.gameLength) * 100)).toFixed(0) + "%)";
+    document.getElementById("scoreDisplay")!.innerText =  "Score: " + score + "/" + gameLength + " (" + (Math.round((score / gameLength) * 100)).toFixed(0) + "%)";
     return userAnswers
   }
 

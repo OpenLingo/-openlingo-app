@@ -78,8 +78,7 @@ export class DictionaryPage implements OnInit {
     for(let i = 0; i != this.sampleWords[0].length; i++)
     {
       if(this.sampleWords[0][this.displayOrder[i]].toLowerCase().includes(searchValue.value.toLowerCase()) ||
-         this.sampleWords[1][this.displayOrder[i]].toLowerCase().includes(searchValue.value.toLowerCase()) ||
-         this.sampleWords[3][this.displayOrder[i]].toLowerCase().includes(searchValue.value.toLowerCase()))
+         this.sampleWords[1][this.displayOrder[i]].toLowerCase().includes(searchValue.value.toLowerCase()))
       {
         if(gray)
         {
@@ -109,6 +108,8 @@ export class DictionaryPage implements OnInit {
         }
       }
     }
+
+    tableDisplay.innerHTML = tableDisplay.innerHTML.concat("<br><br>")
   }
 
   clearSearch()

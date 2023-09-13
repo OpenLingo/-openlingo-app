@@ -44,7 +44,7 @@ export class HomePage implements OnInit
   {
     if(this.serverDataService.getDownloadStatus())
     {
-      document.getElementById("downloadStatus")!.innerHTML = "<em>Using Downloaded Data</em>"
+      document.getElementById("downloadStatus")!.innerHTML = "<em>Using Online Data</em>"
     }
     else
     {

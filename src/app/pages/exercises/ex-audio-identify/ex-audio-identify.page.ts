@@ -19,6 +19,10 @@ export class ExAudioIdentifyPage implements OnInit {
 
   constructor(private exerciseService: ExerciseService, private serverDataService: ServerDataService, private http: HttpClient, private router: Router) {}
 
+  gameLength = 5
+  exName = this.exerciseService.exercises[0][3]
+  exTitle = this.exerciseService.exercises[1][3]
+
   loops = -1
   finalScore = "Score: 0%"
 
@@ -42,7 +46,7 @@ export class ExAudioIdentifyPage implements OnInit {
     {
       try
       {
-        this.serverData = await this.serverDataService.getServerData("audio")
+        this.serverData = await this.serverDataService.getServerData(this.exName)
       }
       catch
       {
@@ -98,14 +102,15 @@ export class ExAudioIdentifyPage implements OnInit {
 
   startEx(): void
   {
+    document.getElementById("audioWarning")!.hidden = true
     document.getElementById("togglePrompt")!.hidden = false
 
-    if(localStorage.getItem("offlineData_audio") != null && !this.serverDataService.getServerStatus())
+    if(localStorage.getItem("offlineData_" + this.exName) != null && !this.serverDataService.getServerStatus())
     {
-      this.serverData = JSON.parse(localStorage.getItem("offlineData_audio")!)
+      this.serverData = JSON.parse(localStorage.getItem("offlineData_" + this.exName)!)
     }
 
-    var chosenData = this.exerciseService.generateExercise(this.serverData, this.sampleWords)
+    var chosenData = this.exerciseService.generateExercise(this.gameLength, this.exName, this.serverData, this.sampleWords)
     this.chosenWords = chosenData[0]
     this.chosenOptions = chosenData[1]
 
@@ -120,28 +125,28 @@ export class ExAudioIdentifyPage implements OnInit {
 
     if(!langOption.checked)
     {
-      var scoreData: string[] = (this.exerciseService.calculateScore(0, 1, "audio", this.sampleWords))
+      var scoreData: string[] = (this.exerciseService.calculateScore(this.gameLength, this.exName, 0, 1, this.sampleWords))
     }
     else
     {
-      var scoreData: string[] = (this.exerciseService.calculateScore(0, 0, "audio", this.sampleWords))
+      var scoreData: string[] = (this.exerciseService.calculateScore(this.gameLength, this.exName, 0, 0, this.sampleWords))
     }
 
-    scoreData.unshift("audio")
+    scoreData.unshift(this.exName)
 
     this.serverDataService.saveOfflineData(scoreData)
     this.serverDataService.postServerData(this.http)
 
     this.exerciseService.handleLoop(this.loops)
 
-    this.scores.push(["audio", document.getElementById("scoreDisplay")!.innerText])
+    this.scores.push([this.exName, document.getElementById("scoreDisplay")!.innerText])
   }
 
   //-------------------------------------------------------------------------------------------------------
 
   nextEx(): void
   {
-    this.router.navigate([this.exerciseService.pickExercise("ex-audio-identify")], { state: { loops: this.loops - 1, scores: this.scores} }).then(() => {window.location.reload()})
+    this.router.navigate([this.exerciseService.pickExercise(this.exTitle)], { state: { loops: this.loops - 1, scores: this.scores} }).then(() => {window.location.reload()})
   }
 
   finishEx(): void

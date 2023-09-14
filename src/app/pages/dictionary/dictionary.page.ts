@@ -64,14 +64,16 @@ export class DictionaryPage implements OnInit {
   {
     var searchValue = document.getElementById("searchValue")! as HTMLInputElement
     var tableDisplay = document.getElementById("tableDisplay")!
+    var color = "#ffffff"
+    var empty = true
 
     tableDisplay.innerHTML = "\
     <tr>\
-      <th style='padding:18px'>English</th>\
-      <th style='padding:18px'>German</th>\
-      <th style='padding:18px'>Definition</th>\
-      <th style='padding:18px'>Gender</th>\
-      <th style='padding:18px'>Accuracy</th>\
+      <th style='padding-bottom:8px;padding-right:10px;padding-left:6px'>English</th>\
+      <th style='padding-bottom:8px;padding-right:10px'>German</th>\
+      <th style='padding-bottom:8px;padding-right:10px'>Definition</th>\
+      <th style='padding-bottom:8px;padding-right:10px'>Gender</th>\
+      <th style='padding-bottom:8px;padding-right:15px'>Accuracy</th>\
     </tr>"
 
     var gray = true
@@ -82,31 +84,47 @@ export class DictionaryPage implements OnInit {
       {
         if(gray)
         {
-          tableDisplay.innerHTML = tableDisplay.innerHTML.concat("\
-          <tr style='background-color: #ebebeb'>\
-            <td style='padding:18px'>" + this.sampleWords[0][this.displayOrder[i]] + "</td>\
-            <td style='padding:18px'>" + this.sampleWords[1][this.displayOrder[i]] + "</td>\
-            <td style='padding:18px'>" + this.sampleWords[3][this.displayOrder[i]] + "</td>\
-            <td style='padding:18px;text-align:center;text-transform:uppercase'>" + this.sampleWords[2][this.displayOrder[i]] + "</td>\
-            <td style='padding:18px;text-align:center'>" + this.accuracyValues[this.displayOrder[i]] + "</td>\
-          </tr>"
-          )
+          if(window.matchMedia('(prefers-color-scheme: dark)').matches)
+          {
+            color = "#141414"
+          }
+          else
+          {
+            color = "#ebebeb"
+          }
+
           gray = false
         }
         else
         {
-          tableDisplay.innerHTML = tableDisplay.innerHTML.concat("\
-          <tr>\
-            <td style='padding:18px'>" + this.sampleWords[0][this.displayOrder[i]] + "</td>\
-            <td style='padding:18px'>" + this.sampleWords[1][this.displayOrder[i]] + "</td>\
-            <td style='padding:18px'>" + this.sampleWords[3][this.displayOrder[i]] + "</td>\
-            <td style='padding:18px;text-align:center;text-transform:uppercase'>" + this.sampleWords[2][this.displayOrder[i]] + "</td>\
-            <td style='padding:18px;text-align:center'>" + this.accuracyValues[this.displayOrder[i]] + "</td>\
-          </tr>"
-          )
+          if(window.matchMedia('(prefers-color-scheme: dark)').matches)
+          {
+            color = "#1e1e1e"
+          }
+          else
+          {
+            color = "#ffffff"
+          }
+
           gray = true
         }
+
+        tableDisplay.innerHTML = tableDisplay.innerHTML.concat("\
+          <tr style='background-color: " + color + " '>\
+            <td style='padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:6px'>"                            + this.sampleWords[0][this.displayOrder[i]] + "</td>\
+            <td style='padding-top:10px;padding-bottom:10px;padding-right:10px;'>"                                            + this.sampleWords[1][this.displayOrder[i]] + "</td>\
+            <td style='padding-top:10px;padding-bottom:10px;padding-right:10px;'>"                                            + this.sampleWords[3][this.displayOrder[i]] + "</td>\
+            <td style='padding-top:10px;padding-bottom:10px;padding-right:10px;text-align:center;text-transform:uppercase'>"  + this.sampleWords[2][this.displayOrder[i]] + "</td>\
+            <td style='padding-top:10px;padding-bottom:10px;padding-right:15px;text-align:center;'>"                          + this.accuracyValues[this.displayOrder[i]] + "</td>\
+          </tr>")
+
+        empty = false
       }
+    }
+
+    if(empty)
+    {
+      tableDisplay.innerHTML = "<h3><em>No Results Found.</em></h3>"
     }
 
     tableDisplay.innerHTML = tableDisplay.innerHTML.concat("<br><br>")

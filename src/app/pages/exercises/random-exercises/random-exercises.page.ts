@@ -24,31 +24,42 @@ export class RandomExercisesPage implements OnInit {
 
     if(state != null)
     {
-      var totalQuestions = 0
-      var totalCorrect = 0
+      var questionTotals: number[][] = [[0,0],[0,0],[0,0],[0,0],[0,0]]
+      var exercises = this.exerciseService.exercises[0]
 
       document.getElementById("instructionsTitle")!.hidden = true
       document.getElementById("instructions")!.hidden = true
       document.getElementById("startBtn")!.hidden = true
 
       document.getElementById("resultsTitle")!.hidden = false
-      document.getElementById("resultsTables")!.hidden = false
+
       document.getElementById("scoreDisplay")!.hidden = false
 
       this.exerciseService.handleLoop(-1)
 
       for(let i = 0; i != state["scores"].length; i++)
       {
-        var scoreTable = document.getElementById(state["scores"][i][0] + "Scores")!
+        var index = exercises.indexOf(state["scores"][i][0])
 
-        scoreTable.hidden = false
-        scoreTable.innerHTML = scoreTable.innerHTML.concat("<tr><td>" + state["scores"][i][1].substring(6) + "</td></tr>")
+        questionTotals[index][0] += +state["scores"][i][1][7]
+        questionTotals[index][1] += +state["scores"][i][1][9]
 
-        totalQuestions += +state["scores"][i][1][9]
-        totalCorrect += +state["scores"][i][1][7]
+        questionTotals[4][0] += +state["scores"][i][1][7]
+        questionTotals[4][1] += +state["scores"][i][1][9]
 
-        document.getElementById("scoreDisplay")!.innerText =  "Total: " + totalCorrect + "/" + totalQuestions + " (" + (Math.round((totalCorrect / totalQuestions) * 100)).toFixed(0) + "%)";
+        document.getElementById(state["scores"][i][0] + "Scores")!.hidden = false
+
+        var cardText = document.getElementById(state["scores"][i][0] + "Text")!
+
+        cardText.innerHTML = this.getScoreDisplay(questionTotals[index][0], questionTotals[index][1])
+        cardText.innerHTML = cardText.innerHTML.slice(0, cardText.innerHTML.indexOf(" ")) + "<br>" + cardText.innerHTML.slice(cardText.innerHTML.indexOf(" "));
+
+        document.getElementById("scoreDisplay")!.innerText =  "Total: " + this.getScoreDisplay(questionTotals[4][0], questionTotals[4][1])
       }
+    }
+    else
+    {
+      this.startEx()
     }
   }
 
@@ -60,5 +71,10 @@ export class RandomExercisesPage implements OnInit {
   playAgain(): void
   {
     this.startEx();
+  }
+
+  getScoreDisplay(correct: number, total: number): string
+  {
+    return correct + "/" + total + " (" + (Math.round((correct / total) * 100)).toFixed(0) + "%)"
   }
 }

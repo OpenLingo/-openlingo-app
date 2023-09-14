@@ -16,11 +16,9 @@
     </tr>
     <tr>
       <ion-list>
-        <ion-reorder-group id="promptList" [disabled]="true">
-          <ion-item *ngFor="let word of chosenWords; let i = index" id="{{'word' + i}}">
-            <ion-label>{{sampleWords[1][chosenWords[i]]}}</ion-label>
-          </ion-item>
-        </ion-reorder-group>
+        <ion-item *ngFor="let word of chosenWords; let i = index" id="{{'word' + i}}">
+          <ion-label>{{sampleWords[1][chosenWords[i]]}}</ion-label>
+        </ion-item>
       </ion-list>
     </tr>
   </table>
@@ -32,12 +30,12 @@
     <tr>
       <ion-list id="answerList">
         <ion-item *ngFor="let option of chosenOptions; let i = index">
-          <input type="radio" name="{{'radioSet' + i}}" value="Masculine">
-          <label for="m">&nbsp; Masc &nbsp; &nbsp;</label>
-          <input type="radio" name="{{'radioSet' + i}}" value="Feminine">
-          <label for="f">&nbsp; Fem &nbsp; &nbsp;</label>
-          <input type="radio" name="{{'radioSet' + i}}" value="Neutral">
-          <label for="n">&nbsp; Neutral &nbsp; &nbsp;</label>
+          <input type="radio" name="{{'radioSet' + i}}" value="Masculine" id="{{'m' + i}}">
+          <label for="{{'m' + i}}">&nbsp; Masc &nbsp; &nbsp;</label>
+          <input type="radio" name="{{'radioSet' + i}}" value="Feminine" id="{{'f' + i}}">
+          <label for="{{'f' + i}}">&nbsp; Fem &nbsp; &nbsp;</label>
+          <input type="radio" name="{{'radioSet' + i}}" value="Neutral" id="{{'n' + i}}">
+          <label for="{{'n' + i}}">&nbsp; Neutral &nbsp; &nbsp;</label>
 
           <div>
             <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>

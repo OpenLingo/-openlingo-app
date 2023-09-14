@@ -4,42 +4,93 @@
   </ion-toolbar>
 </ion-header>
 
+<style>
+  td
+  {
+    padding: 15px;
+  }
+  p
+  {
+    margin-top: 10px;
+    font-size:1.4rem;
+  }
+</style>
+
 <ion-content [fullscreen]="true">
   <h2 id="instructionsTitle">Instructions</h2>
   <p id="instructions">In this exercise you will be presented with 10 different exercises in a random order.</p>
 
   <h2 id="resultsTitle" hidden="true">Results</h2>
 
-  <div id="resultsTables" hidden="true">
-    <style>
-      th {font-size:1rem; font-weight:bold; text-decoration:none;}
-      table {float:none;}
-    </style>
+    <table class="center">
+    <tr>
+      <td id="nounScores" hidden="true">
+        <div class="card">
+          <div class="cardtitle">
+            <picture>
+              <source srcset="assets/img/container_dark.png" media="(prefers-color-scheme: dark)">
+              <img class="center" src="assets/img/container.png" alt="cube">
+            </picture>
+            <h3>Match Nouns</h3>
+          </div>
 
-    <table id="nounScores" hidden="true">
-      <tr>
-        <th>Match Nouns</th>
-      </tr>
-    </table>
+          <div class="cardtext">
+            <p id="nounText"></p>
+          </div>
+        </div>
+      </td>
+      <!--New Column----------------------------------------->
+      <td  id="definitionScores" hidden="true">
+        <div class="card">
+          <div class="cardtitle">
+            <picture>
+              <source srcset="assets/img/book_dark.png" media="(prefers-color-scheme: dark)">
+              <img class="center" src="assets/img/book.png" alt="book">
+            </picture>
+            <h3>Match Definitions</h3>
+          </div>
 
-    <table id="definitionScores" hidden="true">
-      <tr>
-        <th>Match Definitions</th>
-      </tr>
-    </table>
+          <div class="cardtext">
+            <p id="definitionText"></p>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <!--New Row---------------------------------------------------------------------------------------------------->
+    <tr>
+      <td  id="genderScores" hidden="true">
+        <div class="card">
+          <div class="cardtitle">
+            <picture>
+              <source srcset="assets/img/gender_dark.png" media="(prefers-color-scheme: dark)">
+              <img class="center" src="assets/img/gender.png" alt="gender">
+            </picture>
 
-    <table id="genderScores" hidden="true">
-      <tr>
-        <th>Match Genders</th>
-      </tr>
-    </table>
+            <h3>Match Genders</h3>
+            </div>
+            <div class="cardtext">
+              <p id="genderText"></p>
+          </div>
+        </div>
+      </td>
+      <!--New Column----------------------------------------->
+      <td id="audioScores" hidden="true">
+        <div class="card" >
+          <div class="cardtitle">
+            <picture>
+              <source srcset="assets/img/speak_dark.png" media="(prefers-color-scheme: dark)">
+              <img class="center" src="assets/img/speak.png" alt="speaking">
+            </picture>
+            <h3>Listen to Pronunciations</h3>
+          </div>
 
-    <table id="audioScores" hidden="true">
-      <tr>
-        <th>Listen to Pronunciations</th>
-      </tr>
-    </table>
-  </div>
+          <div class="cardtext">
+            <p id="audioText"></p>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
 
   <div>
     <h3 id="scoreDisplay" hidden="true"></h3>

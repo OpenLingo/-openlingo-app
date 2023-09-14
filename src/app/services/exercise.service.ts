@@ -228,6 +228,62 @@ export class ExerciseService{
           userAnswers.push("False")
         }
       }
+      //Definition-------------------------------------------------------------------------------------------------------
+      else if(exercise == "definition")
+      {
+        var currentAnswer = document.getElementsByName("radioSet")!
+        var currentSelection
+        var answer = "-1"
+        var k = 0
+
+        //Disables all radio buttons
+        for(let j = 0; j != gameLength; j++)
+        {
+          currentSelection = currentAnswer[j] as HTMLInputElement
+          currentSelection.disabled = true
+        }
+
+        //Goes through the radio buttons until the checked one is found
+        while(k != gameLength)
+        {
+          currentSelection = currentAnswer[k] as HTMLInputElement
+
+          if(currentSelection.checked)
+          {
+            answer = currentSelection.value
+            break
+          }
+          k++
+        }
+
+        currentResult = document.getElementById("answerResult" + k)!
+
+        if(answer == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
+        {
+          score++;
+
+          if(k != gameLength)
+          {
+            currentResult.innerHTML = currentResult.innerHTML.concat("<b>&#10004</b>")
+          }
+        }
+        else if(k != gameLength)
+        {
+          currentResult.innerHTML = currentResult.innerHTML.concat("<b>&#10006</b>")
+        }
+
+        if(k == gameLength)
+        {
+          userAnswers.push(answer)
+        }
+        else
+        {
+          userAnswers.push(sampleWords[0][sampleWords[col2].indexOf(answer)])
+        }
+
+        gameLength = 1
+        break
+      }
       //All other exercises----------------------------------------------------------------------------------------------
       else
       {

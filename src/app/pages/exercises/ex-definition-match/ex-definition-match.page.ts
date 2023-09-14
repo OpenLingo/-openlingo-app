@@ -59,7 +59,7 @@ export class ExDefinitionMatchPage implements OnInit {
       this.loops = state["loops"]
       this.scores = state["scores"]
 
-      this.startEx()
+      //this.startEx()
       document.getElementById("remainingEx")!.hidden = false
     }
 
@@ -74,6 +74,8 @@ export class ExDefinitionMatchPage implements OnInit {
         }
       }
     }
+
+    this.startEx()
   }
 
   getHandleReorder(ev: CustomEvent<ItemReorderEventDetail>)
@@ -85,7 +87,7 @@ export class ExDefinitionMatchPage implements OnInit {
 
   startEx(): void
   {
-    document.getElementById("definitionWarning")!.hidden = true
+    //document.getElementById("definitionWarning")!.hidden = true
 
     if(localStorage.getItem("offlineData_" + this.exName) != null && this.serverDataService.getServerStatus())
     {

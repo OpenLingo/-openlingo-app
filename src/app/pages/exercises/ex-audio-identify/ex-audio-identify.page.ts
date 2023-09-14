@@ -59,7 +59,7 @@ export class ExAudioIdentifyPage implements OnInit {
       this.loops = state["loops"]
       this.scores = state["scores"]
 
-      this.startEx()
+      //this.startEx()
       document.getElementById("remainingEx")!.hidden = false
     }
 
@@ -67,6 +67,8 @@ export class ExAudioIdentifyPage implements OnInit {
     {
       document.getElementById("audioWarning")!.hidden = false
     }
+
+    this.startEx()
   }
 
   getHandleReorder(ev: CustomEvent<ItemReorderEventDetail>)
@@ -102,7 +104,7 @@ export class ExAudioIdentifyPage implements OnInit {
 
   startEx(): void
   {
-    document.getElementById("audioWarning")!.hidden = true
+    //document.getElementById("audioWarning")!.hidden = true
     document.getElementById("togglePrompt")!.hidden = false
 
     if(localStorage.getItem("offlineData_" + this.exName) != null && !this.serverDataService.getServerStatus())

@@ -276,7 +276,7 @@ export class ServerDataService {
             {
               appearances++
 
-              if(check[1] == check[4])
+              if(check[1] == check[4] || check[4] == "True")
               {
                 correct++
               }

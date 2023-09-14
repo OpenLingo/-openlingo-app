@@ -5,14 +5,13 @@
 </ion-header>
 
 <style>
+  th
+  {
+    padding-right:20px;
+  }
   ion-item
   {
-    height: 8rem;
-  }
-  ion-label
-  {
-    font-size: 1rem;
-    height: 6rem;
+
   }
   ion-reorder
   {
@@ -27,39 +26,25 @@
   <br>The goal is to match as many nouns with their correct definition as you can.<br>
   </p>
 
-  <p id="definitionWarning" style="color:red" hidden="true"><b>There currently are not definitions set for all words while using online data.</b></p>
+  <p id="definitionWarning" style="color:red" hidden="true"><b>There are currently limited definitions for words while using online data.</b></p>
 
   <table id="promptTable" hidden="true">
-    <tr>
-      <th>German</th>
-    </tr>
-    <tr>
-      <ion-list>
-        <ion-reorder-group id="promptList" [disabled]="true">
-          <ion-item *ngFor="let word of chosenWords; let i = index" id="{{'word' + i}}">
-            <ion-label id="{{'wordLabel' + i}}">{{sampleWords[1][chosenWords[i]]}}</ion-label>
-          </ion-item>
-        </ion-reorder-group>
-      </ion-list>
-    </tr>
   </table>
 
   <table width="60%" id="answerTable" hidden="true">
     <tr>
-      <th>Definitions</th>
+      <th id="word0">{{sampleWords[1][chosenWords[0]]}}</th>
     </tr>
     <tr>
-      <ion-list text-wrap >
-        <ion-reorder-group id="answerList" [disabled]="false" (ionItemReorder)="getHandleReorder($any($event))">
-          <ion-item *ngFor="let option of chosenOptions; let i = index">
-            <ion-label id="{{'answerLabel' + i}}" text-wrap>{{sampleWords[3][chosenOptions[i]]}}</ion-label>
-            <ion-reorder slot="end"></ion-reorder><br>
+      <ion-list text-wrap id="answerList">
+        <ion-item *ngFor="let option of chosenOptions; let i = index">
+          <input type="radio" name="radioSet" value="{{sampleWords[3][chosenOptions[i]]}}" id="{{'input' + i}}">
+          <label for="{{'input' + i}}" style="padding-left:10px">{{sampleWords[3][chosenOptions[i]]}}</label>
 
-            <div>
-              <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
-            </div>
-          </ion-item>
-        </ion-reorder-group>
+          <div>
+            <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
+          </div>
+        </ion-item>
       </ion-list>
     </tr>
   </table>

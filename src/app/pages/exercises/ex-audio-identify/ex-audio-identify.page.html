@@ -34,7 +34,7 @@
     </tr>
   </table>
 
-  <table id="answerTable" hidden="true">
+  <table id="answerTable" hidden="true" style="width:25rem">
     <tr>
       <th>Word</th>
     </tr>
@@ -54,15 +54,16 @@
     </tr>
   </table>
 
-  <div height="200%" hidden="true" id="togglePrompt">
+  <div height="200%" hidden="true" id="togglePrompt" style="padding-left:15px">
 	<em>Display English Words: </em> <input (click)="toggleDisplay()" id="gerBox" type="checkbox">
   </div>
 
   <div>
-    <h3 id="remainingEx" hidden="true">Exercises Remaining: {{loops + 1}}</h3>
+    <h3 id="remainingEx" style="padding-left:15px" hidden="true">Exercises Remaining: {{loops + 1}}</h3>
   </div>
+
   <div>
-    <h3 id="scoreDisplay" hidden="true"></h3>
+    <h3 id="scoreDisplay" style="padding-left:15px">&nbsp;</h3>
   </div>
 
   <div id="startBtn">

@@ -69,11 +69,11 @@ export class DictionaryPage implements OnInit {
 
     tableDisplay.innerHTML = "\
     <tr>\
-      <th style='padding-bottom:8px;padding-right:10px;padding-left:6px'>English</th>\
-      <th style='padding-bottom:8px;padding-right:10px'>German</th>\
-      <th style='padding-bottom:8px;padding-right:10px'>Definition</th>\
-      <th style='padding-bottom:8px;padding-right:10px'>Gender</th>\
-      <th style='padding-bottom:8px;padding-right:15px'>Accuracy</th>\
+      <th style='padding-bottom:8px;padding-right:5px;padding-left:6px'>English</th>\
+      <th style='padding-bottom:8px;padding-right:5px'>German</th>\
+      <th style='padding-bottom:8px;padding-right:5px'>Gender</th>\
+      <th style='padding-bottom:8px;padding-right:5px'>Accuracy</th>\
+      <th style='padding-bottom:8px;padding-right:40px'>Definition</th>\
     </tr>"
 
     var gray = true
@@ -111,11 +111,11 @@ export class DictionaryPage implements OnInit {
 
         tableDisplay.innerHTML = tableDisplay.innerHTML.concat("\
           <tr style='background-color: " + color + " '>\
-            <td style='padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:6px'>"                            + this.sampleWords[0][this.displayOrder[i]] + "</td>\
-            <td style='padding-top:10px;padding-bottom:10px;padding-right:10px;'>"                                            + this.sampleWords[1][this.displayOrder[i]] + "</td>\
-            <td style='padding-top:10px;padding-bottom:10px;padding-right:10px;'>"                                            + this.sampleWords[3][this.displayOrder[i]] + "</td>\
-            <td style='padding-top:10px;padding-bottom:10px;padding-right:10px;text-align:center;text-transform:uppercase'>"  + this.sampleWords[2][this.displayOrder[i]] + "</td>\
-            <td style='padding-top:10px;padding-bottom:10px;padding-right:15px;text-align:center;'>"                          + this.accuracyValues[this.displayOrder[i]] + "</td>\
+            <td style='padding-top:10px;padding-bottom:10px;padding-right:5px;padding-left:6px'>"                            + this.sampleWords[0][this.displayOrder[i]] + "</td>\
+            <td style='padding-top:10px;padding-bottom:10px;padding-right:5px;'>"                                            + this.sampleWords[1][this.displayOrder[i]] + "</td>\
+            <td style='padding-top:10px;padding-bottom:10px;padding-right:5px;text-align:center;text-transform:uppercase'>"  + this.sampleWords[2][this.displayOrder[i]] + "</td>\
+            <td style='padding-top:10px;padding-bottom:10px;padding-right:5px;text-align:center;'>"                          + this.accuracyValues[this.displayOrder[i]] + "</td>\
+            <td style='padding-top:10px;padding-bottom:10px;padding-right:40px'>"                                                                                 + this.sampleWords[3][this.displayOrder[i]] + "</td>\
           </tr>")
 
         empty = false
@@ -132,6 +132,6 @@ export class DictionaryPage implements OnInit {
 
   clearSearch()
   {
-    window.location.reload();
+    window.location.reload()
   }
 }

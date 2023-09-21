@@ -18,21 +18,28 @@
 <style>
   td
   {
-    padding: 15px;
+    padding-right: 8px;
+    padding-left: 8px;
+    padding-bottom: 16px;
   }
   p
   {
     padding-right: 0;
+    margin:5px;
   }
   ion-button
   {
     width: 5rem;
     height: 3rem;
   }
+  h3
+  {
+    margin:10px;
+  }
 </style>
 
 <ion-content [fullscreen]="true" class="ion-justify-content-center">
-  <table class="center">
+  <table class="center" style="margin-left:30px">
     <tr>
       <td>
         <a href="/ex-noun-match" class="cardlink">
@@ -82,9 +89,9 @@
               </picture>
 
               <h3>Match Genders</h3>
-              </div>
-              <div class="cardtext">
-                <p>Match German words with their gender.</p>
+            </div>
+            <div class="cardtext">
+              <p>Match German words with their gender.</p>
             </div>
           </div>
         </a>
@@ -108,6 +115,7 @@
         </a>
       </td>
     </tr>
+    <br>
     <!--New Row---------------------------------------------------------------------------------------------------->
     <tr>
       <td>
@@ -140,7 +148,7 @@
             </div>
 
             <div class="cardtext">
-              <p>View a list of available words.</p>
+              <p>View a list of available words and information.</p>
             </div>
           </div>
         </a>

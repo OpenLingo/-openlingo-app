@@ -87,8 +87,6 @@ export class ExDefinitionMatchPage implements OnInit {
 
   startEx(): void
   {
-    //document.getElementById("definitionWarning")!.hidden = true
-
     if(localStorage.getItem("offlineData_" + this.exName) != null && this.serverDataService.getServerStatus())
     {
       this.serverData = JSON.parse(localStorage.getItem("offlineData_" + this.exName)!)

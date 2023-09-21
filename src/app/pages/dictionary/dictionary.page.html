@@ -8,11 +8,11 @@
   th
   {
     padding-bottom: 8px;
-    padding-right: 10px;
+    padding-right: 5px;
   }
   td
   {
-    padding-right: 10px;
+    padding-right: 5px;
     padding-bottom: 10px;
     padding-top: 10px;
   }
@@ -45,16 +45,16 @@
     <tr>
       <th style="padding-left:6px">English</th>
       <th>German</th>
-      <th>Definition</th>
       <th>Gender</th>
-      <th style="padding-right:15px">Accuracy</th>
+      <th>Accuracy</th>
+      <th style="padding-right:40px">Definition</th>
     </tr>
     <tr *ngFor="let word of sampleWords[0]; let i = index">
       <td style="padding-left:6px">{{sampleWords[0][displayOrder[i]]}}</td>
       <td>{{sampleWords[1][displayOrder[i]]}}</td>
-      <td>{{sampleWords[3][displayOrder[i]]}}</td>
       <td style="text-align:center;text-transform:uppercase;">{{sampleWords[2][displayOrder[i]]}}</td>
-      <td style="text-align:center;padding-right:15px">{{accuracyValues[displayOrder[i]]}}</td>
+      <td style="text-align:center">{{accuracyValues[displayOrder[i]]}}</td>
+      <td style="padding-right:40px">{{sampleWords[3][displayOrder[i]]}}</td>
     </tr>
     <br><br>
   </table>

@@ -25,17 +25,12 @@
 </style>
 
 <ion-content [fullscreen]="true">
-  <h2 id="instructionsTitle">Instructions</h2>
-  <p id="instructions">In this exercise you will be presented with two lists, one containing nouns in German, and the other containing the matching definitions in English.<br>
-  <br>The goal is to match as many nouns with their correct definition as you can.<br>
-  </p>
-
   <p id="definitionWarning" style="color:red" hidden="true"><b>There are currently limited definitions for words while using online data.</b></p>
 
   <table id="promptTable" hidden="true">
   </table>
 
-  <table width="60%" id="answerTable" hidden="true">
+  <table width="60%" id="answerTable">
     <tr>
       <th id="word0">{{sampleWords[1][chosenWords[0]]}}</th>
     </tr>
@@ -60,10 +55,7 @@
     <h3 id="scoreDisplay" style="padding-left:15px">&nbsp;</h3>
   </div>
 
-  <div id="startBtn">
-    <ion-button type="button" (click)="startEx()">Start</ion-button>
-  </div>
-  <div id="submitBtn" hidden="true">
+  <div id="submitBtn">
     <ion-button type="button" (click)="submitEx()">Submit</ion-button>
   </div>
   <div id="nextBtn" hidden="true">

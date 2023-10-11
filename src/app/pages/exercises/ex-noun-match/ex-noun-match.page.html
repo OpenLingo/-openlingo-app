@@ -12,12 +12,7 @@
 </style>
 
 <ion-content [fullscreen]="true">
-  <h2 id="instructionsTitle">Instructions</h2>
-  <p id="instructions">In this exercise you will be presented with two lists, one containing nouns in English, and the other containing the matching German translations.<br>
-  <br>The goal is to match as many nouns with their correct translation as you can.<br>
-  </p>
-
-  <table id="promptTable" hidden="true">
+  <table id="promptTable">
     <tr >
       <th style="padding-right:60px">English</th>
     </tr>
@@ -32,7 +27,7 @@
     </tr>
   </table>
 
-  <table id="answerTable" hidden="true">
+  <table id="answerTable">
     <tr>
       <th style="padding-right:120px">German</th>
     </tr>
@@ -59,10 +54,7 @@
     <h3 id="scoreDisplay" style="padding-left:15px">&nbsp;</h3>
   </div>
 
-  <div id="startBtn">
-    <ion-button type="button" (click)="startEx()">Start</ion-button>
-  </div>
-  <div id="submitBtn" hidden="true">
+  <div id="submitBtn">
     <ion-button type="button" (click)="submitEx()">Submit</ion-button>
   </div>
   <div id="nextBtn" hidden="true">

@@ -45,15 +45,6 @@ export class ExerciseService{
 
   generateExercise(gameLength: number, exercise: string, quesData: string[][], sampleWords: string[][]): number[][]
   {
-    document.getElementById("startBtn")!.hidden = true;
-    document.getElementById("instructionsTitle")!.hidden = true;
-    document.getElementById("instructions")!.hidden = true;
-
-    document.getElementById("promptTable")!.hidden = false;
-    document.getElementById("answerTable")!.hidden = false;
-
-    document.getElementById("submitBtn")!.hidden = false;
-
     var promptList = document.getElementById("promptList")!
     var answerList = document.getElementById("answerList")!
     var resultsList = document.getElementById("resultsList")!

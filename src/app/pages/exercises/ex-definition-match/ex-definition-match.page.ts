@@ -59,7 +59,6 @@ export class ExDefinitionMatchPage implements OnInit {
       this.loops = state["loops"]
       this.scores = state["scores"]
 
-      //this.startEx()
       document.getElementById("remainingEx")!.hidden = false
     }
 

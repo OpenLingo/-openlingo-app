@@ -5,15 +5,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <h2 id="instructionsTitle">Instructions</h2>
-  <p id="instructions">In this exercise you will be presented with a list of words being pronounced in German.<br>
-  <br>The goal is to correctly match the pronunciation with the correct answer from the list of words.
-  <br>In this exercise you have the option to change which language you are matching the pronunciations with.<br>
-  </p>
-
   <p id="audioWarning" style="color:red" hidden="true"><b>There are currently limited audio files to be played while using online data.</b></p>
 
-  <table id="promptTable" hidden="true">
+  <table id="promptTable">
     <tr>
       <th>German</th>
     </tr>
@@ -34,7 +28,7 @@
     </tr>
   </table>
 
-  <table id="answerTable" hidden="true" style="width:25rem">
+  <table id="answerTable" style="width:25rem">
     <tr>
       <th>Word</th>
     </tr>
@@ -66,10 +60,7 @@
     <h3 id="scoreDisplay" style="padding-left:15px">&nbsp;</h3>
   </div>
 
-  <div id="startBtn">
-    <ion-button type="button" (click)="startEx()">Start</ion-button>
-  </div>
-  <div id="submitBtn" hidden="true">
+  <div id="submitBtn">
     <ion-button type="button" (click)="submitEx()">Submit</ion-button>
   </div>
   <div id="nextBtn" hidden="true">

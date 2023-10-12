@@ -5,35 +5,36 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <table id="promptTable" style="width:8rem">
+  <table width="60%" id="answerTable">
     <tr>
-      <th>Word</th>
+      <th id="wordAnswer">{{sampleWords[1][chosenWords[0]]}}</th>
     </tr>
     <tr>
-      <ion-list>
-        <ion-item *ngFor="let word of chosenWords; let i = index" id="{{'word' + i}}">
-          <ion-label>{{sampleWords[1][chosenWords[i]]}}</ion-label>
-        </ion-item>
-      </ion-list>
-    </tr>
-  </table>
-
-  <table id="answerTable">
-    <tr>
-      <th>Gender</th>
-    </tr>
-    <tr>
-      <ion-list id="answerList">
-        <ion-item *ngFor="let option of chosenOptions; let i = index">
-          <input type="radio" name="{{'radioSet' + i}}" value="Masculine" id="{{'m' + i}}">
-          <label for="{{'m' + i}}">&nbsp; Masc &nbsp; &nbsp;</label>
-          <input type="radio" name="{{'radioSet' + i}}" value="Feminine" id="{{'f' + i}}">
-          <label for="{{'f' + i}}">&nbsp; Fem &nbsp; &nbsp;</label>
-          <input type="radio" name="{{'radioSet' + i}}" value="Neutral" id="{{'n' + i}}">
-          <label for="{{'n' + i}}">&nbsp; Neutral &nbsp; &nbsp;</label>
+      <ion-list text-wrap id="answerList">
+        <ion-item>
+          <input type="radio" name="radioSet" value="m" id="masc">
+          <label for="masc">&nbsp; Masculine</label>
 
           <div>
-            <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
+            <ion-label style="text-align:center; float:right" id="answerResult0">&nbsp;&nbsp;&nbsp;</ion-label>
+          </div>
+        </ion-item>
+        <!----------------------------------------------------------------------------------------->
+        <ion-item>
+          <input type="radio" name="radioSet" value="f" id="fem">
+          <label for="fem">&nbsp; Feminine</label>
+
+          <div>
+            <ion-label style="text-align:center; float:right" id="answerResult1">&nbsp;&nbsp;&nbsp;</ion-label>
+          </div>
+        </ion-item>
+        <!----------------------------------------------------------------------------------------->
+        <ion-item>
+          <input type="radio" name="radioSet" value="n" id="neut">
+          <label for="neut">&nbsp; Neutral</label>
+
+          <div>
+            <ion-label style="text-align:center; float:right" id="answerResult2">&nbsp;&nbsp;&nbsp;</ion-label>
           </div>
         </ion-item>
       </ion-list>

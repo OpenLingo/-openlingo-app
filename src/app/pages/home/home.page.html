@@ -3,14 +3,26 @@
     <table style="float:right;">
       <tr>
         <button style="float:right; color:grey; font-size:150%; margin-right:2rem" (click)="moreInfo()">&#9432;</button>
+        <br>
+        <p id="onlineStatus" style="float:right; color:grey; margin-right:2rem"><em>Offline</em></p>
       </tr>
-      <tr>
-        <ion-text id="onlineStatus" style="float:right; color:grey; margin-right:2rem"><em>Offline</em></ion-text>
-      </tr>
-      <tr>
+      <tr hidden="true">
         <ion-text id="downloadStatus" style="float:right; color:grey; margin-right:2rem"><em>Using Offline Data</em></ion-text>
       </tr>
     </table>
+
+    <div style="float:right; padding-bottom:10px; margin-top:-20px">
+      <ion-button class="wifiButton" id="onlineButton" (click)="connectOnline()" disabled="true" style="width:fit-content">
+        <img class="wifiLight" src="assets/img/wifi.png" height="60%" alt="online" >
+        <img class="wifiDark" src="assets/img/wifi_dark.png" height="60%" alt="online">
+      </ion-button>
+
+      <ion-button class="downloadButton" id="updateButton" (click)="updateData()" disabled="true" style="width:fit-content">
+        <img class="downloadLight" src="assets/img/download.png" height="60%" alt="download">
+        <img class="downloadDark" src="assets/img/download_dark.png" height="60%" alt="download">
+      </ion-button>
+    </div>
+
     <ion-title size="large">OpenLingo <img src="assets/icon/favicon.png" width="25rem" height="25rem"></ion-title>
   </ion-toolbar>
 </ion-header>
@@ -39,7 +51,67 @@
 </style>
 
 <ion-content [fullscreen]="true" class="ion-justify-content-center">
-  <table class="center" style="margin-left:30px">
+  <table id="homeTable" class="center" style="margin-left:30px">
+    <tr>
+      <td colspan="2" style="text-align:center">
+        <a href="/random-exercises" class="centerlink">
+          <div class="card">
+            <div class="cardtitle">
+              <picture>
+                <source srcset="assets/img/arrow_dark.png" media="(prefers-color-scheme: dark)">
+                <img class="center" src="assets/img/arrow.png" alt="shuffle">
+              </picture>
+              <h3>Start Exercises</h3>
+            </div>
+
+            <div class="cardtext">
+              <p>Play through a selection of 20 random exercises.</p>
+            </div>
+          </div>
+        </a>
+      </td>
+    </tr>
+    <!--New Row--------------------------------------------------------------->
+    <tr>
+      <td>
+        <a (click)="toggleExercises()" class="cardlink">
+          <div class="card" >
+            <div class="cardtitle">
+              <picture>
+                <source srcset="assets/img/specific_dark.png" media="(prefers-color-scheme: dark)">
+                <img class="center" src="assets/img/specific.png" alt="bullseye">
+              </picture>
+              <h3>Specific Exercises</h3>
+            </div>
+
+            <div class="cardtext">
+              <p>Choose between specfic types of exercises.</p>
+            </div>
+          </div>
+        </a>
+      </td>
+      <!--New Column----------------------------------------->
+      <td>
+        <a href="/dictionary" class="cardlink">
+          <div class="card">
+            <div class="cardtitle">
+              <picture>
+                <source srcset="assets/img/dictionary_dark.png" media="(prefers-color-scheme: dark)">
+                <img class="center" src="assets/img/dictionary.png" alt="dictionary">
+              </picture>
+              <h3>Dictionary</h3>
+            </div>
+
+            <div class="cardtext">
+              <p>View a list of available words and information.</p>
+            </div>
+          </div>
+        </a>
+      </td>
+    </tr>
+  </table>
+  <!--New Table--------------------------------------------------------------------------------------------->
+  <table class="center" style="margin-left:30px" id="exerciseTable">
     <tr>
       <td>
         <a href="/ex-noun-match" class="cardlink">
@@ -77,7 +149,7 @@
         </a>
       </td>
     </tr>
-    <!--New Row---------------------------------------------------------------------------------------------------->
+    <!--New Row--------------------------------------------------------------->
     <tr>
       <td>
         <a href="/ex-gender-identify" class="cardlink">
@@ -115,43 +187,59 @@
         </a>
       </td>
     </tr>
-    <br>
-    <!--New Row---------------------------------------------------------------------------------------------------->
+    <!--New Row--------------------------------------------------------------->
     <tr>
       <td>
-        <a href="/random-exercises" class="cardlink">
+        <ion-button (click)="toggleExercises()">
+          Back
+        </ion-button>
+      </td>
+    </tr>
+  </table>
+  <!--New Table--------------------------------------------------------------------------------------------->
+  <table class="center" style="margin-left:30px" id="settingsTable">
+    <tr>
+      <td>
+        <a (click)="clearData()" class="cardlink">
           <div class="card">
             <div class="cardtitle">
               <picture>
-                <source srcset="assets/img/arrow_dark.png" media="(prefers-color-scheme: dark)">
-                <img class="center" src="assets/img/arrow.png" alt="shuffle">
+                <source srcset="assets/img/bin_dark.png" media="(prefers-color-scheme: dark)">
+                <img class="center" src="assets/img/bin.png" alt="bullseye">
               </picture>
-              <h3>Randomised Exercises</h3>
+              <h3>Delete Performance Data</h3>
             </div>
 
             <div class="cardtext">
-              <p>Play through a selection of 10 random exercises.</p>
+              <p>Clear all personal data and exercise progress.</p>
             </div>
           </div>
         </a>
       </td>
       <!--New Column----------------------------------------->
       <td>
-        <a href="/dictionary" class="cardlink">
+        <a (click)="deleteWordData()" class="cardlink">
           <div class="card">
             <div class="cardtitle">
               <picture>
-                <source srcset="assets/img/dictionary_dark.png" media="(prefers-color-scheme: dark)">
-                <img class="center" src="assets/img/dictionary.png" alt="dictionary">
+                <source srcset="assets/img/warning_dark.png" media="(prefers-color-scheme: dark)">
+                <img class="center" src="assets/img/warning.png" alt="warning">
               </picture>
-              <h3>Dictionary</h3>
+              <h3>Delete Downloaded Data</h3>
             </div>
 
             <div class="cardtext">
-              <p>View a list of available words and information.</p>
+              <p>Remove downloaded data from the database.</p>
             </div>
           </div>
         </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <ion-button (click)="toggleSettings()">
+          Back
+        </ion-button>
       </td>
     </tr>
   </table>
@@ -159,25 +247,9 @@
 
 <ion-footer>
   <!--<ion-button href="../login">Exit/Logout</ion-button><br>-->
-
-  <ion-button class="wifiButton" id="onlineButton" (click)="connectOnline()" disabled="true">
-    <img class="wifiLight" src="assets/img/wifi.png" height="80%" alt="online" >
-    <img class="wifiDark" src="assets/img/wifi_dark.png" height="80%" alt="online">
-  </ion-button>
-
-  <ion-button class="downloadButton" id="updateButton" (click)="updateData()" disabled="true">
-    <img class="downloadLight" src="assets/img/download.png" height="80%" alt="download">
-    <img class="downloadDark" src="assets/img/download_dark.png" height="80%" alt="download">
-  </ion-button>
-
-  <ion-button class="warningButton" style="float:right; margin-right:5%" (click)="deleteWordData()">
-    <img class="warningLight" src="assets/img/warning.png" height="80%" alt="hazard">
-    <img class="warningDark" src="assets/img/warning_dark.png" height="80%" alt="hazard">
-  </ion-button>
-
-  <ion-button class="binButton" style="float:right" (click)="clearData()">
-    <img class="binLight" src="assets/img/bin.png"  height="80%" alt="bin">
-    <img class="binDark" src="assets/img/bin_dark.png" height="80%" alt="bin">
+  <ion-button class="settingsButton" style="float:right; margin-right:3%; width:fit-content" (click)="toggleSettings()">
+    <img class="settingsLight" src="assets/img/settings.png"  height="60%" alt="settings">
+    <img class="settingsDark" src="assets/img/settings_dark.png" height="60%" alt="settings">
   </ion-button>
 </ion-footer>
 

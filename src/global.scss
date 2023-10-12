@@ -150,14 +150,26 @@ html{
 .cardlink {
   text-decoration: none;
   color: inherit;
+  padding-top: 15px;
+  cursor: pointer;
 }
 
 .center {
-  display: block;
   margin-left: auto;
   margin-right: auto;
   padding: 15px;
   width: 50%;
+}
+
+.centerlink {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  display: inline-table;
+
+  text-decoration: none;
+  color: inherit;
+  padding-top: 15px;
 }
 
 .centercontent {
@@ -196,23 +208,13 @@ html{
   display: inline;
 }
 /*----------------------------------------------------------*/
-.binButton .binDark {
+.settingsButton .settingsDark {
   display: none;
 }
-.binButton:hover .binLight {
+.settingsButton:hover .settingsLight {
   display: none;
 }
-.binButton:hover .binDark {
-  display: inline;
-}
-/*----------------------------------------------------------*/
-.warningButton .warningDark {
-  display: none;
-}
-.warningButton:hover .warningLight {
-  display: none;
-}
-.warningButton:hover .warningDark {
+.settingsButton:hover .settingsDark {
   display: inline;
 }
 /*--------------------------------------------------------------------------------------------------------------*/

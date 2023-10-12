@@ -34,6 +34,8 @@ export class ExAudioIdentifyPage implements OnInit {
   chosenWords: number[] = []
   chosenOptions: number[] = []
 
+  langColumn = 1
+
   //-------------------------------------------------------------------------------------------------------
 
   async ngOnInit()
@@ -70,11 +72,6 @@ export class ExAudioIdentifyPage implements OnInit {
     this.startEx()
   }
 
-  getHandleReorder(ev: CustomEvent<ItemReorderEventDetail>)
-  {
-    this.exerciseService.handleReorder(ev)
-  }
-
   playAudio(audioName: string): void
   {
     var audioElement = document.getElementById(audioName)! as HTMLAudioElement
@@ -90,12 +87,14 @@ export class ExAudioIdentifyPage implements OnInit {
     {
       if(langOption.checked)
       {
-        document.getElementById("option" + i)!.innerText = this.sampleWords[0][this.chosenOptions[i]]
+        this.langColumn = 0
       }
       else
       {
-        document.getElementById("option" + i)!.innerText = this.sampleWords[1][this.chosenOptions[i]]
+        this.langColumn = 1
       }
+
+      document.getElementById("label" + i)!.innerText = this.sampleWords[this.langColumn][this.chosenOptions[i]]
     }
   }
 
@@ -115,23 +114,15 @@ export class ExAudioIdentifyPage implements OnInit {
     this.chosenWords = chosenData[0]
     this.chosenOptions = chosenData[1]
 
-    console.log(this.sampleWords[0][this.chosenWords[0]])
+    document.getElementById("wordAnswer")!.innerHTML = "<source src='assets/audio/mp3/" + this.sampleWords[0][this.chosenWords[0]] + ".mp3' type='audio/mpeg'>\
+                                                        <source src='assets/audio/ogg/" + this.sampleWords[0][this.chosenWords[0]] + ".ogg' type='audio/ogg'>"
   }
 
   //-------------------------------------------------------------------------------------------------------
 
   submitEx(): void
   {
-    var langOption = document.getElementById("gerBox")! as HTMLInputElement
-
-    if(!langOption.checked)
-    {
-      var scoreData: string[] = (this.exerciseService.calculateScore(this.gameLength, this.exName, 0, 1, this.sampleWords))
-    }
-    else
-    {
-      var scoreData: string[] = (this.exerciseService.calculateScore(this.gameLength, this.exName, 0, 0, this.sampleWords))
-    }
+    var scoreData: string[] = (this.exerciseService.calculateScore(this.gameLength, this.exName, 0, this.langColumn, this.sampleWords))
 
     scoreData.unshift(this.exName)
 

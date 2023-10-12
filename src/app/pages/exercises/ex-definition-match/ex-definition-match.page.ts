@@ -62,26 +62,9 @@ export class ExDefinitionMatchPage implements OnInit {
       document.getElementById("remainingEx")!.hidden = false
     }
 
-    if(this.serverDataService.getDownloadStatus())
-    {
-      for(var definition of this.sampleWords[3])
-      {
-        if(definition == "-")
-        {
-          document.getElementById("definitionWarning")!.hidden = false
-          this.gameLength = 1
-        }
-      }
-    }
-
     this.startEx()
   }
-
-  getHandleReorder(ev: CustomEvent<ItemReorderEventDetail>)
-  {
-    this.exerciseService.handleReorder(ev)
-  }
-
+  
   //-------------------------------------------------------------------------------------------------------
 
   startEx(): void

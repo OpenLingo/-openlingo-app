@@ -18,6 +18,10 @@ export class HomePage implements OnInit
 
   async ngOnInit()
   {
+    document.getElementById("homeTable")!.style.display = "inline"
+    document.getElementById("exerciseTable")!.style.display = "none"
+    document.getElementById("settingsTable")!.style.display = "none"
+
     var updateButton = document.getElementById("updateButton")! as HTMLInputElement
 
     this.updateDisplays()
@@ -94,5 +98,34 @@ export class HomePage implements OnInit
   moreInfo()
   {
     alert("Icons from: https://www.flaticon.com.")
+  }
+
+  toggleExercises()
+  {
+    if(document.getElementById("homeTable")!.style.display == "inline")
+    {
+      document.getElementById("homeTable")!.style.display = "none"
+      document.getElementById("exerciseTable")!.style.display = "inline"
+    }
+    else
+    {
+      document.getElementById("homeTable")!.style.display = "inline"
+      document.getElementById("exerciseTable")!.style.display = "none"
+    }
+  }
+
+  toggleSettings()
+  {
+    if(document.getElementById("settingsTable")!.style.display == "inline")
+    {
+      document.getElementById("settingsTable")!.style.display = "none"
+      document.getElementById("homeTable")!.style.display = "inline"
+    }
+    else
+    {
+      document.getElementById("settingsTable")!.style.display = "inline"
+      document.getElementById("homeTable")!.style.display = "none"
+      document.getElementById("exerciseTable")!.style.display = "none"
+    }
   }
 }

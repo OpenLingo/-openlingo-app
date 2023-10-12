@@ -21,9 +21,6 @@
 </style>
 
 <ion-content [fullscreen]="true">
-  <h2 id="instructionsTitle">Instructions</h2>
-  <p id="instructions">In this exercise you will be presented with 10 different exercises in a random order.</p>
-
   <h2 id="resultsTitle" hidden="true">Results</h2>
     <table class="center" style="padding-top:0%">
     <tr>
@@ -78,7 +75,7 @@
       </td>
       <!--New Column----------------------------------------->
       <td id="audioScores" hidden="true">
-        <div class="card" >
+        <div  class="card">
           <div class="cardtitle">
             <picture>
               <source srcset="assets/img/speak_dark.png" media="(prefers-color-scheme: dark)">
@@ -99,9 +96,6 @@
     <h3 id="scoreDisplay" hidden="true"></h3>
   </div>
 
-  <div id="startBtn">
-    <ion-button type="button" (click)="startEx()">Start</ion-button>
-  </div>
   <div id="againBtn" hidden="true">
     <ion-button type="button" (click)="playAgain()">Play Again</ion-button>
   </div>

@@ -12,37 +12,20 @@
 </style>
 
 <ion-content [fullscreen]="true">
-  <table id="promptTable">
-    <tr >
-      <th style="padding-right:60px">English</th>
+  <table width="60%" id="answerTable">
+    <tr>
+      <th id="wordAnswer">{{sampleWords[1][chosenWords[0]]}}</th>
     </tr>
     <tr>
-      <ion-list>
-        <ion-reorder-group id="promptList" [disabled]="true">
-          <ion-item *ngFor="let word of chosenWords; let i = index" id="{{'word' + i}}">
-            <ion-label>{{sampleWords[0][chosenWords[i]]}}</ion-label>
-          </ion-item>
-        </ion-reorder-group>
-      </ion-list>
-    </tr>
-  </table>
+      <ion-list text-wrap id="answerList">
+        <ion-item *ngFor="let option of chosenOptions; let i = index">
+          <input type="radio" name="radioSet" value="{{sampleWords[0][chosenOptions[i]]}}" id="{{'input' + i}}">
+          <label for="{{'input' + i}}" style="padding-left:10px">{{sampleWords[0][chosenOptions[i]]}}</label>
 
-  <table id="answerTable">
-    <tr>
-      <th style="padding-right:120px">German</th>
-    </tr>
-    <tr>
-      <ion-list>
-        <ion-reorder-group id="answerList" [disabled]="false" (ionItemReorder)="getHandleReorder($any($event))">
-          <ion-item *ngFor="let option of chosenOptions; let i = index">
-            <ion-label>{{sampleWords[1][chosenOptions[i]]}}</ion-label>
-            <ion-reorder slot="end"></ion-reorder>
-
-            <div>
-              <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
-            </div>
-          </ion-item>
-        </ion-reorder-group>
+          <div>
+            <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
+          </div>
+        </ion-item>
       </ion-list>
     </tr>
   </table>

@@ -19,7 +19,7 @@ export class ExGenderIdentifyPage implements OnInit {
 
   constructor(private exerciseService: ExerciseService, private serverDataService: ServerDataService, private http: HttpClient, private router: Router) {}
 
-  gameLength = 5
+  gameLength = 3
   exName = this.exerciseService.exercises[0][2]
   exTitle = this.exerciseService.exercises[1][2]
 
@@ -63,11 +63,6 @@ export class ExGenderIdentifyPage implements OnInit {
     }
 
     this.startEx()
-  }
-
-  getHandleReorder(ev: CustomEvent<ItemReorderEventDetail>)
-  {
-    this.exerciseService.handleReorder(ev)
   }
 
   //-------------------------------------------------------------------------------------------------------

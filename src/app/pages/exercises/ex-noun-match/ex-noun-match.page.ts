@@ -65,11 +65,6 @@ export class ExNounMatchPage implements OnInit {
     this.startEx()
   }
 
-  getHandleReorder(ev: CustomEvent<ItemReorderEventDetail>)
-  {
-    this.exerciseService.handleReorder(ev)
-  }
-
   //-------------------------------------------------------------------------------------------------------
 
   startEx(): void
@@ -88,7 +83,7 @@ export class ExNounMatchPage implements OnInit {
 
   submitEx(): void
   {
-    var scoreData: string[] = (this.exerciseService.calculateScore(this.gameLength, this.exName, 0, 1, this.sampleWords))
+    var scoreData: string[] = (this.exerciseService.calculateScore(this.gameLength, this.exName, 1, 0, this.sampleWords))
     scoreData.unshift(this.exName)
 
     this.serverDataService.saveOfflineData(scoreData)

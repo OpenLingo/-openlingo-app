@@ -27,10 +27,6 @@ export class RandomExercisesPage implements OnInit {
       var questionTotals: number[][] = [[0,0],[0,0],[0,0],[0,0],[0,0]]
       var exercises = this.exerciseService.exercises[0]
 
-      document.getElementById("instructionsTitle")!.hidden = true
-      document.getElementById("instructions")!.hidden = true
-      document.getElementById("startBtn")!.hidden = true
-
       document.getElementById("resultsTitle")!.hidden = false
 
       document.getElementById("scoreDisplay")!.hidden = false
@@ -65,7 +61,7 @@ export class RandomExercisesPage implements OnInit {
 
   startEx(): void
   {
-    this.router.navigate([this.exerciseService.pickExercise("ex-random-excercises")], { state: { loops: 10 - 1, scores: [] } }).then(() => {window.location.reload()})
+    this.router.navigate([this.exerciseService.pickExercise("ex-random-excercises")], { state: { loops: 20 - 1, scores: [] } }).then(() => {window.location.reload()})
   }
 
   playAgain(): void

@@ -43,19 +43,15 @@ export class ExerciseService{
     }
   }
 
-  generateExercise(gameLength: number, exercise: string, quesData: string[][], sampleWords: string[][]): number[][]
+  generateExercise(optionCount: number, exercise: string, quesData: string[][], sampleWords: string[][]): number[][]
   {
-    var promptList = document.getElementById("promptList")!
-    var answerList = document.getElementById("answerList")!
-    var resultsList = document.getElementById("resultsList")!
-
     var chosenWords: number[] = []    //Used for checking which words have already been randomly chosen for this round
     var chosenOptions: number[] = []  //Contains the random order of chosen words to be used in the selection element
 
     console.log(quesData)
 
     //Set and display random words
-    for(let i = 0; i != gameLength; i++)
+    for(let i = 0; i != optionCount; i++)
     {
       var nextWord = -1
 
@@ -119,7 +115,7 @@ export class ExerciseService{
     }
 
     //Set a random order of the chosen words
-    for(let i = 0; i != gameLength; i++)
+    for(let i = 0; i != optionCount; i++)
     {
       var nextOption = Math.floor(Math.random() * sampleWords[0].length)
 
@@ -134,7 +130,7 @@ export class ExerciseService{
     return [chosenWords, chosenOptions]
   }
 
-  calculateScore(gameLength: number, exercise: string, col1: number, col2: number, sampleWords: string[][]): string[]
+  calculateScore(optionCount: number, exercise: string, col1: number, col2: number, sampleWords: string[][]): string[]
   {
     var score = 0
     var userAnswers: string[] = []
@@ -142,9 +138,8 @@ export class ExerciseService{
 
     document.getElementById("submitBtn")!.hidden = true;
     document.getElementById("scoreDisplay")!.hidden = false;
-    answerList.disabled = true
 
-    //Removes blank space from HTML innertext to be used for answer checking
+    //Removes blank space from HTML innertext to be used for answer checking-------------------------------------------
     var listCopy: string[] = answerList.innerText.split("\n")
     var answerOrder = []
     for(let i = listCopy.length - 1; i != -1; i--)
@@ -155,198 +150,71 @@ export class ExerciseService{
       }
     }
 
-    //Finds the arrangement of answers to display the correct result
-    var currentIndex = 0
-    var resultIndexes = []
-    for(let i = 0; i != gameLength; i++)
-    {
-      currentIndex = answerList.innerHTML.indexOf("answerResult", currentIndex + 2)
+    //For each question, the word and answer is recorded and the result is displayed to the user-----------------------
+    //Variables wordAnswer and answerList are what is being compared to get the user's result
+    var wordAnswer = document.getElementById("wordAnswer")!  as HTMLInputElement
+    var wordResult
 
-      resultIndexes.push(answerList.innerHTML[currentIndex + 12])
+    if(exercise == "audio")
+    {
+      wordAnswer.innerText = wordAnswer.innerHTML.slice(30, wordAnswer.innerHTML.slice(30).indexOf(".") + 30)
     }
 
-    //For each question, the word and answer is recorded and the result is displayed to the user
-    //Variables currentWord and answerList are what is being compared to get the user's result
-    for(let i = 0; i != gameLength; i++)
+    userAnswers.push(sampleWords[0][sampleWords[col1].indexOf(wordAnswer.innerText)])
+
+    //Begin Checking Answers-------------------------------------------------------------------------------------------
+    var radioOptions = document.getElementsByName("radioSet")!
+    var userSelection
+    var answer = "-1"
+    var k = 0
+
+    //Disables all radio buttons
+    for(let j = 0; j != optionCount; j++)
     {
-      var currentWord = document.getElementById("word" + i)!  as HTMLInputElement
-      var currentResult = document.getElementById("answerResult" + resultIndexes[i])!    //Element containing cross or check symbol
+      userSelection = radioOptions[j] as HTMLInputElement
+      userSelection.disabled = true
+    }
 
-      if(exercise == "audio")
+    //Goes through the radio buttons until the checked one is found
+    while(k != optionCount)
+    {
+      userSelection = radioOptions[k] as HTMLInputElement
+
+      if(userSelection.checked)
       {
-        currentWord.innerText = currentWord.src.slice(0,-4).substring(currentWord.src.indexOf("audio") + 6 + 4)
-      }
-
-      userAnswers.push(sampleWords[0][sampleWords[col1].indexOf(currentWord.innerText)])
-
-      //Gender-----------------------------------------------------------------------------------------------------------
-      if(exercise == "gender")
-      {
-        var genderOptions = ["m", "f", "n", "null"]
-        var currentAnswer = document.getElementsByName("radioSet" + i)!
-        var currentSelection
-        var k = 0
-
-        //Disables all radio buttons
-        for(let j = 0; j != 3; j++)
-        {
-          currentSelection = currentAnswer[j] as HTMLInputElement
-          currentSelection.disabled = true
-        }
-
-        //Goes through the three radio buttons until the checked one is found
-        while(k != 3)
-        {
-          currentSelection = currentAnswer[k] as HTMLInputElement
-
-          if(currentSelection.checked)
-          {
-            break
-          }
-          k++
-        }
-
-        //The index of the checked radio button is used to get the user's answer
-        if(genderOptions[k] == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
-        {
-          score++;
-          currentResult.innerHTML = currentResult.innerHTML.concat("<b>&#10004</b>")
-          userAnswers.push("True")
-        }
-        else
-        {
-          currentResult.innerHTML = currentResult.innerHTML.concat("<b>&#10006</b>")
-          userAnswers.push("False")
-        }
-      }
-      //Definition-------------------------------------------------------------------------------------------------------
-      else if(exercise == "definition")
-      {
-        var currentAnswer = document.getElementsByName("radioSet")!
-        var currentSelection
-        var answer = "-1"
-        var k = 0
-
-        //Disables all radio buttons
-        for(let j = 0; j != gameLength; j++)
-        {
-          currentSelection = currentAnswer[j] as HTMLInputElement
-          currentSelection.disabled = true
-        }
-
-        //Goes through the radio buttons until the checked one is found
-        while(k != gameLength)
-        {
-          currentSelection = currentAnswer[k] as HTMLInputElement
-
-          if(currentSelection.checked)
-          {
-            answer = currentSelection.value
-            break
-          }
-          k++
-        }
-
-        currentResult = document.getElementById("answerResult" + k)!
-
-        if(answer == sampleWords[col2][sampleWords[col1].indexOf(currentWord.innerText)])
-        {
-          score++;
-
-          if(k != gameLength)
-          {
-            currentResult.innerHTML = currentResult.innerHTML.concat("<b>&#10004</b>")
-          }
-        }
-        else if(k != gameLength)
-        {
-          currentResult.innerHTML = currentResult.innerHTML.concat("<b>&#10006</b>")
-        }
-
-        if(k == gameLength)
-        {
-          userAnswers.push(answer)
-        }
-        else
-        {
-          userAnswers.push(sampleWords[0][sampleWords[col2].indexOf(answer)])
-        }
-
-        gameLength = 1
+        answer = userSelection.value
         break
       }
-      //All other exercises----------------------------------------------------------------------------------------------
-      else
-      {
-        if(sampleWords[col1].indexOf(currentWord.innerText) == sampleWords[col2].indexOf(answerOrder[i]))
-        {
-          score++;
-          currentResult.innerHTML = currentResult.innerHTML.concat("<b>&#10004</b>")
-        }
-        else
-        {
-          currentResult.innerHTML = currentResult.innerHTML.concat("<b>&#10006</b>")
-        }
 
-        userAnswers.push(sampleWords[0][sampleWords[col2].indexOf(answerOrder[i])])
-      }
+      k++
     }
 
-    document.getElementById("scoreDisplay")!.innerText =  "Score: " + score + "/" + gameLength + " (" + (Math.round((score / gameLength) * 100)).toFixed(0) + "%)";
+    wordResult = document.getElementById("answerResult" + k)!
+
+    if(answer == sampleWords[col2][sampleWords[col1].indexOf(wordAnswer.innerText)])
+    {
+      score++;
+
+      if(k != optionCount)
+      {
+        wordResult.innerHTML = wordResult.innerHTML.concat("<b>&#10004</b>")
+      }
+    }
+    else if(k != optionCount)
+    {
+      wordResult.innerHTML = wordResult.innerHTML.concat("<b>&#10006</b>")
+    }
+
+    if(k == optionCount)
+    {
+      userAnswers.push(answer)
+    }
+    else
+    {
+      userAnswers.push(sampleWords[0][sampleWords[col2].indexOf(answer)])
+    }
+
+    document.getElementById("scoreDisplay")!.innerText =  "Score: " + score + "/" + 1 + " (" + (Math.round((score / 1) * 100)).toFixed(0) + "%)";
     return userAnswers
-  }
-
-  handleReorder(ev: CustomEvent<ItemReorderEventDetail>)
-  {
-    /*This function edits a list after it has been rearranged so that the item that is being moved swaps with the item that is where it's moving to and
-      the rest stay in the same position.
-      Originally the list could only be rearranged to put an item above or the rest, shifting them all down, which was annoying*/
-
-    ev.detail.complete();
-
-    var answerList = document.getElementById("answerList")!
-
-    if(ev.detail.from < ev.detail.to)       //Item moved down
-    {
-      var valueOverwrite = answerList.children[ev.detail.from + 1].children[0].innerHTML
-
-      //Swap the to and from values
-      answerList.children[ev.detail.from + 1].children[0].innerHTML = answerList.children[ev.detail.to].children[0].innerHTML
-
-      //Move everything inbetween back down one
-      if(ev.detail.to - ev.detail.from > 2)
-      {
-        for(let i = 0; i != (ev.detail.to - ev.detail.from - 1); i++)
-        {
-          answerList.children[ev.detail.to - i].children[0].innerHTML = answerList.children[ev.detail.to - i - 1].children[0].innerHTML
-        }
-      }
-
-      if(ev.detail.to - ev.detail.from > 1)
-      {
-        answerList.children[ev.detail.from + 2].children[0].innerHTML = valueOverwrite
-      }
-    }
-    else if(ev.detail.from > ev.detail.to)  //Item moved up
-    {
-      var valueOverwrite = answerList.children[ev.detail.from - 1].children[0].innerHTML
-
-      //Swap the to and from values
-      answerList.children[ev.detail.from - 1].children[0].innerHTML = answerList.children[ev.detail.to].children[0].innerHTML
-
-      //Move everything inbetween back up one
-      if(ev.detail.from - ev.detail.to > 2)
-      {
-        for(let i = 0; i != (ev.detail.from - ev.detail.to - 1); i++)
-        {
-          answerList.children[ev.detail.to + i].children[0].innerHTML = answerList.children[ev.detail.to + i + 1].children[0].innerHTML
-        }
-      }
-
-      if(ev.detail.from - ev.detail.to > 1)
-      {
-        answerList.children[ev.detail.from - 2].children[0].innerHTML = valueOverwrite
-      }
-    }
   }
 }

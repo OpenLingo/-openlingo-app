@@ -7,43 +7,27 @@
 <ion-content [fullscreen]="true">
   <p id="audioWarning" style="color:red" hidden="true"><b>There are currently limited audio files to be played while using online data.</b></p>
 
-  <table id="promptTable">
+  <table width="60%" id="answerTable">
     <tr>
-      <th>German</th>
-    </tr>
-    <tr>
-      <ion-list>
-        <ion-reorder-group id="promptList" [disabled]="true">
-          <ion-item *ngFor="let word of chosenWords; let i = index">
-            <audio id="{{'audio' + i}}">
-              <source id="{{'word' + i}}" src="assets/audio/mp3/{{sampleWords[0][chosenWords[i]]}}.mp3" type="audio/mpeg">
-              <source src="assets/audio/ogg/{{sampleWords[0][chosenWords[i]]}}.ogg" type="audio/ogg">
-            </audio>
-            <ion-button (click)="playAudio('audio' + i)">
-              &#9658;
-            </ion-button>
-          </ion-item>
-        </ion-reorder-group>
-      </ion-list>
-    </tr>
-  </table>
+      <th>
+        <audio id="wordAnswer">
 
-  <table id="answerTable" style="width:25rem">
-    <tr>
-      <th>Word</th>
+        </audio>
+        <ion-button (click)="playAudio('wordAnswer')">
+            &#9658;
+        </ion-button>
+      </th>
     </tr>
     <tr>
-      <ion-list>
-        <ion-reorder-group id="answerList" [disabled]="false" (ionItemReorder)="getHandleReorder($any($event))">
-          <ion-item *ngFor="let option of chosenOptions; let i = index">
-            <ion-label id="{{'option' + i}}">{{sampleWords[1][chosenOptions[i]]}}</ion-label>
-            <ion-reorder slot="end"></ion-reorder>
+      <ion-list text-wrap id="answerList">
+        <ion-item *ngFor="let option of chosenOptions; let i = index">
+          <input type="radio" name="radioSet" value="{{sampleWords[langColumn][chosenOptions[i]]}}" id="{{'input' + i}}">
+          <label id="{{'label' + i}}" for="{{'input' + i}}" style="padding-left:10px">{{sampleWords[langColumn][chosenOptions[i]]}}</label>
 
-            <div>
-              <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
-            </div>
-          </ion-item>
-        </ion-reorder-group>
+          <div>
+            <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
+          </div>
+        </ion-item>
       </ion-list>
     </tr>
   </table>

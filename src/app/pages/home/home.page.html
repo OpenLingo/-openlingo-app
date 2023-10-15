@@ -11,7 +11,7 @@
       </tr>
     </table>
 
-    <div style="float:right; padding-bottom:10px; margin-top:-20px">
+    <div style="float:right; padding-bottom:10px; margin-top:-10px">
       <ion-button class="wifiButton" id="onlineButton" (click)="connectOnline()" disabled="true" style="width:fit-content">
         <img class="wifiLight" src="assets/img/wifi.png" height="60%" alt="online" >
         <img class="wifiDark" src="assets/img/wifi_dark.png" height="60%" alt="online">
@@ -51,7 +51,7 @@
 </style>
 
 <ion-content [fullscreen]="true" class="ion-justify-content-center">
-  <table id="homeTable" class="center" style="margin-left:30px">
+  <table id="homeTable" class="center">
     <tr>
       <td colspan="2" style="text-align:center">
         <a href="/random-exercises" class="centerlink">
@@ -111,7 +111,7 @@
     </tr>
   </table>
   <!--New Table--------------------------------------------------------------------------------------------->
-  <table class="center" style="margin-left:30px" id="exerciseTable">
+  <table class="center" id="exerciseTable">
     <tr>
       <td>
         <a href="/ex-noun-match" class="cardlink">
@@ -197,7 +197,7 @@
     </tr>
   </table>
   <!--New Table--------------------------------------------------------------------------------------------->
-  <table class="center" style="margin-left:30px" id="settingsTable">
+  <table class="center" id="settingsTable">
     <tr>
       <td>
         <a (click)="clearData()" class="cardlink">
@@ -229,7 +229,7 @@
             </div>
 
             <div class="cardtext">
-              <p>Remove downloaded data from the database.</p>
+              <p>Remove data downloaded from the database.</p>
             </div>
           </div>
         </a>
@@ -247,7 +247,7 @@
 
 <ion-footer>
   <!--<ion-button href="../login">Exit/Logout</ion-button><br>-->
-  <ion-button class="settingsButton" style="float:right; margin-right:3%; width:fit-content" (click)="toggleSettings()">
+  <ion-button class="settingsButton" style="float:right; margin-right:2rem; width:fit-content" (click)="toggleSettings()">
     <img class="settingsLight" src="assets/img/settings.png"  height="60%" alt="settings">
     <img class="settingsDark" src="assets/img/settings_dark.png" height="60%" alt="settings">
   </ion-button>

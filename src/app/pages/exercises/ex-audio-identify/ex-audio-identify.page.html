@@ -4,45 +4,37 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <p id="audioWarning" style="color:red" hidden="true"><b>There are currently limited audio files to be played while using online data.</b></p>
+<ion-content [fullscreen]="true" style="scale:120%;transform-origin: top left;">
+  <p id="audioWarning" style="color:red; padding-right:10rem; margin-bottom:0px;" hidden="true"><b>There are currently limited audio files to be played while using online data.</b></p>
 
   <table width="60%" id="answerTable">
     <tr>
-      <th>
-        <audio id="wordAnswer">
-
-        </audio>
-        <ion-button (click)="playAudio('wordAnswer')">
-            &#9658;
-        </ion-button>
+      <th style="padding:0px;" >
+        <audio id="wordAnswer"></audio>
+        <ion-button (click)="playAudio('wordAnswer')">&#9658;</ion-button>
       </th>
     </tr>
     <tr>
-      <ion-list text-wrap id="answerList">
+      <ion-list text-wrap id="answerList" style="padding:0px">
         <ion-item *ngFor="let option of chosenOptions; let i = index">
           <input type="radio" name="radioSet" value="{{sampleWords[langColumn][chosenOptions[i]]}}" id="{{'input' + i}}">
           <label id="{{'label' + i}}" for="{{'input' + i}}" style="padding-left:10px">{{sampleWords[langColumn][chosenOptions[i]]}}</label>
-
-          <div>
-            <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
-          </div>
+          <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
         </ion-item>
       </ion-list>
     </tr>
+    <tr>
+      <div hidden="true" id="togglePrompt" style="padding-left:15px; padding-bottom:10px;">
+          <em>Display English Words: </em> <input (click)="toggleDisplay()" id="gerBox" type="checkbox">
+      </div>
+    </tr>
+    <tr>
+      <h3 id="remainingEx" hidden="true">Exercises Remaining: {{loops + 1}}</h3>
+    </tr>
+    <tr>
+      <h3 id="scoreDisplay">&nbsp;</h3>
+    </tr>
   </table>
-
-  <div height="200%" hidden="true" id="togglePrompt" style="padding-left:15px">
-	<em>Display English Words: </em> <input (click)="toggleDisplay()" id="gerBox" type="checkbox">
-  </div>
-
-  <div>
-    <h3 id="remainingEx" style="padding-left:15px" hidden="true">Exercises Remaining: {{loops + 1}}</h3>
-  </div>
-
-  <div>
-    <h3 id="scoreDisplay" style="padding-left:15px">&nbsp;</h3>
-  </div>
 
   <div id="submitBtn">
     <ion-button type="button" (click)="submitEx()">Submit</ion-button>

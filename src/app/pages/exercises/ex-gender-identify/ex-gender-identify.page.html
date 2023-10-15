@@ -4,49 +4,39 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" style="scale:130%;transform-origin: top left;">
   <table width="60%" id="answerTable">
     <tr>
       <th id="wordAnswer">{{sampleWords[1][chosenWords[0]]}}</th>
     </tr>
     <tr>
-      <ion-list text-wrap id="answerList">
+      <ion-list text-wrap id="answerList" style="padding:0px">
         <ion-item>
           <input type="radio" name="radioSet" value="m" id="masc">
           <label for="masc">&nbsp; Masculine</label>
-
-          <div>
-            <ion-label style="text-align:center; float:right" id="answerResult0">&nbsp;&nbsp;&nbsp;</ion-label>
-          </div>
+          <ion-label style="text-align:center; float:right" id="answerResult0">&nbsp;&nbsp;&nbsp;</ion-label>
         </ion-item>
-        <!----------------------------------------------------------------------------------------->
+
         <ion-item>
           <input type="radio" name="radioSet" value="f" id="fem">
           <label for="fem">&nbsp; Feminine</label>
-
-          <div>
-            <ion-label style="text-align:center; float:right" id="answerResult1">&nbsp;&nbsp;&nbsp;</ion-label>
-          </div>
+          <ion-label style="text-align:center; float:right" id="answerResult1">&nbsp;&nbsp;&nbsp;</ion-label>
         </ion-item>
-        <!----------------------------------------------------------------------------------------->
+
         <ion-item>
           <input type="radio" name="radioSet" value="n" id="neut">
           <label for="neut">&nbsp; Neutral</label>
-
-          <div>
-            <ion-label style="text-align:center; float:right" id="answerResult2">&nbsp;&nbsp;&nbsp;</ion-label>
-          </div>
+          <ion-label style="text-align:center; float:right" id="answerResult2">&nbsp;&nbsp;&nbsp;</ion-label>
         </ion-item>
       </ion-list>
     </tr>
+    <tr>
+        <h3 id="remainingEx" hidden="true">Exercises Remaining: {{loops + 1}}</h3>
+    </tr>
+    <tr>
+        <h3 id="scoreDisplay">&nbsp;</h3>
+    </tr>
   </table>
-
-  <div>
-    <h3 id="remainingEx" style="padding-left:15px" hidden="true">Exercises Remaining: {{loops + 1}}</h3>
-  </div>
-  <div>
-    <h3 id="scoreDisplay" style="padding-left:15px">&nbsp;</h3>
-  </div>
 
   <div id="submitBtn">
     <ion-button type="button" (click)="submitEx()">Submit</ion-button>

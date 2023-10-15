@@ -5,50 +5,33 @@
 </ion-header>
 
 <style>
-  th
-  {
-    padding-right:20px;
-  }
-  ion-item
-  {
-
-  }
-  ion-reorder
-  {
-    margin: 0;
-    float: right;
-  }
   table
   {
-    width:30rem;
+    width:28rem;
   }
 </style>
 
-<ion-content [fullscreen]="true">
-  <table width="60%" id="answerTable">
+<ion-content [fullscreen]="true" style="scale:130%;transform-origin: top left;">
+  <table id="answerTable">
     <tr>
       <th id="wordAnswer">{{sampleWords[1][chosenWords[0]]}}</th>
     </tr>
     <tr>
-      <ion-list text-wrap id="answerList">
-        <ion-item *ngFor="let option of chosenOptions; let i = index">
+      <ion-list text-wrap id="answerList" style="padding:0px">
+        <ion-item *ngFor="let option of chosenOptions; let i = index" style="height:fit-content">
           <input type="radio" name="radioSet" value="{{sampleWords[3][chosenOptions[i]]}}" id="{{'input' + i}}">
-          <label for="{{'input' + i}}" style="padding-left:10px">{{sampleWords[3][chosenOptions[i]]}}</label>
-
-          <div>
-            <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
-          </div>
+          <label for="{{'input' + i}}" style="padding:10px">{{sampleWords[3][chosenOptions[i]]}}</label>
+          <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
         </ion-item>
       </ion-list>
     </tr>
+    <tr>
+        <h3 id="remainingEx" hidden="true">Exercises Remaining: {{loops + 1}}</h3>
+    </tr>
+    <tr>
+        <h3 id="scoreDisplay">&nbsp;</h3>
+    </tr>
   </table>
-
-  <div>
-    <h3 id="remainingEx" style="padding-left:15px" hidden="true">Exercises Remaining: {{loops + 1}}</h3>
-  </div>
-  <div>
-    <h3 id="scoreDisplay" style="padding-left:15px">&nbsp;</h3>
-  </div>
 
   <div id="submitBtn">
     <ion-button type="button" (click)="submitEx()">Submit</ion-button>

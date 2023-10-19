@@ -105,7 +105,7 @@ export class ExAudioIdentifyPage implements OnInit {
     //document.getElementById("audioWarning")!.hidden = true
     document.getElementById("togglePrompt")!.hidden = false
 
-    if(localStorage.getItem("offlineData_" + this.exName) != null && !this.serverDataService.getServerStatus())
+    if(localStorage.getItem("offlineData_" + this.exName) != null)
     {
       this.serverData = JSON.parse(localStorage.getItem("offlineData_" + this.exName)!)
     }

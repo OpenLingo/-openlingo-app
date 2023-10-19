@@ -69,7 +69,7 @@ export class ExGenderIdentifyPage implements OnInit {
 
   startEx(): void
   {
-    if(localStorage.getItem("offlineData_" + this.exName) != null && this.serverDataService.getServerStatus())
+    if(localStorage.getItem("offlineData_" + this.exName) != null)
     {
       this.serverData = JSON.parse(localStorage.getItem("offlineData_" + this.exName)!)
     }

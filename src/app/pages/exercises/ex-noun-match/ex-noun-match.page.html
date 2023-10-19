@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" style="scale:130%;transform-origin: top left;">
+<ion-content [fullscreen]="true" style="scale:125%;transform-origin: top left;">
   <table id="answerTable">
     <tr>
       <th id="wordAnswer">{{sampleWords[1][chosenWords[0]]}}</th>
@@ -14,7 +14,7 @@
         <ion-item *ngFor="let option of chosenOptions; let i = index">
           <input type="radio" name="radioSet" value="{{sampleWords[0][chosenOptions[i]]}}" id="{{'input' + i}}">
           <label for="{{'input' + i}}" style="padding-left:10px">{{sampleWords[0][chosenOptions[i]]}}</label>
-          <ion-label style="text-align:center; float:right;;" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
+          <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
         </ion-item>
       </ion-list>
     </tr>

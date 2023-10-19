@@ -153,7 +153,7 @@ export class ExerciseService{
     //For each question, the word and answer is recorded and the result is displayed to the user-----------------------
     //Variables wordAnswer and answerList are what is being compared to get the user's result
     var wordAnswer = document.getElementById("wordAnswer")!  as HTMLInputElement
-    var wordResult
+    var wordResult = document.getElementById("answerResult0")
 
     if(exercise == "audio")
     {

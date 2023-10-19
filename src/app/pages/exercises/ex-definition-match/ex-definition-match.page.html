@@ -17,10 +17,10 @@
       <th id="wordAnswer">{{sampleWords[1][chosenWords[0]]}}</th>
     </tr>
     <tr>
-      <ion-list text-wrap id="answerList" style="padding:0px">
-        <ion-item *ngFor="let option of chosenOptions; let i = index" style="height:fit-content">
+      <ion-list text-wrap id="answerList" style="padding:0px; width:27rem">
+        <ion-item *ngFor="let option of chosenOptions; let i = index" style="height:fit-content; padding-bottom:1rem">
           <input type="radio" name="radioSet" value="{{sampleWords[3][chosenOptions[i]]}}" id="{{'input' + i}}">
-          <label for="{{'input' + i}}" style="padding:10px">{{sampleWords[3][chosenOptions[i]]}}</label>
+          <label for="{{'input' + i}}" style="padding:10px; width:20rem">{{sampleWords[3][chosenOptions[i]]}}</label>
           <ion-label style="text-align:center; float:right" id="{{'answerResult' + i}}">&nbsp;&nbsp;&nbsp;</ion-label>
         </ion-item>
       </ion-list>
